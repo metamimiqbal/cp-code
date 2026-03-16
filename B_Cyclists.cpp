@@ -69,21 +69,40 @@ const ll M = 1e7;
 
 // [ The Great Adventure ] ----------------------------------
 void solve() {
-    ll n; cin>>n;
-    VEC v(n+1);
-    v[n] = 1;
-    ll flip = 0;
-    rrep(i, n-1, 1){
-        if((flip & 1) == 0){
-            v[i] = v[i+1] + i;
-        }else{
-            v[i] = abs(v[i+1]-i);
+    ll n, k, p, m; cin>>n>>k>>p>>m;
+    // ll n, k; cin>>n>>k;
+    VEC v(n);
+    rep(i, 0, n) cin>>v[i];
+    ll energy = 0;
+
+    ll ans = 0;
+    while(energy < m) {
+        ll mn = LLONG_MAX;
+        rep(l, 0, k) {
+            mn = min(mn, v[l]);
+            if()
         }
-        flip++;
+        energy += mn;
+        auto pos = find(all(v), mn) - v.begin();
+        v.erase(v.begin()+pos);
+        v.emplace_back(mn);
     }
-    
-    rep(i, 1, n+1) cout<<v[i]<<spc;
-    cout<<nl;
+
+    // for(int i = 0, j = k; i <= n-k; i++, j++) {
+    //     ll mn = LLONG_MAX;
+    //     rep(l, i, j) {
+    //         mn = min(mn, v[l]);
+    //     }
+    //     // dbg(i);
+    //     // dbg(j);
+    //     // dbg(mn);
+    //     cycle_energy += mn;
+    //     auto pos = find(all(v), mn) - v.begin();
+    //     v.erase(v.begin()+pos);
+    //     v.emplace_back(mn);
+    // }
+    // // cout<<cycle_energy<<nl;
+    // cout<<m/cycle_energy<<nl;
 }
 
 // [ Black Pearl ] -------------------------------------------

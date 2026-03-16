@@ -69,28 +69,17 @@ const ll M = 1e7;
 
 // [ The Great Adventure ] ----------------------------------
 void solve() {
-    ll n; cin>>n;
-    VEC v(n+1);
-    v[n] = 1;
-    ll flip = 0;
-    rrep(i, n-1, 1){
-        if((flip & 1) == 0){
-            v[i] = v[i+1] + i;
-        }else{
-            v[i] = abs(v[i+1]-i);
-        }
-        flip++;
-    }
-    
-    rep(i, 1, n+1) cout<<v[i]<<spc;
-    cout<<nl;
+    ll a, b; cin>>a>>b;
+    if(a>b) cout<<"Alice\n";
+    else if(b>a) cout<<"Bob\n";
+    else cout<<"Draw\n";
 }
 
 // [ Black Pearl ] -------------------------------------------
 signed main() {
     Think_Like_Jack_Sparrow
 
-    int t; cin >> t; while(t--)
+    // int t; cin >> t; while(t--)
     solve();
 
     return 0;

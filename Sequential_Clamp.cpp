@@ -69,21 +69,21 @@ const ll M = 1e7;
 
 // [ The Great Adventure ] ----------------------------------
 void solve() {
-    ll n; cin>>n;
-    VEC v(n+1);
-    v[n] = 1;
-    ll flip = 0;
-    rrep(i, n-1, 1){
-        if((flip & 1) == 0){
-            v[i] = v[i+1] + i;
-        }else{
-            v[i] = abs(v[i+1]-i);
-        }
-        flip++;
+    ll n;cin>>n;
+    vector<pair<ll, ll>>vpr;
+    ll mx = LLONG_MAX;
+    rep(i, 0, n) {
+        ll x, y; cin>>x>>y;
+        vpr.push_back({x, y});
+        mx = max(mx, max(x, y));
     }
-    
-    rep(i, 1, n+1) cout<<v[i]<<spc;
-    cout<<nl;
+
+    for(auto[u, v]: vpr) {
+        if(mx < u) mx = u;
+        else if(mx > v) mx = v;
+    }
+
+    cout<<mx<<nl;
 }
 
 // [ Black Pearl ] -------------------------------------------

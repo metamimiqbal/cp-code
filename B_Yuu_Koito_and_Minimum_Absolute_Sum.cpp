@@ -60,7 +60,7 @@ using namespace std;
 
 // [ Dropping Anchor ] 
 #define dbg(x)          cerr << "[DBG] " << #x << " = " << x << nl
-#define printv(v)       for(auto x : v) cerr << x << ' '; cerr << nl
+#define printv(v)       for(auto x : v) cout << x << ' '; cout << nl
 
 // [ Secret Map ] 
 const ll M = 1e7;
@@ -70,20 +70,22 @@ const ll M = 1e7;
 // [ The Great Adventure ] ----------------------------------
 void solve() {
     ll n; cin>>n;
-    VEC v(n+1);
-    v[n] = 1;
-    ll flip = 0;
-    rrep(i, n-1, 1){
-        if((flip & 1) == 0){
-            v[i] = v[i+1] + i;
-        }else{
-            v[i] = abs(v[i+1]-i);
-        }
-        flip++;
+    VEC v(n);
+    rep(i, 0, n) {
+        cin>>v[i]; 
     }
-    
-    rep(i, 1, n+1) cout<<v[i]<<spc;
-    cout<<nl;
+    if(v[0] == -1 || v[n-1] == -1) v[0] = v[n-1] = max(v[n-1], v[0]); 
+
+    if(v[0] == -1) {
+        v[0] = v[n-1] = 0;
+    }
+
+    rep(i, 1, n-1) {
+        if(v[i] == -1) v[i] = 0;
+    } 
+
+    cout<<abs(v[n-1] - v[0])<<nl;
+    printv(v);
 }
 
 // [ Black Pearl ] -------------------------------------------

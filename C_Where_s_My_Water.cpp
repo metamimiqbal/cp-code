@@ -68,22 +68,120 @@ const ll M = 1e7;
 // bitset<octroi> vc;
 
 // [ The Great Adventure ] ----------------------------------
+//plan-a);
+// void solve() {
+//     ll n, h; cin>>n>>h;
+//     VEC v(n);
+//     rep(i, 0, n) {
+//         cin>>v[i];
+//     }
+//     VEC old_v = v;
+//     // ll sum = accumulate(all(v), 0ll);
+//     // cout<<sum<<nl;
+//     VEC maxing(n);
+//     ll mxx = LLONG_MIN;
+//     rep(i, 0, n) {
+//         mxx = max(v[i], mxx);
+//         maxing[i] = mxx;
+//     }
+
+//     VEC smaxing(n);
+//     mxx = LLONG_MIN;
+//     rrep(i, n-1, 0) {
+//         mxx = max(v[i], mxx);
+//         smaxing[i] = mxx;
+//     }
+
+//     ll mx = LLONG_MIN;
+//     rep(i, 0, n-1) {
+//         ll sm1 = 0;
+//         rep(k, 0, i-1) sm1 += (h-maxing[k]);
+//         sm1 += v[i];
+//         ll id = i + 1;
+//         if(id >= n) continue;
+//         while(v[id] > v[i]) {
+//             sm1 += (h-maxing[id]); ++id;
+//         }
+//         if(id >= n) continue;
+//         ll sm2;
+//         rep(j, id, n) {
+//             sm2 = v[j];
+//             rep(k, j+1, n) {
+//                 sm2 += (h-smaxing[k]);
+//             }
+//         }
+//         mx = max(mx, sm1+sm2);
+//     }
+
+//     cout<<mx<<nl;
+// }
+
+// [ The Great Adventure ] ----------------------------------
+//plan-b
 void solve() {
-    ll n; cin>>n;
-    VEC v(n+1);
-    v[n] = 1;
-    ll flip = 0;
-    rrep(i, n-1, 1){
-        if((flip & 1) == 0){
-            v[i] = v[i+1] + i;
-        }else{
-            v[i] = abs(v[i+1]-i);
-        }
-        flip++;
+    ll n, h; cin>>n>>h;
+    VEC v(n);
+    rep(i, 0, n) {
+        cin>>v[i];
     }
+
+    VEC l_water(n, 0);
+    rep(i, 0, n) {
+        ll mxx = v[i];
+        ll sm = 0;
+        rrep(k, i, 0) {
+            mxx = max(mxx, v[k]);
+            sm += (h-mxx);
+        }
+        l_water[i] = sm;
+    }
+
+    VEC r_water(n, 0);
+    rep(i, 0, n) {
+        ll mxx = v[i];
+        ll sm = 0;
+        rep(k, i, n) {
+            mxx = max(mxx, v[k]);
+            sm += (h-mxx);
+        }
+        r_water[i] = sm;
+    }
+
+    VEC maxing(n, 0);
+    rep(i, 0, n) {
+        ll water = l_water[i];
+        maxing[i] = max(maxing[i], water);
+        
+        ll mxx = v[i];
+        rep(x, i+1, n) {
+            mxx = max(mxx, v[x]);
+            water += (h-mxx);
+            maxing[x] = max(maxing[x], water);
+        }
+    }
+    rep(x, 1, n) maxing[x] = max(maxing[x], maxing[x-1]);
+
+    VEC smaxing(n, 0);
+    rrep(i, n-1, 0) {
+        ll water = r_water[i];
+        smaxing[i] = max(smaxing[i], water);
+        
+        ll mxx = v[i];
+        rrep(x, i-1, 0) {
+            mxx = max(mxx, v[x]);
+            water += (h-mxx);
+            smaxing[x] = max(smaxing[x], water);
+        }
+    }
+    rrep(x, n-2, 0) smaxing[x] = max(smaxing[x], smaxing[x+1]);
+
+    ll mx = max(maxing[n-1], smaxing[0]); 
     
-    rep(i, 1, n+1) cout<<v[i]<<spc;
-    cout<<nl;
+    rep(p, 0, n-1) {
+        mx = max(mx, maxing[p]+smaxing[p+1]);
+    }
+
+    cout<<mx<<nl;
 }
 
 // [ Black Pearl ] -------------------------------------------

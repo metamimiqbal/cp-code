@@ -63,25 +63,32 @@ using namespace std;
 #define printv(v)       for(auto x : v) cerr << x << ' '; cerr << nl
 
 // [ Secret Map ] 
-const ll octroi = 1e7;
+const ll M = 1e7;
 // vector<int> dp(octroi, -1);
 // bitset<octroi> vc;
 
 // [ The Great Adventure ] ----------------------------------
 void solve() {
-    // Code your way out of the locker...
     ll n; cin>>n;
-    bool evn = false;
-    ll od = 0;
-    rep(i, 0, n){
-        ll x; cin>>x;
-        if(x&1) od++;
-        // else evn = true;
+    VEC v(n);
+    MP mp;
+    rep(i, 0, n) {
+        cin>>v[i];
+        if(i&1) mp[v[i]] = 1;
+        else mp[v[i]] = 0;
     }
-    // if((evn && (od&1)==0) || (!evn && ())) yes;
-    // else no;
-    if((od & 1)==0) yes;
-    else no;
+
+    VEC vec;
+    for(auto [u, v]:mp) {
+        vec.push_back(v);
+    }
+    rep(i, 0, n-1) {
+        if(vec[i] == vec[i+1]) {
+            no; return;
+        }
+    }
+    yes;
+
 }
 
 // [ Black Pearl ] -------------------------------------------

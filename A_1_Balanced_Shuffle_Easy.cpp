@@ -68,29 +68,44 @@ const ll M = 1e7;
 // bitset<octroi> vc;
 
 // [ The Great Adventure ] ----------------------------------
-void solve() {
-    ll n; cin>>n;
-    VEC v(n+1);
-    v[n] = 1;
-    ll flip = 0;
-    rrep(i, n-1, 1){
-        if((flip & 1) == 0){
-            v[i] = v[i+1] + i;
-        }else{
-            v[i] = abs(v[i+1]-i);
-        }
-        flip++;
-    }
+bool cmp(tuple<ll, ll, char>a, tuple<ll, ll, char>b) {
+    auto [a1, a2, a3] = a;
+    auto [b1, b2, b3] = b;
+
+    if(a1 == b1) return a2 > b2;
     
-    rep(i, 1, n+1) cout<<v[i]<<spc;
-    cout<<nl;
+    return a1 < b1;
+}
+
+void solve() {
+    vector<tuple<ll, ll, char>>vpr;
+    stack<char>stk;
+    char c; 
+    ll idx = 0;
+    while(cin>>c) {
+        vpr.push_back({sz(stk), idx, c});
+        if(stk.empty()) {
+            stk.push(c); continue;
+        }
+        if(c == '(' && stk.top() == ')') stk.pop();
+        else if(c == ')' && stk.top() == '(') stk.pop();
+        else stk.push(c);
+
+        ++idx;
+    }
+    sort(all(vpr), cmp);
+    
+    for(auto[p, q, v]: vpr) {
+        cout<<v;
+    }
+    cout<<nl;   
 }
 
 // [ Black Pearl ] -------------------------------------------
 signed main() {
     Think_Like_Jack_Sparrow
 
-    int t; cin >> t; while(t--)
+    // int t; cin >> t; while(t--)
     solve();
 
     return 0;

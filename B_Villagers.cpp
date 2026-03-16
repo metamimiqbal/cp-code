@@ -1,113 +1,93 @@
-/* This is the same dawn -- the one in which truth shall rise as falsehood falls. 
-By the promise of my Almighty, oppression shall perish, and justice shall prevail.  
-Free Palestine. Free the Uyghurs. Free the Rohingyas.  
-Free Sudan, Yemen, Iraq, and every land where the blood of the innocent cries out.  
-
-"They wish to extinguish the light of Allah with their mouths, 
-but Allah will perfect His light -- even if the disbelievers hate it." -- Surah As-Saff (61:8)  
-
-And say: "Truth has come and falsehood has vanished. Indeed, falsehood is bound to vanish." -- Surah Al-Isra (17:81)
-
-May the curse of my Lord be upon the oppressors, the tyrants, and the usurpers of truth. 
-May their plans be shattered as were those of Firaun, and their legacy buried like Aad and Thamud.  
-We stand with our oppressed brothers and sisters -- not with slogans, but with conviction. 
-Victory will surely come to those who stand firm upon the Haqq.  
-
-"So bear beautiful patience. They see it far off, but We see it near." -- Surah Al-Ma'arij (70:5-7)  
-
-May mankind rise with justice, and may falsehood vanish -- as it is always bound to. */
+/**
+ * Bismillah
+ * "The problem is not the problem. The problem is your attitude about the problem."
+ *
+ * THE BLACK PEARL CODEBASE
+ * -------------------------------------------------------------
+ * |  "Take what you can, give nothing back!"                  |
+ * -------------------------------------------------------------
+ */
 
 #include <bits/stdc++.h>
 using namespace std;
 
+// [Navigating the Seas] 
 #define FAST_IO ios::sync_with_stdio(false); cin.tie(nullptr);
-#define A_Fighting_Horse_Never_Dances_With_The_Wedding_Horses FAST_IO
+#define Think_Like_Jack_Sparrow FAST_IO
 
-// ------------------ [Type Aliases] ------------------
-#define ll long long
-#define ull unsigned long long
-#define flt long double
-#define VEC vector<ll>
-#define VVEC vector<vector<ll>>
-#define MP map<ll, ll>//Reminder: MAP potentially conflict on c++20+
-#define SET set<ll>
-#define que queue<ll>
-#define dque deque<ll>
-#define prque priority_queue<ll>
-#define aprque priority_queue<ll, vector<ll>, greater<ll>>
+// [ The Pirate's Gold ] 
+#define ll      long long
+#define ull     unsigned long long
+#define flt     long double
 
-// ------------------ [STL Macros] ------------------
-#define all(x) (x).begin(), (x).end()
+// [ Provisions & Cargo ]
+#define VEC     vector<ll>
+#define VPR     vector<pair<ll,ll>>
+#define VVEC    vector<vector<ll>>
+#define MP      map<ll, ll>
+#define SET     set<ll>
+#define que     queue<ll>
+#define dque    deque<ll>
+#define prque   priority_queue<ll>
+#define aprque  priority_queue<ll, vector<ll>, greater<ll>>
+
+#define all(x)  (x).begin(), (x).end()
 #define rall(x) (x).rbegin(), (x).rend()
-#define size(x) (ll)(x).size()
-#define SUM(x) accumulate(all(x), 0LL)
-#define MAX(x) *max_element(all(x))
-#define MIN(x) *min_element(all(x))
-#define STR_TOUPPER(s) transform(s.begin(), s.end(), s.begin(), ::toupper)
-#define STR_TOLOWER(s) transform(s.begin(), s.end(), s.begin(), ::tolower)
+#define sz(x)   (ll)(x).size()
 
-// ------------------ [Looping Macros] ------------------
-#define rep(i,a,b) for(ll i=(a);i<(b);++i)
-#define rrep(i,a,b) for(ll i=(a);i>=(b);--i)
-#define each(x,a) for(auto &x : a)
+// [ Combat Maneuvers ] --------------------------------------
+#define SUM(x)          accumulate(all(x), 0LL)
+#define MAX(x)          *max_element(all(x))
+#define MIN(x)          *min_element(all(x))
+#define STR_TOUPPER(s)  transform(all(s), s.begin(), ::toupper)
+#define STR_TOLOWER(s)  transform(all(s), s.begin(), ::tolower)
+#define gcd             __gcd
+#define lcm(a,b)        ((a)/gcd(a,b)*(b))
+#define mod             1000000007
+#define modn(x)         (((x)%mod+mod)%mod)
+#define ll_len(n)       ((n) > 0 ? (int)floor(log10((long double)(n)) + 1) : 1)
 
-// ------------------ [Math] ------------------
-#define gcd __gcd
-#define lcm(a,b) ((a)/gcd(a,b)*(b))
-#define mod 1000000007 // 1e9+7
-#define modn(x) (((x)%mod+mod)%mod)
-#define ll_len(n) ((n) > 0 ? (int)floor(log10((long double)(n)) + 1) : 1)
+// [ Constant Voyages ] 
+#define rep(i,a,b)      for(ll i=(a);i<(b);++i)
+#define rrep(i,a,b)     for(ll i=(a);i>=(b);--i)
+#define each(x,a)       for(auto &x : a)
 
-// ------------------ [Output Helpers] ------------------
-#define yes cout<<"YES\n"
-#define no cout<<"NO\n"
-#define nl '\n'
-#define spc " "
+// [ Parlay ]
+#define yes             cout<<"YES\n"
+#define no              cout<<"NO\n"
+#define nl              '\n'
+#define spc             " "
 
-// ------------------ [Debugging] ------------------
-#define dbg(x) cerr << #x << " = " << x << nl
-#define printv(v) for(auto x : v) cerr << x << ' '; cerr << nl
+// [ Dropping Anchor ] 
+#define dbg(x)          cerr << "[DBG] " << #x << " = " << x << nl
+#define printv(v)       for(auto x : v) cerr << x << ' '; cerr << nl
 
-// ------------------ [Constants & Globals] ------------------
-const ll octroi = 1e7;
-// vector<int> dp(octroi, -1); 
+// [ Secret Map ] 
+const ll M = 1e7;
+// vector<int> dp(octroi, -1);
 // bitset<octroi> vc;
 
-void solve(){
+// [ The Great Adventure ] ----------------------------------
+void solve() {
     ll n; cin>>n;
-    VEC vec;
-    rep(i, 0, n){
-        ll val; cin>>val;
-        vec.push_back(val);
-    }
+    VEC v(n);
+    rep(i, 0, n) cin>>v[i];
+    sort(all(v));
     ll ans = 0;
-
-    while(size(vec)>=2){
-        VEC tmp;
-        ll mn = LLONG_MAX;
-        sort(all(vec));
-        ll idx = 0;
-        ll mx = LLONG_MIN;
-        for(int i = 0; i<size(vec)-1; i+=2){
-            ans += max(vec[i], vec[i+1]);
-            ll mini = min(vec[i], vec[i+1]);
-            tmp.push_back(min(vec[i]-mini, vec[i+1]-mini));
-            mx = max(mx, );
-            idx = i;
-        }
-        if(size(vec)&1){
-            
-        }
-        vec = tmp;
-    }
-    // cout<<size(vec)<<": ";
-    // cout<<ans<<nl;
+    for(int i = n-1; i>=0; i-=2) ans += v[i];
+    cout<<ans<<nl;
 }
 
-signed main(){
-    A_Fighting_Horse_Never_Dances_With_The_Wedding_Horses
-    int t; cin>>t; while(t--)
-        solve();
+// [ Black Pearl ] -------------------------------------------
+signed main() {
+    Think_Like_Jack_Sparrow
+
+    int t; cin >> t; while(t--)
+    solve();
 
     return 0;
 }
+
+// -------------------------------------------------------------
+// You'll always be remembered, mate (Sorif Osman Bin Hady)
+// -------------------------------------------------------------

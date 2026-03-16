@@ -70,20 +70,12 @@ const ll M = 1e7;
 // [ The Great Adventure ] ----------------------------------
 void solve() {
     ll n; cin>>n;
-    VEC v(n+1);
-    v[n] = 1;
-    ll flip = 0;
-    rrep(i, n-1, 1){
-        if((flip & 1) == 0){
-            v[i] = v[i+1] + i;
-        }else{
-            v[i] = abs(v[i+1]-i);
-        }
-        flip++;
+    VEC v(n);
+    rep(i, 0, n) {
+        cin>>v[i];
     }
-    
-    rep(i, 1, n+1) cout<<v[i]<<spc;
-    cout<<nl;
+    sort(all(v));
+    cout<<max(v[0], v[1]-v[0])<<nl;
 }
 
 // [ Black Pearl ] -------------------------------------------

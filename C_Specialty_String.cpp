@@ -69,21 +69,15 @@ const ll M = 1e7;
 
 // [ The Great Adventure ] ----------------------------------
 void solve() {
-    ll n; cin>>n;
-    VEC v(n+1);
-    v[n] = 1;
-    ll flip = 0;
-    rrep(i, n-1, 1){
-        if((flip & 1) == 0){
-            v[i] = v[i+1] + i;
-        }else{
-            v[i] = abs(v[i+1]-i);
-        }
-        flip++;
+    ll n; string s; cin>>n>>s;
+    stack<char>stk;
+    stk.push(s[0]);
+    rep(i, 1, n){
+        if(!stk.empty() && stk.top()==s[i]) stk.pop();
+        else stk.push(s[i]);
     }
-    
-    rep(i, 1, n+1) cout<<v[i]<<spc;
-    cout<<nl;
+    if(stk.empty()) yes;
+    else no;
 }
 
 // [ Black Pearl ] -------------------------------------------

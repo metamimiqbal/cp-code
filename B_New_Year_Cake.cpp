@@ -63,43 +63,34 @@ using namespace std;
 #define printv(v)       for(auto x : v) cerr << x << ' '; cerr << nl
 
 // [ Secret Map ] 
-const ll octroi = 1e7;
+const ll M = 1e7;
 // vector<int> dp(octroi, -1);
 // bitset<octroi> vc;
 
+
+ll calc(ll a, ll b) {
+    ll size = 1;
+    ll turn = 1;
+    while(true) {
+        if(turn % 2 == 0) {
+            if(a < size) break;
+            a -= size;
+        }else {
+            if(b < size) break;
+            b -= size;
+        }
+        turn++;
+        size *= 2;
+    }
+    return turn - 1;
+}
+
+
 // [ The Great Adventure ] ----------------------------------
 void solve() {
-    // Code your way out of the locker...
-    ll w, d; cin>>w>>d;
-    ll mn_choc = min(w, d);
-    ll mx_choc = max(w, d);
-
-    ll mn_dmnd = 2;
-    ll mx_dmnd = 1;
-
-    ll layer = 0;
-    ll idx = 0;
-
-    if(mn_choc == 1 && mx_choc > 1){
-        cout<<2<<nl; return;
-    }
-
-    while(true){
-        if((idx&1) && mn_choc >= mn_dmnd){
-            mn_choc -= mn_dmnd;
-            mn_dmnd = mx_dmnd * 2;
-            layer++;
-        }else if((idx&1) == 0 && mx_choc >= mx_dmnd){
-            mx_choc -= mx_dmnd;
-            mx_dmnd = mn_dmnd * 2;
-            layer++;
-        }else{
-            break;
-        }
-        idx++;
-    }
-
-    cout<<layer<<nl;
+    ll a, b; cin>>a>>b;
+    
+    cout<<max(calc(a, b), calc(b, a))<<nl;
 }
 
 // [ Black Pearl ] -------------------------------------------
@@ -114,4 +105,4 @@ signed main() {
 
 // -------------------------------------------------------------
 // You'll always be remembered, mate (Sorif Osman Bin Hady)
-// -------------------------------------------------------------    
+// -------------------------------------------------------------

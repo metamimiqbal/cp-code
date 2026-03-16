@@ -70,20 +70,32 @@ const ll M = 1e7;
 // [ The Great Adventure ] ----------------------------------
 void solve() {
     ll n; cin>>n;
-    VEC v(n+1);
-    v[n] = 1;
-    ll flip = 0;
-    rrep(i, n-1, 1){
-        if((flip & 1) == 0){
-            v[i] = v[i+1] + i;
-        }else{
-            v[i] = abs(v[i+1]-i);
-        }
-        flip++;
+    VEC v(n);
+    SET st;
+    ll id=-1;
+    ll zero = 0;
+    rep(i, 0, n) {
+        cin>>v[i];
+        if(v[i] == 0) zero++;
+        
+        if(v[i] != 0) id = i;        
     }
-    
-    rep(i, 1, n+1) cout<<v[i]<<spc;
-    cout<<nl;
+    if(zero == n) {
+        cout<<-1<<nl; return;
+    }
+
+    ll x = 0, y = 1, z = 2;
+    if (v[0] == 0 && v[1] == 0 && v[2] == 0) {
+        z = id;
+    }
+
+    if(v[x] + v[y] != v[z]) {
+        cout<<++x<<spc<<++y<<spc<<++z<<nl;
+    }else if(v[x] + v[z] != v[y]) {
+        cout<<x+1<<spc<<z+1<<spc<<y+1<<nl;
+    }else {
+        cout<<++y<<spc<<++z<<spc<<++x<<nl;
+    }
 }
 
 // [ Black Pearl ] -------------------------------------------

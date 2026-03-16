@@ -53,8 +53,8 @@ using namespace std;
 #define each(x,a)       for(auto &x : a)
 
 // [ Parlay ]
-#define yes             cout<<"YES\n"
-#define no              cout<<"NO\n"
+#define yes             cout<<"Yes\n"
+#define no              cout<<"No\n"
 #define nl              '\n'
 #define spc             " "
 
@@ -69,21 +69,11 @@ const ll M = 1e7;
 
 // [ The Great Adventure ] ----------------------------------
 void solve() {
-    ll n; cin>>n;
-    VEC v(n+1);
-    v[n] = 1;
-    ll flip = 0;
-    rrep(i, n-1, 1){
-        if((flip & 1) == 0){
-            v[i] = v[i+1] + i;
-        }else{
-            v[i] = abs(v[i+1]-i);
-        }
-        flip++;
-    }
-    
-    rep(i, 1, n+1) cout<<v[i]<<spc;
-    cout<<nl;
+    ll a, b, c;  cin>>a>>b>>c;
+    b -= (2*a);
+    c -= (3*b);
+    if(!c) yes;
+    else no;
 }
 
 // [ Black Pearl ] -------------------------------------------
