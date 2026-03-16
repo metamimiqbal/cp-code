@@ -17,6 +17,8 @@ Prefix:	The "trigger" word. What you type to make the snippet appear.
 Body:	The actual code. Use an array of strings for multiple lines.
 Description:	(Optional) A quick note on what this snippet does.
 */
+
+
 {
 	"Black Pearl CP Template": {
     "prefix": "cpcp",
@@ -129,7 +131,7 @@ Description:	(Optional) A quick note on what this snippet does.
       "signed main() {",
       "\tThink_Like_Jack_Sparrow",
       "",
-      "\t// int t; cin >> t; while(t--)",
+      "\t${1:// }int t; cin >> t; while(t--)",
       "\tsolve();",
       "",
       "\treturn 0;",
