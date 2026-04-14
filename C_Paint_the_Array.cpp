@@ -1,9 +1,10 @@
 /**
+ * Assalamualaikum
  * Bismillah
  * "The problem is not the problem. The problem is the attitude about the problem."
  *
  * My people: the whole muslim ummah from uyghoor to rohingya, from the people of Falastin to Sudan; 
- * they all are my people, I belong to them and I dream of UMA (United Muslim Aliance)
+ * I belong to them and I dream of UMA (United Muslim Aliance) with them - Be Iznillah
  * 
  * -------------------------------------------------------------
  * |     Salam guyz."Take what you can, give nothing back!"    |
@@ -99,41 +100,37 @@ const int dy[] = {1, -1, 0, 0};
 // [ The Great Adventure ] 
 void solve() {
     ll n; cin>>n;
-    // VEC a(n), b(n), c(n);
-    vector<pair<ll,ll>>a(n), b(n), c(n);
-    rep(i, 0, n) {
-        ll x; cin>>x;
-        a[i] = {x, i};
+    VEC v(n);
+    rep(i, 0, n) cin>>v[i];
+
+    ll g1 = 0, g2 = 0;
+    bool ck1 = false, ck2 = false;
+
+    for(int i = 1; i<n; i+=2) {
+        g1 = gcd(g1, v[i]);
     }
-    rep(i, 0, n) {
-        ll x; cin>>x;
-        b[i] = {x, i};
+    for(int i = 0; i<n; i+=2) {
+        g2 = gcd(g2, v[i]);
     }
-    rep(i, 0, n) {
-        ll x; cin>>x;
-        c[i] = {x, i};
+
+    for(int i = 0; i<n; i+=2) {
+        if(v[i] % g1 == 0) {
+            ck1 = true;
+        } 
     }
     
-    
-    sort(rall(a));
-    sort(rall(b));
-    sort(rall(c));
-
-
-    ll ans = -inf;
-    rep(i, 0, 3) {
-        rep(j, 0, 3) {
-            rep(k, 0, 3) {
-                ll f = a[i].second;
-                ll s = b[j].second;
-                ll t = c[k].second;
-                if(f != s && s!=t && t!=f) {
-                    ans = max(ans, a[i].first + b[j].first + c[k].first);
-                }
-            }
-        }
+    for(int i = 1; i<n; i+=2) {
+        if(v[i] % g2 == 0) {
+            ck2 = true;
+        } 
     }
-    cout<<ans<<nl;
+
+
+    if(ck1 && ck2) cout<<0<<nl;
+    else {
+        if(!ck1) cout<<g1<<nl;
+        else cout<<g2<<nl;
+    }
 }
 
 // [ Black Pearl ] 

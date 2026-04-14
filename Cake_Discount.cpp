@@ -99,48 +99,18 @@ const int dy[] = {1, -1, 0, 0};
 // [ The Great Adventure ] 
 void solve() {
     ll n; cin>>n;
-    // VEC a(n), b(n), c(n);
-    vector<pair<ll,ll>>a(n), b(n), c(n);
-    rep(i, 0, n) {
-        ll x; cin>>x;
-        a[i] = {x, i};
+    if(n>=5) {
+        cout<<85*n<<nl;
+    }else{
+        cout<<100*n<<nl;
     }
-    rep(i, 0, n) {
-        ll x; cin>>x;
-        b[i] = {x, i};
-    }
-    rep(i, 0, n) {
-        ll x; cin>>x;
-        c[i] = {x, i};
-    }
-    
-    
-    sort(rall(a));
-    sort(rall(b));
-    sort(rall(c));
-
-
-    ll ans = -inf;
-    rep(i, 0, 3) {
-        rep(j, 0, 3) {
-            rep(k, 0, 3) {
-                ll f = a[i].second;
-                ll s = b[j].second;
-                ll t = c[k].second;
-                if(f != s && s!=t && t!=f) {
-                    ans = max(ans, a[i].first + b[j].first + c[k].first);
-                }
-            }
-        }
-    }
-    cout<<ans<<nl;
 }
 
 // [ Black Pearl ] 
 signed main() {
     Think_Like_Jack_Sparrow
 
-    int t; cin >> t; while(t--)
+        // int t; cin >> t; while(t--)
     solve();
 
     return 0;

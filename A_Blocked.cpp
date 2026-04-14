@@ -1,9 +1,10 @@
 /**
+ * Assalamualaikum
  * Bismillah
  * "The problem is not the problem. The problem is the attitude about the problem."
  *
  * My people: the whole muslim ummah from uyghoor to rohingya, from the people of Falastin to Sudan; 
- * they all are my people, I belong to them and I dream of UMA (United Muslim Aliance)
+ * I belong to them and I dream of UMA (United Muslim Aliance) with them - Be Iznillah
  * 
  * -------------------------------------------------------------
  * |     Salam guyz."Take what you can, give nothing back!"    |
@@ -99,41 +100,20 @@ const int dy[] = {1, -1, 0, 0};
 // [ The Great Adventure ] 
 void solve() {
     ll n; cin>>n;
-    // VEC a(n), b(n), c(n);
-    vector<pair<ll,ll>>a(n), b(n), c(n);
-    rep(i, 0, n) {
-        ll x; cin>>x;
-        a[i] = {x, i};
-    }
-    rep(i, 0, n) {
-        ll x; cin>>x;
-        b[i] = {x, i};
-    }
-    rep(i, 0, n) {
-        ll x; cin>>x;
-        c[i] = {x, i};
-    }
-    
-    
-    sort(rall(a));
-    sort(rall(b));
-    sort(rall(c));
+    VEC v(n);
+    SET st;
 
-
-    ll ans = -inf;
-    rep(i, 0, 3) {
-        rep(j, 0, 3) {
-            rep(k, 0, 3) {
-                ll f = a[i].second;
-                ll s = b[j].second;
-                ll t = c[k].second;
-                if(f != s && s!=t && t!=f) {
-                    ans = max(ans, a[i].first + b[j].first + c[k].first);
-                }
-            }
-        }
+    rep(i, 0, n) {
+        cin>>v[i];
+        st.insert(v[i]);
     }
-    cout<<ans<<nl;
+    if(sz(st) < n) {
+        cout<<-1<<nl; return;
+    }
+    sort(rall(v));
+    rep(i, 0, n) cout<<v[i]<<spc;
+    cout<<nl;
+
 }
 
 // [ Black Pearl ] 

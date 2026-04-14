@@ -98,42 +98,16 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ The Great Adventure ] 
 void solve() {
-    ll n; cin>>n;
-    // VEC a(n), b(n), c(n);
-    vector<pair<ll,ll>>a(n), b(n), c(n);
-    rep(i, 0, n) {
-        ll x; cin>>x;
-        a[i] = {x, i};
-    }
-    rep(i, 0, n) {
-        ll x; cin>>x;
-        b[i] = {x, i};
-    }
-    rep(i, 0, n) {
-        ll x; cin>>x;
-        c[i] = {x, i};
-    }
-    
-    
-    sort(rall(a));
-    sort(rall(b));
-    sort(rall(c));
+    ll n, m, a, b, c; cin>>n>>m>>a>>b>>c;
+    ll val = min(n, m);
+    // ll excess = max(n, m) - val;
+    ll khoroc = val*c;
 
+    if(m > n) khoroc += (m-n) * b;
+    else if(n>m) khoroc += (n-m) * a;
 
-    ll ans = -inf;
-    rep(i, 0, 3) {
-        rep(j, 0, 3) {
-            rep(k, 0, 3) {
-                ll f = a[i].second;
-                ll s = b[j].second;
-                ll t = c[k].second;
-                if(f != s && s!=t && t!=f) {
-                    ans = max(ans, a[i].first + b[j].first + c[k].first);
-                }
-            }
-        }
-    }
-    cout<<ans<<nl;
+    cout<<khoroc<<nl;
+
 }
 
 // [ Black Pearl ] 

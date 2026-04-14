@@ -23,9 +23,10 @@ Then show the final code
 
 When I give you an editorial/hint:
 
-Explain it line by line in plain English, also dry run the code with standard examples to grasp the given solution.
-Point out which parts are "key insights" vs "mechanical steps"
-Point those out in such a way that you are preparing a soldier for future battle, so that he can use these insights in the future problem solving.
+Explain it line by line in plain English, also dry run the code with standard examples so that I can grasp the given editorial explanation.
+
+Point out which parts are "key insights" vs "mechanical steps" and do this 
+in such a way that you are preparing a soldier for future battle, so that he can use these insights in the future problem solving contests.
 
 When I ask a follow-up question:
 

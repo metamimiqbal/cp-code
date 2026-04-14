@@ -99,41 +99,20 @@ const int dy[] = {1, -1, 0, 0};
 // [ The Great Adventure ] 
 void solve() {
     ll n; cin>>n;
-    // VEC a(n), b(n), c(n);
-    vector<pair<ll,ll>>a(n), b(n), c(n);
+    vector<string>vs(n);
     rep(i, 0, n) {
-        ll x; cin>>x;
-        a[i] = {x, i};
+        cin>>vs[i];
     }
-    rep(i, 0, n) {
-        ll x; cin>>x;
-        b[i] = {x, i};
-    }
-    rep(i, 0, n) {
-        ll x; cin>>x;
-        c[i] = {x, i};
-    }
-    
-    
-    sort(rall(a));
-    sort(rall(b));
-    sort(rall(c));
 
-
-    ll ans = -inf;
-    rep(i, 0, 3) {
-        rep(j, 0, 3) {
-            rep(k, 0, 3) {
-                ll f = a[i].second;
-                ll s = b[j].second;
-                ll t = c[k].second;
-                if(f != s && s!=t && t!=f) {
-                    ans = max(ans, a[i].first + b[j].first + c[k].first);
-                }
-            }
+    string s = vs[0];
+    rep(i, 1, n) {
+        if(s+vs[i] > vs[i] + s) {
+            s = vs[i] + s;
+        } else {
+            s += vs[i];
         }
     }
-    cout<<ans<<nl;
+    cout<<s<<nl;
 }
 
 // [ Black Pearl ] 
@@ -145,3 +124,5 @@ signed main() {
 
     return 0;
 }
+
+// aminamirrimanima

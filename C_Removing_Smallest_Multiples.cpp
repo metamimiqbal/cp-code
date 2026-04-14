@@ -1,9 +1,10 @@
 /**
+ * Assalamualaikum
  * Bismillah
  * "The problem is not the problem. The problem is the attitude about the problem."
  *
  * My people: the whole muslim ummah from uyghoor to rohingya, from the people of Falastin to Sudan; 
- * they all are my people, I belong to them and I dream of UMA (United Muslim Aliance)
+ * I belong to them and I dream of UMA (United Muslim Aliance) with them - Be Iznillah
  * 
  * -------------------------------------------------------------
  * |     Salam guyz."Take what you can, give nothing back!"    |
@@ -99,41 +100,24 @@ const int dy[] = {1, -1, 0, 0};
 // [ The Great Adventure ] 
 void solve() {
     ll n; cin>>n;
-    // VEC a(n), b(n), c(n);
-    vector<pair<ll,ll>>a(n), b(n), c(n);
-    rep(i, 0, n) {
-        ll x; cin>>x;
-        a[i] = {x, i};
-    }
-    rep(i, 0, n) {
-        ll x; cin>>x;
-        b[i] = {x, i};
-    }
-    rep(i, 0, n) {
-        ll x; cin>>x;
-        c[i] = {x, i};
-    }
-    
-    
-    sort(rall(a));
-    sort(rall(b));
-    sort(rall(c));
-
-
-    ll ans = -inf;
-    rep(i, 0, 3) {
-        rep(j, 0, 3) {
-            rep(k, 0, 3) {
-                ll f = a[i].second;
-                ll s = b[j].second;
-                ll t = c[k].second;
-                if(f != s && s!=t && t!=f) {
-                    ans = max(ans, a[i].first + b[j].first + c[k].first);
-                }
+    string tt; cin>>tt;
+    string t = "n";
+    t += tt;
+    // rep(i, 1, n+1) s[i] = i;
+    ll sm = 0;
+    vector<bool>vbl(n+1, false);
+    rep(i, 1, n+1) {
+        for(int j = i; j<=n; j+=i) {
+            if(t[j] == '1') break;
+            else if(!vbl[j]) {
+                vbl[j] = true;
+                sm += i;
+                // dbg(j);
             }
         }
     }
-    cout<<ans<<nl;
+
+    cout<<sm<<nl;
 }
 
 // [ Black Pearl ] 
