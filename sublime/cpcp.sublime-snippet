@@ -1,3 +1,5 @@
+<snippet>
+    <content><![CDATA[
 /**
  * Assalamualaikum
  * Bismillah
@@ -28,7 +30,7 @@ using namespace std;
 #define VEC     vector<ll>
 #define VPR     vector<pair<ll, ll>>
 #define VVEC    vector<vector<ll>>
-#define MP      map<ll, ll>
+#define MAP      map<ll, ll>
 #define SET     set<ll>
 #define prque   priority_queue<ll>
 #define gprque  priority_queue<ll, vector<ll>, greater<ll>>
@@ -97,15 +99,21 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ The Great Adventure ] 
 void solve() {
-    
+    $0
 }
 
 // [ Black Pearl ] 
 signed main() {
     Think_Like_Jack_Sparrow
 
-    // int t; cin >> t; while(t--)
+    ${1:// }int t; cin >> t; while(t--)
     solve();
 
     return 0;
 }
+]]></content>
+
+    <tabTrigger>cpcp</tabTrigger>
+    <scope>source.c++</scope>
+    <description>The Black Pearl CP Template</description>
+</snippet>

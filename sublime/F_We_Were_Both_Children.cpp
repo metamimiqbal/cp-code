@@ -3,9 +3,9 @@
  * Bismillah
  * "The problem is not the problem. The problem is the attitude about the problem."
  *
- * My people: the whole muslim ummah from uyghoor to rohingya, from the people of Falastin to Sudan; 
+ * My people: the whole muslim ummah from uyghoor to rohingya, from the people of Falastin to Sudan;
  * I belong to them and I dream of UMA (United Muslim Aliance) with them - Be Iznillah
- * 
+ *
  * -------------------------------------------------------------
  *  |      Following up the legacy (Sorif Osman Bin Hady)      |
  * -------------------------------------------------------------
@@ -13,11 +13,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// [printing follow up] 
+// [printing follow up]
 #define FAST_IO ios::sync_with_stdio(false); cin.tie(nullptr);
 #define Think_Like_Jack_Sparrow FAST_IO
 
-// [ datatype ] 
+// [ datatype ]
 #define ll      long long
 #define ull     unsigned long long
 #define flt     long double
@@ -28,7 +28,7 @@ using namespace std;
 #define VEC     vector<ll>
 #define VPR     vector<pair<ll, ll>>
 #define VVEC    vector<vector<ll>>
-#define MP      map<ll, ll>
+#define MAP      map<ll, ll>
 #define SET     set<ll>
 #define prque   priority_queue<ll>
 #define gprque  priority_queue<ll, vector<ll>, greater<ll>>
@@ -56,7 +56,7 @@ using namespace std;
 #define rev(x)      reverse(all(x))
 #define uniq(x)     (x).erase(unique(all(x)), (x).end())
 
-// [ Function ] 
+// [ Function ]
 #define SUM(x)          accumulate(all(x), 0LL)
 #define MAX(x)          *max_element(all(x))
 #define MIN(x)          *min_element(all(x))
@@ -78,7 +78,7 @@ using namespace std;
 #define nl              '\n'
 #define spc             " "
 
-// [ Dropping Anchor ] 
+// [ Dropping Anchor ]
 #define dbg(x)          cerr << "[DBG] " << #x << " = " << x << nl
 #define printv(v)       for(auto x : v) cerr << x << ' '; cerr << nl
 
@@ -95,16 +95,52 @@ const int dy[] = {1, -1, 0, 0};
 // const int dx[] = {-1,-1,-1, 0, 0, 1, 1, 1};
 // const int dy[] = {-1, 0, 1,-1, 1,-1, 0, 1};
 
-// [ The Great Adventure ] 
+// [ The Great Adventure ]
 void solve() {
-    
+    ll n; cin>>n;
+    // VEC v(n);
+
+    vector<ll>trap(n+1), cnt(n+1);
+    rep(i, 0, n) {
+        ll x; cin>>x;
+        if(x > n) continue;
+        ++cnt[x];
+    }
+
+    rep(i, 1, n+1) {
+        for(int j = i; j<=n; j+=i) {
+            trap[j] += cnt[i];
+        }
+    }
+
+    cout<<*max_element(all(trap))<<nl;
+
+
+    // sort(all(v));
+    // ll ans = 0;
+
+    // rep(i, 0, n-1) {
+    //     ll lc = v[i];
+    //     ll prxy_ans = 1;
+    //     rep(j, i+1, n) {
+    //         if(lcm(lc, v[j]) <= n) {
+    //             lc = lcm(lc, v[j]), ++prxy_ans;
+    //             // dbg(lc), dbg(v[j]);
+    //             // dbg(lc);
+    //         }
+    //     }
+    //     // dbg(prxy_ans);
+    //     ans = max(ans, prxy_ans);
+    // }
+
+    // cout<<ans<<nl;
 }
 
-// [ Black Pearl ] 
+// [ Black Pearl ]
 signed main() {
     Think_Like_Jack_Sparrow
 
-    // int t; cin >> t; while(t--)
+    int t; cin >> t; while(t--)
     solve();
 
     return 0;

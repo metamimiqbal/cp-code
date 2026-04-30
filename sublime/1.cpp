@@ -28,7 +28,7 @@ using namespace std;
 #define VEC     vector<ll>
 #define VPR     vector<pair<ll, ll>>
 #define VVEC    vector<vector<ll>>
-#define MP      map<ll, ll>
+#define MAP      map<ll, ll>
 #define SET     set<ll>
 #define prque   priority_queue<ll>
 #define gprque  priority_queue<ll, vector<ll>, greater<ll>>
@@ -97,7 +97,9 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ The Great Adventure ] 
 void solve() {
-    
+  string s;
+  cin >> s;
+  cout << "Akib Swalehinis " << s << endl;
 }
 
 // [ Black Pearl ] 

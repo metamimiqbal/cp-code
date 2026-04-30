@@ -97,14 +97,28 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ The Great Adventure ] 
 void solve() {
-    
+    ll n, m; cin>>n>>m;
+    VEC v(n);
+    rep(i, 0, n) cin>>v[i];
+
+    if(v[n-1] < v[n-2]) {
+        cout<<-1<<nl; return;
+    }
+
+    rrep(i, n-3, 0) {
+        if(v[i] > 0) {
+            ll val = upper_bound(all(v), v[i]);
+            
+        }
+    }
+
 }
 
 // [ Black Pearl ] 
 signed main() {
     Think_Like_Jack_Sparrow
 
-    // int t; cin >> t; while(t--)
+    int t; cin >> t; while(t--)
     solve();
 
     return 0;

@@ -65,7 +65,7 @@ using namespace std;
 #define sq(x)           ((x)*(x))
 #define gcd             __gcd
 #define lcm(a,b)        ((a)/gcd(a,b)*(b))
-#define mod             1000000007
+#define mod             676767677
 #define modn(x)         (((x)%mod+mod)%mod)
 #define ll_len(n)       ((n) > 0 ? (int)floor(log10((long double)(n)) + 1) : 1)
 
@@ -97,14 +97,25 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ The Great Adventure ] 
 void solve() {
-    
+    ll n; cin>>n;
+    VEC v(n);
+    ll ans = 0;  
+    rep(i, 0, n) {
+        cin>>v[i];
+        if(v[i] != 1) {
+            ans += v[i];
+        }
+    }
+    ans += (v[n-1] == 1) ? 1 : 0;
+
+    cout<<ans<<nl;
 }
 
 // [ Black Pearl ] 
 signed main() {
     Think_Like_Jack_Sparrow
 
-    // int t; cin >> t; while(t--)
+    int t; cin >> t; while(t--)
     solve();
 
     return 0;
