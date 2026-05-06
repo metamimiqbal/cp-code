@@ -97,12 +97,15 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ The Great Adventure ] 
 void solve() {
-  string s;
-  cin >> s;
-  cout << "Akib Swalehinis " << s << endl;
+    ll n; cin>>n;
+    if(n==2) {
+        no; return;
+    }
+    if(n % 2 == 1) no;
+    else yes;
 }
 
-// [ Black Pearl ] 
+// [ Black Pearl ]
 signed main() {
     Think_Like_Jack_Sparrow
 

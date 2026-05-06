@@ -1,4 +1,16 @@
 /**
+ * =============================================================
+ *
+ *  ████████  █████  ███    ███ ██ ███    ███
+ *     ██    ██   ██ ████  ████ ██ ████  ████
+ *     ██    ███████ ██ ████ ██ ██ ██ ████ ██
+ *     ██    ██   ██ ██  ██  ██ ██ ██  ██  ██
+ *     ██    ██   ██ ██      ██ ██ ██      ██
+ *
+ * =============================================================
+ */
+
+/**
  * Assalamualaikum
  * Bismillah
  * "The problem is not the problem. The problem is the attitude about the problem."
@@ -28,7 +40,7 @@ using namespace std;
 #define VEC     vector<ll>
 #define VPR     vector<pair<ll, ll>>
 #define VVEC    vector<vector<ll>>
-#define MP      map<ll, ll>
+#define MAP      map<ll, ll>
 #define SET     set<ll>
 #define prque   priority_queue<ll>
 #define gprque  priority_queue<ll, vector<ll>, greater<ll>>

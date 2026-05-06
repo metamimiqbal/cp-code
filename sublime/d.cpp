@@ -3,9 +3,9 @@
  * Bismillah
  * "The problem is not the problem. The problem is the attitude about the problem."
  *
- * My people: the whole muslim ummah from uyghoor to rohingya, from the people of Falastin to Sudan; 
+ * My people: the whole muslim ummah from uyghoor to rohingya, from the people of Falastin to Sudan;
  * I belong to them and I dream of UMA (United Muslim Aliance) with them - Be Iznillah
- * 
+ *
  * -------------------------------------------------------------
  *  |      Following up the legacy (Sorif Osman Bin Hady)      |
  * -------------------------------------------------------------
@@ -13,11 +13,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// [printing follow up] 
+// [printing follow up]
 #define FAST_IO ios::sync_with_stdio(false); cin.tie(nullptr);
 #define Think_Like_Jack_Sparrow FAST_IO
 
-// [ datatype ] 
+// [ datatype ]
 #define ll      long long
 #define ull     unsigned long long
 #define flt     long double
@@ -56,7 +56,7 @@ using namespace std;
 #define rev(x)      reverse(all(x))
 #define uniq(x)     (x).erase(unique(all(x)), (x).end())
 
-// [ Function ] 
+// [ Function ]
 #define SUM(x)          accumulate(all(x), 0LL)
 #define MAX(x)          *max_element(all(x))
 #define MIN(x)          *min_element(all(x))
@@ -78,7 +78,7 @@ using namespace std;
 #define nl              '\n'
 #define spc             " "
 
-// [ Dropping Anchor ] 
+// [ Dropping Anchor ]
 #define dbg(x)          cerr << "[DBG] " << #x << " = " << x << nl
 #define printv(v)       for(auto x : v) cerr << x << ' '; cerr << nl
 
@@ -95,28 +95,63 @@ const int dy[] = {1, -1, 0, 0};
 // const int dx[] = {-1,-1,-1, 0, 0, 1, 1, 1};
 // const int dy[] = {-1, 0, 1,-1, 1,-1, 0, 1};
 
-// [ The Great Adventure ] 
-
-
-
+// [ The Great Adventure ]
 void solve() {
-    ll n; cin>>n;
-    ll inp = (n*(n-1))/2;
-    ll arr[inp];
-    rep(i, 0, inp) {
-        cin>>arr[i];
+    ll n,q;
+    cin >> n >> q;
+    VEC a(n+1);
+    vector<ll> p_sum(n+1,0);
+    rep(i,1,n+1)
+    cin >> a[i];
+    ll last=1;
+    vector<ll>D(n+2,0);
+    vector<ll>A(n+2,0);
+    while(q--){
+        ll act,l,r,x=1;
+        cin >> act >> l >> r;
+
+        if(act==1)
+        {
+            cin >> x;
+            D[l]+=x;
+            D[r+1]-=x;
+        }
+        else{
+            if(last==1 && x!=0){
+                for(ll i=1;i<=n;i++)
+                    D[i]+=D[i-1];
+            for(ll i=1;i<=n;i++){
+                a[i]+=D[i];
+            }
+        }
+            if(last==1 && x!=0)
+                for(ll i=0;i<=n+1;i++)
+                    D[i]=0;
+
+            // cout << endl;
+            if(last==1 && x!=0){
+                for(int i=1;i<=n;i++)
+                    if(a[i]==i)
+                        A[i]=1;
+                    else A[i]=0;
+                // for(auto i:A)
+                //     cout << i << ' ';
+                //cout << endl;
+            for(ll i=1;i<=n;i++)
+                A[i]+=A[i-1];
+            }
+            cout << A[r]-A[l-1] << endl;
+
+        }
+        last=act;
     }
-    sort(arr, arr + inp);
-    for(int i = 0; i<inp; i += --n) cout<<arr[i]<<spc;
-    cout<<arr[inp-1];
-    cout<<nl;
 }
 
-// [ Black Pearl ] 
+// [ Black Pearl ]
 signed main() {
     Think_Like_Jack_Sparrow
 
-    int t; cin >> t; while(t--)
+    //int t; cin >> t; while(t--)
     solve();
 
     return 0;

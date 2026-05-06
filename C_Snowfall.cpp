@@ -96,19 +96,21 @@ const int dy[] = {1, -1, 0, 0};
 // const int dy[] = {-1, 0, 1,-1, 1,-1, 0, 1};
 
 // [ The Great Adventure ] 
-
-
-
 void solve() {
     ll n; cin>>n;
-    ll inp = (n*(n-1))/2;
-    ll arr[inp];
-    rep(i, 0, inp) {
-        cin>>arr[i];
+    // VEC v(n);
+    VEC dui, six, tin, nsix;
+    rep(i, 0, n) {
+        ll x; cin>>x;
+        if(x % 6 == 0) six.push_back(x);
+        else if(x % 2 == 0) dui.pb(x);
+        else if(x % 3 == 0) tin.pb(x);
+        else nsix.pb(x);
     }
-    sort(arr, arr + inp);
-    for(int i = 0; i<inp; i += --n) cout<<arr[i]<<spc;
-    cout<<arr[inp-1];
+    rep(i, 0, sz(six)) cout<<six[i]<<spc;
+    rep(i, 0, sz(tin)) cout<<tin[i]<<spc;
+    rep(i, 0, sz(nsix)) cout<<nsix[i]<<spc;
+    rep(i, 0, sz(dui)) cout<<dui[i]<<spc;
     cout<<nl;
 }
 

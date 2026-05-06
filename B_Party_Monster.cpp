@@ -96,20 +96,15 @@ const int dy[] = {1, -1, 0, 0};
 // const int dy[] = {-1, 0, 1,-1, 1,-1, 0, 1};
 
 // [ The Great Adventure ] 
-
-
-
 void solve() {
-    ll n; cin>>n;
-    ll inp = (n*(n-1))/2;
-    ll arr[inp];
-    rep(i, 0, inp) {
-        cin>>arr[i];
+    ll n; string s; cin>>n>>s;
+    ll l = 0, r = 0;
+    rep(i, 0, n) {
+        if(s[i] == '(') ++l;
+        else ++r;
     }
-    sort(arr, arr + inp);
-    for(int i = 0; i<inp; i += --n) cout<<arr[i]<<spc;
-    cout<<arr[inp-1];
-    cout<<nl;
+    if(l != r) no;
+    else yes;
 }
 
 // [ Black Pearl ] 

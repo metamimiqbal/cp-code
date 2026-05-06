@@ -96,19 +96,19 @@ const int dy[] = {1, -1, 0, 0};
 // const int dy[] = {-1, 0, 1,-1, 1,-1, 0, 1};
 
 // [ The Great Adventure ] 
-
-
-
 void solve() {
     ll n; cin>>n;
-    ll inp = (n*(n-1))/2;
-    ll arr[inp];
-    rep(i, 0, inp) {
-        cin>>arr[i];
+    VEC v(n), ans(n);
+    rep(i, 0, n) cin>>v[i];
+    rep(i, 0, n-1) {
+        ll bg = 0, sml = 0;
+        rep(j, i+1, n) {
+            if(v[j] > v[i]) ++bg;
+            else if(v[j] < v[i]) ++sml;
+        }
+        ans[i] = max(bg, sml);
     }
-    sort(arr, arr + inp);
-    for(int i = 0; i<inp; i += --n) cout<<arr[i]<<spc;
-    cout<<arr[inp-1];
+    for(auto u: ans) cout<<u<<spc;
     cout<<nl;
 }
 

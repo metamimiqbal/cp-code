@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="header">
+    <h3>
+      <img src="images/vjudge_icon.png" class="header-icon" alt="">
+      <span class="header-title-text">VJudge Helper</span>
+      <span id="versionLabel" class="version-label"></span>
+      <span id="devBadge" class="dev-badge" style="display: none;">DEV</span>
+    </h3>
+  </div>
+
+  <div class="section-header">
+    <span class="section-title"><img src="images/icon.png" class="header-icon" alt=""> CF Challenge Toolkit</span>
+    <label class="switch">
+      <input type="checkbox" id="enableToggle">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div id="warningBanner" class="warning-banner" style="display: none;">
+    ⚠️ System proxy is temporarily overridden.<br>✅ Fill your system proxy in "Fallback Proxy"<br>✅ Disable the toolkit after use.
+  </div>
+
+  <div id="updateBanner" class="update-banner" style="display: none;"></div>
+
+  <div id="mainContent" style="display: none;">
+    <div class="global-auto-row">
+      <span class="global-auto-label">Auto Mode</span>
+      <label class="switch switch-small">
+        <input type="checkbox" id="autoModeToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="fallback-section">
+      <div class="fallback-row">
+        <label>Route:</label>
+        <select id="routeSelect"></select>
+        <span id="routeRefresh" class="refresh-icon" title="Refresh">🔄</span>
+      </div>
+    </div>
+
+    <div class="fallback-section">
+      <div class="fallback-header">Fallback Proxy</div>
+      <div class="fallback-inline-row">
+        <select id="fallbackMode" aria-label="Mode">
+          <option value="direct">DIRECT</option>
+          <option value="http">HTTP</option>
+          <option value="socks5">SOCKS5</option>
+        </select>
+        <input type="text" id="fallbackHost" placeholder="Host" aria-label="Host" value="127.0.0.1">
+        <input type="number" id="fallbackPort" placeholder="Port" aria-label="Port" min="1" max="65535">
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="clearance">Clearance</button>
+      <button class="tab-btn" data-tab="turnstile">Turnstile</button>
+    </div>
+    <div class="tab-content">
+      <div id="clearanceTab" class="tab-panel active">
+        <div id="status" class="status not-found">Checking...</div>
+        <div id="clearanceAutoState" class="clearance-auto-state" style="display: none;">
+          <span id="clearanceAutoBadge" class="clearance-auto-badge">--</span>
+          <span id="clearanceAutoText" class="clearance-auto-text">No clearance auto refresh scheduled for this page</span>
+        </div>
+        <div id="cookieInfo" class="cookie-info" style="display: none;"></div>
+        <button id="clearanceReportBtn" style="display: none;">Report cf_clearance</button>
+      </div>
+      <div id="turnstileTab" class="tab-panel">
+        <div class="turnstile-settings">
+          <div class="turnstile-setting-row">
+            <label>Click delay:</label>
+            <input type="number" id="autoClickDelay">
+            <span class="unit">sec</span>
+            <span class="tooltip" data-tip="Delay before auto-clicking Report, Reset Widget, or Reload Page">?</span>
+          </div>
+          <div class="turnstile-setting-row">
+            <label>Timeout:</label>
+            <input type="number" id="turnstileTimeout">
+            <span class="unit">sec</span>
+            <span class="tooltip" data-tip="If Turnstile not solved in time, auto reset widget. Switch route only after the configured consecutive-failure threshold">?</span>
+          </div>
+          <div class="turnstile-setting-row">
+            <label>Token threshold:</label>
+            <input type="number" id="turnstileTokenResetThreshold">
+            <span class="unit">tokens</span>
+            <span class="tooltip" data-tip="When available Turnstile tokens reach this value, auto mode waits before resetting until inventory drops below it">?</span>
+          </div>
+        </div>
+        <div id="turnstileHint" class="turnstile-hint">Use the action panel next to the Turnstile widget on the target site page.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="error" class="error"></div>
+  <script src="popup.js"></script>
+</body>
+</html>

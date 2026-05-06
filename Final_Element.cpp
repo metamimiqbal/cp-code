@@ -96,20 +96,45 @@ const int dy[] = {1, -1, 0, 0};
 // const int dy[] = {-1, 0, 1,-1, 1,-1, 0, 1};
 
 // [ The Great Adventure ] 
-
-
-
 void solve() {
     ll n; cin>>n;
-    ll inp = (n*(n-1))/2;
-    ll arr[inp];
-    rep(i, 0, inp) {
-        cin>>arr[i];
+    VEC v(n);
+    rep(i, 0, n) cin>>v[i];
+
+    if(n==2) {
+        cout<<(v[0]^v[1])<<nl;
+        return;
+    } else if(n==3) {
+        cout<<(v[0]^v[2])<<nl; return;
     }
-    sort(arr, arr + inp);
-    for(int i = 0; i<inp; i += --n) cout<<arr[i]<<spc;
-    cout<<arr[inp-1];
-    cout<<nl;
+
+    if(n&1) {
+        if(n%4 == 3) {
+            cout<<(v[0]^v[2]^v[n-1]^v[n-3])<<nl;
+        } else {
+            cout<<(v[0] ^ v[n-1])<<nl;
+        }
+    } else {
+        if(n%4 == 0) {
+            ll ans = v[0];
+            rep(i, 1, n) ans ^= v[i];
+            cout<<ans<<nl;
+        } else {
+            cout<<(v[0]^v[1]^v[n-2]^v[n-1])<<nl;
+        }
+    }
+
+    // MAP mp;
+    // rep(i, 0, n-1) {
+    //     rep(i, 0, sz(v)-1) {
+    //         ++mp[v[i]];
+    //     }
+    // }
+    // cout<<(v[n-1]^v[0])<<nl;
+    // for(auto [u, v]: mp) {
+    //     cout<<u<<spc<<v<<nl;
+    // }
+
 }
 
 // [ Black Pearl ] 

@@ -3,9 +3,9 @@
  * Bismillah
  * "The problem is not the problem. The problem is the attitude about the problem."
  *
- * My people: the whole muslim ummah from uyghoor to rohingya, from the people of Falastin to Sudan; 
+ * My people: the whole muslim ummah from uyghoor to rohingya, from the people of Falastin to Sudan;
  * I belong to them and I dream of UMA (United Muslim Aliance) with them - Be Iznillah
- * 
+ *
  * -------------------------------------------------------------
  *  |      Following up the legacy (Sorif Osman Bin Hady)      |
  * -------------------------------------------------------------
@@ -13,11 +13,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// [printing follow up] 
+// [printing follow up]
 #define FAST_IO ios::sync_with_stdio(false); cin.tie(nullptr);
 #define Think_Like_Jack_Sparrow FAST_IO
 
-// [ datatype ] 
+// [ datatype ]
 #define ll      long long
 #define ull     unsigned long long
 #define flt     long double
@@ -56,7 +56,7 @@ using namespace std;
 #define rev(x)      reverse(all(x))
 #define uniq(x)     (x).erase(unique(all(x)), (x).end())
 
-// [ Function ] 
+// [ Function ]
 #define SUM(x)          accumulate(all(x), 0LL)
 #define MAX(x)          *max_element(all(x))
 #define MIN(x)          *min_element(all(x))
@@ -78,7 +78,7 @@ using namespace std;
 #define nl              '\n'
 #define spc             " "
 
-// [ Dropping Anchor ] 
+// [ Dropping Anchor ]
 #define dbg(x)          cerr << "[DBG] " << #x << " = " << x << nl
 #define printv(v)       for(auto x : v) cerr << x << ' '; cerr << nl
 
@@ -95,24 +95,32 @@ const int dy[] = {1, -1, 0, 0};
 // const int dx[] = {-1,-1,-1, 0, 0, 1, 1, 1};
 // const int dy[] = {-1, 0, 1,-1, 1,-1, 0, 1};
 
-// [ The Great Adventure ] 
-
-
-
+// [ The Great Adventure ]
 void solve() {
-    ll n; cin>>n;
-    ll inp = (n*(n-1))/2;
-    ll arr[inp];
-    rep(i, 0, inp) {
-        cin>>arr[i];
+    ll n;
+    cin >> n;
+    string s;
+    cin >> s;
+    ll flag = 0;
+    ll idx = n;
+    set<ll> st;
+    for(ll i = 0; i < n; i++){
+        if(s[i] == 'p') flag = 1;
+        else if(s[i] == 'o' and flag == 1){
+            idx = i;
+            break;
+        }
     }
-    sort(arr, arr + inp);
-    for(int i = 0; i<inp; i += --n) cout<<arr[i]<<spc;
-    cout<<arr[inp-1];
-    cout<<nl;
+    for(ll i = idx + 1; i < n; i++){
+        if(s[i] >= '1' and s[i] <= '9'){
+            ll val = s[i] - '0';
+            st.insert(val);
+        }
+    }
+    cout << st.size() << endl;
 }
 
-// [ Black Pearl ] 
+// [ Black Pearl ]
 signed main() {
     Think_Like_Jack_Sparrow
 

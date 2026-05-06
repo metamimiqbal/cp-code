@@ -96,27 +96,21 @@ const int dy[] = {1, -1, 0, 0};
 // const int dy[] = {-1, 0, 1,-1, 1,-1, 0, 1};
 
 // [ The Great Adventure ] 
-
-
-
 void solve() {
-    ll n; cin>>n;
-    ll inp = (n*(n-1))/2;
-    ll arr[inp];
-    rep(i, 0, inp) {
-        cin>>arr[i];
+    ll a,b; cin>>a>>b;
+    ll st = a/2 + 1;
+    if(st - b < 0) {
+        cout<<0<<nl;
+    } else {
+        cout<<st-b<<nl;
     }
-    sort(arr, arr + inp);
-    for(int i = 0; i<inp; i += --n) cout<<arr[i]<<spc;
-    cout<<arr[inp-1];
-    cout<<nl;
 }
 
 // [ Black Pearl ] 
 signed main() {
     Think_Like_Jack_Sparrow
 
-    int t; cin >> t; while(t--)
+    // int t; cin >> t; while(t--)
     solve();
 
     return 0;

@@ -96,20 +96,73 @@ const int dy[] = {1, -1, 0, 0};
 // const int dy[] = {-1, 0, 1,-1, 1,-1, 0, 1};
 
 // [ The Great Adventure ] 
-
-
-
 void solve() {
     ll n; cin>>n;
-    ll inp = (n*(n-1))/2;
-    ll arr[inp];
-    rep(i, 0, inp) {
-        cin>>arr[i];
+    VEC a(2*n);
+    rep(i, 0, 2*n) cin>>a[i];
+
+    
+    ll lf = -1, rt = -1;
+    // for(lf = 0; lf<2*n-1 && a[lf] != 0; ) ++lf;
+    // for(rt = 2*n-1; rt>=0 && a[rt] != 0; ) --rt;
+    for(int i = 0; i<2*n; i++) {
+        if(!a[i]) {
+            if(lf == -1) lf = i;
+            rt = i;
+        }
     }
-    sort(arr, arr + inp);
-    for(int i = 0; i<inp; i += --n) cout<<arr[i]<<spc;
-    cout<<arr[inp-1];
-    cout<<nl;
+
+    // mex 1 -> first 0 - centric
+    MAP mp1, mp2, mp3;
+    for(int l = lf-1, r = lf+1; l >= 0 && r <= 2*n - 1; ) {
+        if(a[l] == a[r]) mp1[a[l]]++, --l, ++r;
+        else break;
+    }
+    
+    
+    // mex 2 -> second 0 - centric
+    for(int l = rt-1, r = rt+1; l >= 0 && r <= 2*n - 1; ) {
+        if(a[l] == a[r]) mp2[a[l]]++, --l, ++r;
+        else break;
+    }
+    
+    // mex 1 -> first 0 - second 0 centric
+    bool innerPalindrome = true;
+    for(int l = lf + 1, r = rt - 1; l<=r; ) {
+        if(a[l] == a[r]) mp3[a[l]]++, ++l, --r;
+        else {
+            innerPalindrome = false;
+            break;
+        }
+    }
+
+    if(innerPalindrome) {
+        for(int l = lf - 1, r = rt + 1; l >= 0 && r < 2*n; ) {
+            if(a[l] == a[r]) mp3[a[l]]++, --l, ++r;
+            else break;
+        }
+    }
+
+    ll mex1 = 1, mex2 = 1, mex3 = 1;
+
+    while(mp1.count(mex1)) ++mex1;
+    while(mp2.count(mex2)) ++mex2;
+    
+    if(innerPalindrome) {
+        while(mp3.count(mex3)) ++mex3;
+    }
+
+    cout<<max(mex1, max(mex2, mex3))<<nl;
+    // cout<<"hello"
+
+    // cout<<"MAP1\n";
+    // for(auto [u, v]: mp1) cout<<u<<spc<<v<<nl;
+    
+    // cout<<"MAP2\n";
+    // for(auto [u, v]: mp2) cout<<u<<spc<<v<<nl;
+
+    // cout<<"MAP3\n";
+    // for(auto [u, v]: mp3) cout<<u<<spc<<v<<nl;
 }
 
 // [ Black Pearl ] 

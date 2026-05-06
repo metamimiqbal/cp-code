@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "VJudge Helper",
+  "version": "3.5.17",
+  "permissions": ["cookies", "activeTab", "scripting", "proxy", "webRequest", "webRequestAuthProvider", "storage"],
+  "host_permissions": ["<all_urls>"],
+  "icons": {
+    "16": "images/vjudge_icon.png",
+    "48": "images/vjudge_icon.png",
+    "128": "images/vjudge_icon.png"
+  },
+  "action": {
+    "default_title": "VJudge Helper",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["content.js"],
+    "run_at": "document_idle"
+  }, {
+    "matches": ["*://*.vjudge.net/*", "*://localhost/*"],
+    "js": ["autofill.js"],
+    "run_at": "document_idle"
+  }],
+  "web_accessible_resources": [{
+    "resources": ["images/vjudge_icon.png"],
+    "matches": ["<all_urls>"]
+  }]
+}

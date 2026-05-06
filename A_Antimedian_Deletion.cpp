@@ -96,19 +96,16 @@ const int dy[] = {1, -1, 0, 0};
 // const int dy[] = {-1, 0, 1,-1, 1,-1, 0, 1};
 
 // [ The Great Adventure ] 
-
-
-
 void solve() {
     ll n; cin>>n;
-    ll inp = (n*(n-1))/2;
-    ll arr[inp];
-    rep(i, 0, inp) {
-        cin>>arr[i];
+    VEC v(n);
+    rep(i, 0, n) cin>>v[i];
+
+    // ll val = (n < 3)?n:(n-1);
+    ll val = (n == 1) ? 1 : 2;
+    rep(i, 0, n) {
+        cout<<val<<spc;
     }
-    sort(arr, arr + inp);
-    for(int i = 0; i<inp; i += --n) cout<<arr[i]<<spc;
-    cout<<arr[inp-1];
     cout<<nl;
 }
 

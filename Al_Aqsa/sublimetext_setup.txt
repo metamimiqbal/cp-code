@@ -1,0 +1,1 @@
+cmd+option+3 -> cpfile_name + inputf.in + outputf.in
