@@ -98,15 +98,28 @@ const int dy[] = {1, -1, 0, 0};
 // [ The Great Adventure ] 
 void solve() {
     ll n; cin>>n;
-    string s = "";
-    rep(i, 1, n+1) {
-        if(i <= (n+1)/2) s+='0';
-        else s+='1';
-        // dbg(i), dbg(n/2);
-        // dbg(s);
-    } 
-    cout<<s<<nl;
+    VEC v(n);
+    rep(i, 0, n) cin>>v[i];
+    ll psm = 0;
+    rrep(i, n-1, 0) {
+        if(v[i] >= 0) {
+            v[i] = psm = psm + v[i];
+        }
+        else if(v[i] < 0) {
+            v[i] = psm + v[i];
+            if(v[i] < 0) psm = 0;
+            else psm = v[i];
+        } 
+    }
+    // printv(v);
+    ll k = 0;
+
+    rep(i, 0, n) {
+        if(v[i] > 0) ++k;
+    }
+    cout<<k<<nl;
 }
+
 
 // [ Black Pearl ] 
 signed main() {

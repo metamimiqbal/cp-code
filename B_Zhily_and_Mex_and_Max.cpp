@@ -94,18 +94,43 @@ const int dy[] = {1, -1, 0, 0};
 // 8-directional:
 // const int dx[] = {-1,-1,-1, 0, 0, 1, 1, 1};
 // const int dy[] = {-1, 0, 1,-1, 1,-1, 0, 1};
+ll arr[M];
+
 
 // [ The Great Adventure ] 
 void solve() {
     ll n; cin>>n;
-    string s = "";
+    rep(i, 1, n+1) cin>>arr[i];
+
+    sort(arr+1, arr+n+1);
+    swap(arr[1], arr[n]);
+    sort(arr+2, arr+n+1);
+    
+    VEC unq, dpl;
+    unq.pb(arr[1]);
+    rep(i, 2, n+1) {
+        if(arr[i] == arr[i-1]) dpl.pb(arr[i]);
+        else unq.pb(arr[i]);
+    }
+
+    // rep(i, sz(unq-1), sz(unq) + sz(dpl)) unq.pb(dpl[i]);
+    ll t = 1; 
+    rep(i, 0, sz(unq)) arr[t++] = unq[i];
+    rep(i, 0, sz(dpl)) arr[t++] = dpl[i];
+
+    // rep(i, 1, n+1) cout<<arr[i]<<spc;
+
+    MAP mp;
+    ll mx = arr[1];
+    ll mex = 0;
+    ll ans = 0;
     rep(i, 1, n+1) {
-        if(i <= (n+1)/2) s+='0';
-        else s+='1';
-        // dbg(i), dbg(n/2);
-        // dbg(s);
-    } 
-    cout<<s<<nl;
+        ++mp[arr[i]];
+        while(mp.count(mex)) ++mex;
+        ans += mex;
+    }
+ 
+    cout<<ans + mx*n<<nl;
 }
 
 // [ Black Pearl ] 
