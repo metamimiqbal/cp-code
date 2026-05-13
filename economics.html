@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economics — Complete Study Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0c0f;
+  --bg2: #13131a;
+  --bg3: #1a1a24;
+  --card: #16161f;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #f0eee8;
+  --muted: #888899;
+  --dim: #444455;
+  --accent: #c8f03c;
+  --accent2: #7b6cfa;
+  --accent3: #fa6c6c;
+  --accent4: #6cdffa;
+  --accent5: #faaa6c;
+  --green: #4cfaaa;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 18px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── NOISE TEXTURE ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: 0.4;
+}
+
+/* ── LAYOUT ── */
+.app { display: flex; min-height: 100vh; position: relative; z-index: 1; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 240px; flex-shrink: 0;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  padding: 28px 0;
+  position: fixed; top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  z-index: 100;
+  display: flex; flex-direction: column;
+  transition: transform 0.3s ease;
+}
+.sidebar-logo {
+  padding: 0 24px 28px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.sidebar-logo .logo-mark {
+  font-family: var(--font-display);
+  font-size: 20px; font-weight: 800;
+  color: var(--accent);
+  letter-spacing: -0.5px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.sidebar-logo .logo-sub {
+  font-size: 11px; color: var(--muted);
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.nav-section {
+  padding: 0 12px 6px;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--dim);
+  margin: 16px 12px 4px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 20px;
+  margin: 1px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 13.5px; font-weight: 400; color: var(--muted);
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+  text-decoration: none;
+}
+.nav-item:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+.nav-item.active {
+  background: rgba(200,240,60,0.1);
+  border-color: rgba(200,240,60,0.2);
+  color: var(--accent);
+}
+.nav-item .nav-icon {
+  width: 18px; height: 18px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.nav-item .badge-count {
+  margin-left: auto; font-size: 10px;
+  background: rgba(200,240,60,0.15); color: var(--accent);
+  padding: 1px 7px; border-radius: 20px; font-family: var(--font-mono);
+}
+.sidebar-bottom {
+  margin-top: auto; padding: 20px 24px 0;
+  border-top: 1px solid var(--border);
+  font-size: 11px; color: var(--dim); line-height: 1.7;
+}
+
+/* ── MAIN ── */
+.main { margin-left: 240px; flex: 1; min-height: 100vh; }
+.topbar {
+  position: sticky; top: 0; z-index: 90;
+  background: rgba(12,12,15,0.9);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 36px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.topbar-title {
+  font-family: var(--font-display);
+  font-size: 17px; font-weight: 700;
+  color: var(--text);
+}
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.progress-pill {
+  font-size: 11px; font-family: var(--font-mono);
+  background: rgba(123,108,250,0.15); color: var(--accent2);
+  padding: 4px 12px; border-radius: 20px;
+  border: 1px solid rgba(123,108,250,0.25);
+}
+.hamburger {
+  display: none; background: none; border: none; cursor: pointer;
+  color: var(--muted); font-size: 20px; padding: 4px;
+}
+
+/* ── PAGE ── */
+.page { padding: 40px 36px; display: none; }
+.page.active { display: block; }
+.page-hero {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+}
+.page-hero-left {}
+.page-number {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.page-title {
+  font-family: var(--font-display);
+  font-size: 32px; font-weight: 800;
+  line-height: 1.1; letter-spacing: -0.5px;
+}
+.page-title span { color: var(--accent); }
+.page-desc { font-size: 14px; color: var(--muted); margin-top: 8px; max-width: 480px; }
+.page-tag {
+  display: inline-block; font-size: 11px; font-weight: 600;
+  padding: 4px 12px; border-radius: 20px; margin-top: 12px;
+  letter-spacing: 0.05em; text-transform: uppercase;
+}
+
+/* ── CARDS ── */
+.grid { display: grid; gap: 16px; }
+.g2 { grid-template-columns: repeat(2, 1fr); }
+.g3 { grid-template-columns: repeat(3, 1fr); }
+.g4 { grid-template-columns: repeat(4, 1fr); }
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color: var(--border2); }
+.card-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.card-value {
+  font-family: var(--font-display);
+  font-size: 26px; font-weight: 700; color: var(--text);
+  line-height: 1.1;
+}
+.card-value.accent { color: var(--accent); }
+.card-value.purple { color: var(--accent2); }
+.card-value.red { color: var(--accent3); }
+.card-value.cyan { color: var(--accent4); }
+.card-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+.content-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+.content-card + .content-card { margin-top: 16px; }
+.section-title {
+  font-family: var(--font-display);
+  font-size: 16px; font-weight: 700;
+  margin-bottom: 18px; color: var(--text);
+  display: flex; align-items: center; gap: 8px;
+}
+.section-title::after {
+  content: ''; flex: 1; height: 1px;
+  background: var(--border);
+}
+
+/* ── CONCEPT ROWS ── */
+.concept { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.concept:last-child { border-bottom: none; padding-bottom: 0; }
+.concept:first-of-type { padding-top: 0; }
+.concept-chip {
+  width: 36px; height: 36px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  flex-shrink: 0;
+}
+.concept-body {}
+.concept-name { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+.concept-def { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+/* ── BADGES ── */
+.badge {
+  display: inline-block; font-size: 10px; font-weight: 600;
+  padding: 2px 9px; border-radius: 10px; letter-spacing: 0.04em;
+  text-transform: uppercase; margin-left: 6px;
+}
+.badge-green { background: rgba(76,250,170,0.12); color: var(--green); border: 1px solid rgba(76,250,170,0.2); }
+.badge-red { background: rgba(250,108,108,0.12); color: var(--accent3); border: 1px solid rgba(250,108,108,0.2); }
+.badge-yellow { background: rgba(200,240,60,0.12); color: var(--accent); border: 1px solid rgba(200,240,60,0.2); }
+.badge-purple { background: rgba(123,108,250,0.12); color: var(--accent2); border: 1px solid rgba(123,108,250,0.2); }
+.badge-cyan { background: rgba(108,223,250,0.12); color: var(--accent4); border: 1px solid rgba(108,223,250,0.2); }
+
+/* ── FLOW DIAGRAMS ── */
+.flow {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
+  margin: 12px 0;
+}
+.flow-box {
+  padding: 7px 14px; border-radius: 7px;
+  font-size: 12px; font-weight: 500;
+  border: 1px solid var(--border2); color: var(--text);
+  background: var(--bg3);
+}
+.flow-box.hi { background: rgba(200,240,60,0.1); border-color: rgba(200,240,60,0.25); color: var(--accent); }
+.flow-box.end { background: rgba(76,250,170,0.1); border-color: rgba(76,250,170,0.25); color: var(--green); }
+.flow-box.warn { background: rgba(250,170,108,0.1); border-color: rgba(250,170,108,0.25); color: var(--accent5); }
+.flow-arrow { color: var(--dim); font-size: 14px; }
+
+/* ── INTERACTIVE CONTROLS ── */
+.control-group { margin-bottom: 18px; }
+.control-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.control-label span:first-child { font-size: 13px; color: var(--muted); }
+.control-label span:last-child { font-family: var(--font-mono); font-size: 13px; color: var(--accent); }
+input[type=range] {
+  width: 100%; height: 4px;
+  background: var(--bg3); border-radius: 4px;
+  outline: none; appearance: none; cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  appearance: none; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--accent); cursor: pointer;
+  box-shadow: 0 0 0 3px rgba(200,240,60,0.2);
+  transition: box-shadow 0.2s;
+}
+input[type=range]::-webkit-slider-thumb:hover { box-shadow: 0 0 0 5px rgba(200,240,60,0.25); }
+.outcome-box {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px; margin-top: 14px;
+}
+.outcome-title { font-size: 20px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.outcome-desc { font-size: 12px; color: var(--muted); }
+
+/* ── BARS ── */
+.bar-row { margin-bottom: 12px; }
+.bar-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 5px; }
+.bar-track { height: 6px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+
+/* ── PILLS ── */
+.pill-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+.pill {
+  font-size: 12px; padding: 4px 12px;
+  border-radius: 20px; border: 1px solid var(--border2);
+  color: var(--muted);
+}
+
+/* ── COMPARE GRID ── */
+.compare-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 12px; }
+.compare-col {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px 16px;
+}
+.compare-col-head { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+.compare-col p { font-size: 12px; color: var(--muted); line-height: 1.55; }
+
+/* ── TIMELINE ── */
+.timeline { margin-top: 4px; }
+.tl-item { display: flex; gap: 14px; margin-bottom: 18px; }
+.tl-dot-col { display: flex; flex-direction: column; align-items: center; }
+.tl-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+.tl-line { width: 1px; flex: 1; background: var(--border); margin-top: 6px; }
+.tl-item:last-child .tl-line { display: none; }
+.tl-title { font-size: 13px; font-weight: 500; color: var(--text); }
+.tl-desc { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.5; }
+
+/* ── SYSTEM CARDS ── */
+.system-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+.system-card {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px;
+  border-top: 3px solid;
+  transition: transform 0.2s;
+}
+.system-card:hover { transform: translateY(-2px); }
+.system-card-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.system-card p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.system-pros-cons { margin-top: 10px; font-size: 12px; line-height: 1.7; }
+
+/* ── QUIZ ── */
+.quiz-wrap { max-width: 640px; margin: 0 auto; }
+.quiz-progress-bar { height: 3px; background: var(--bg3); border-radius: 2px; margin-bottom: 28px; overflow: hidden; }
+.quiz-progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s ease; }
+.quiz-q-num { font-size: 11px; color: var(--muted); font-family: var(--font-mono); margin-bottom: 10px; }
+.quiz-question { font-family: var(--font-display); font-size: 20px; font-weight: 700; margin-bottom: 24px; line-height: 1.3; }
+.quiz-options { display: flex; flex-direction: column; gap: 10px; }
+.quiz-opt {
+  padding: 13px 18px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border2); background: var(--bg3);
+  font-size: 14px; color: var(--text); cursor: pointer;
+  text-align: left; transition: all 0.15s;
+}
+.quiz-opt:hover { border-color: var(--accent2); color: var(--text); background: rgba(123,108,250,0.08); }
+.quiz-opt.correct { border-color: var(--green); background: rgba(76,250,170,0.1); color: var(--green); }
+.quiz-opt.wrong { border-color: var(--accent3); background: rgba(250,108,108,0.1); color: var(--accent3); }
+.quiz-feedback { margin-top: 18px; padding: 14px 18px; border-radius: var(--radius-sm); font-size: 14px; }
+.quiz-feedback.correct-fb { background: rgba(76,250,170,0.08); border: 1px solid rgba(76,250,170,0.2); color: var(--green); }
+.quiz-feedback.wrong-fb { background: rgba(250,108,108,0.08); border: 1px solid rgba(250,108,108,0.2); color: var(--accent3); }
+.quiz-next {
+  margin-top: 18px; padding: 12px 28px;
+  background: var(--accent); color: #0c0c0f;
+  border: none; border-radius: var(--radius-sm);
+  font-family: var(--font-display); font-size: 14px; font-weight: 700;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+  transition: opacity 0.15s;
+}
+.quiz-next:hover { opacity: 0.88; }
+.quiz-result {
+  text-align: center; padding: 40px 20px;
+}
+.quiz-score-big {
+  font-family: var(--font-display); font-size: 72px; font-weight: 800;
+  color: var(--accent); line-height: 1;
+}
+.quiz-result-msg { font-size: 17px; color: var(--muted); margin: 12px 0 28px; }
+.retry-btn {
+  padding: 12px 32px; border-radius: var(--radius-sm);
+  background: rgba(200,240,60,0.1); border: 1px solid rgba(200,240,60,0.3);
+  color: var(--accent); font-family: var(--font-display); font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all 0.15s;
+}
+.retry-btn:hover { background: rgba(200,240,60,0.18); }
+
+/* ── THREE QUESTIONS ── */
+.three-q { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 12px; }
+.three-q-card {
+  text-align: center; padding: 20px 14px;
+  border-radius: var(--radius); border: 1px solid var(--border);
+  background: var(--bg3);
+}
+.three-q-icon { font-size: 28px; margin-bottom: 8px; }
+.three-q-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; }
+
+/* ── SIDEBAR OVERLAY (mobile) ── */
+.sidebar-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6); z-index: 99;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page.active > * { animation: fadeUp 0.35s ease both; }
+.page.active > *:nth-child(2) { animation-delay: 0.04s; }
+.page.active > *:nth-child(3) { animation-delay: 0.08s; }
+.page.active > *:nth-child(4) { animation-delay: 0.12s; }
+.page.active > *:nth-child(5) { animation-delay: 0.16s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-overlay.open { display: block; }
+  .main { margin-left: 0; }
+  .hamburger { display: block; }
+  .page { padding: 28px 20px; }
+  .topbar { padding: 14px 20px; }
+  .g2, .g3, .g4 { grid-template-columns: 1fr; }
+  .compare-grid, .system-grid, .three-q { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .page-title { font-size: 24px; }
+  .page-hero { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<div class="app">
+  <!-- ── SIDEBAR ── -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">ECON°</div>
+      <div class="logo-sub">Complete Study Dashboard</div>
+    </div>
+
+    <div class="nav-section">Core</div>
+    <a class="nav-item active" onclick="go('foundations')" href="#">
+      <span class="nav-icon">⚖️</span> Foundations
+    </a>
+    <a class="nav-item" onclick="go('gdp')" href="#">
+      <span class="nav-icon">📊</span> GDP & Growth
+    </a>
+    <a class="nav-item" onclick="go('money')" href="#">
+      <span class="nav-icon">🏦</span> Money & Banks
+    </a>
+
+    <div class="nav-section">Global</div>
+    <a class="nav-item" onclick="go('trade')" href="#">
+      <span class="nav-icon">🌐</span> Trade & Currency
+    </a>
+    <a class="nav-item" onclick="go('labor')" href="#">
+      <span class="nav-icon">👷</span> Labor & Finance
+    </a>
+
+    <div class="nav-section">Big Picture</div>
+    <a class="nav-item" onclick="go('systems')" href="#">
+      <span class="nav-icon">🗺️</span> Economic Systems
+    </a>
+    <a class="nav-item" onclick="go('behavioral')" href="#">
+      <span class="nav-icon">🧠</span> Behavioral Econ
+    </a>
+    <a class="nav-item" onclick="go('quiz')" href="#">
+      <span class="nav-icon">🎯</span> Quick Quiz
+      <span class="badge-count">8Q</span>
+    </a>
+
+    <div class="sidebar-bottom">
+      Based on the full economics explainer video. All topics covered.
+    </div>
+  </nav>
+
+  <!-- ── MAIN ── -->
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="hamburger" onclick="openSidebar()">☰</button>
+        <div class="topbar-title" id="topbar-title">Foundations</div>
+      </div>
+      <div class="topbar-right">
+        <div class="progress-pill" id="progress-pill">0 / 8 answered</div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         PAGE: FOUNDATIONS
+    ════════════════════════════════ -->
+    <div class="page active" id="page-foundations">
+      <div class="page-hero">
+        <div class="page-hero-left">
+          <div class="page-number">Chapter 01</div>
+          <div class="page-title">Economic <span>Foundations</span></div>
+          <div class="page-desc">Scarcity, trade, opportunity cost, markets — the building blocks everything else rests on.</div>
+        </div>
+      </div>
+
+      <div class="grid g4" style="margin-bottom:20px">
+        <div class="card">
+          <div class="card-label">Core problem</div>
+          <div class="card-value accent">Scarcity</div>
+          <div class="card-sub">Not enough to go around</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Core solution</div>
+          <div class="card-value" style="color:var(--accent4)">Trade</div>
+          <div class="card-sub">Voluntary exchange = win-win</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Core signal</div>
+          <div class="card-value" style="color:var(--accent5)">Prices</div>
+          <div class="card-sub">Coordinates all decisions</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Core coordinator</div>
+          <div class="card-value purple">Markets</div>
+          <div class="card-sub">Buyers + sellers interacting</div>
+        </div>
+      </div>
+
+      <div class="grid g2" style="margin-bottom:20px">
+        <div class="content-card">
+          <div class="section-title">Key Concepts</div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(200,240,60,0.12);color:var(--accent)">OC</div>
+            <div class="concept-body">
+              <div class="concept-name">Opportunity cost</div>
+              <div class="concept-def">Every choice means giving up the next-best option. Watching this video = not watching cat fails. That's your opportunity cost.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(108,223,250,0.12);color:var(--accent4)">CA</div>
+            <div class="concept-body">
+              <div class="concept-name">Comparative advantage</div>
+              <div class="concept-def">Trade based on relative efficiency. Even if you're worse at everything, specialize in what you're <em>least worst</em> at. You're economically useful.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(250,170,108,0.12);color:var(--accent5)">S&D</div>
+            <div class="concept-body">
+              <div class="concept-name">Supply & demand</div>
+              <div class="concept-def">Demand = what people want at a price. Supply = what producers make at a price. Where they meet is the equilibrium price.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(123,108,250,0.12);color:var(--accent2)">IH</div>
+            <div class="concept-body">
+              <div class="concept-name">Invisible hand</div>
+              <div class="concept-def">Markets coordinate millions through prices & incentives — without any central planner. It's math + desire + desperation working in silence.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(76,250,170,0.12);color:var(--green)">PC</div>
+            <div class="concept-body">
+              <div class="concept-name">Price controls</div>
+              <div class="concept-def">Government-set limits. Price ceiling → shortage. Price floor → surplus. Usually doesn't go well. Economics ignored is economics that bites back.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <div class="section-title">Supply & Demand Simulator</div>
+          <div class="control-group">
+            <div class="control-label"><span>Supply level</span><span id="sval">5</span></div>
+            <input type="range" min="1" max="10" value="5" id="supply" oninput="updateSD()">
+          </div>
+          <div class="control-group">
+            <div class="control-label"><span>Demand level</span><span id="dval">5</span></div>
+            <input type="range" min="1" max="10" value="5" id="demand" oninput="updateSD()">
+          </div>
+          <div class="outcome-box">
+            <div class="outcome-title" id="sd-price">⚖️ Equilibrium</div>
+            <div class="outcome-desc" id="sd-detail">Supply meets demand — price is stable</div>
+          </div>
+
+          <div class="section-title" style="margin-top:24px">The Chain: Scarcity → Market</div>
+          <div class="flow">
+            <div class="flow-box hi">Scarcity</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">Choices</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">Opp. cost</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">Trade</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">Specialize</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box end">Market</div>
+          </div>
+
+          <div class="section-title" style="margin-top:24px">Incentives Rule</div>
+          <div class="concept" style="padding-top:0">
+            <div class="concept-body">
+              <div class="concept-def">Pizza at $100? You won't buy it. At $1? You'll eat seven. Lower prices incentivize buyers. Higher prices incentivize sellers. This back-and-forth <em>is</em> the market.</div>
+            </div>
+          </div>
+          <div class="section-title" style="margin-top:20px">Factors of Production</div>
+          <div class="pill-row">
+            <span class="pill" style="border-color:rgba(200,240,60,0.3);color:var(--accent)">🌱 Land (natural resources)</span>
+            <span class="pill" style="border-color:rgba(108,223,250,0.3);color:var(--accent4)">👷 Labor (people doing stuff)</span>
+            <span class="pill" style="border-color:rgba(123,108,250,0.3);color:var(--accent2)">🏭 Capital (man-made tools)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         PAGE: GDP
+    ════════════════════════════════ -->
+    <div class="page" id="page-gdp">
+      <div class="page-hero">
+        <div class="page-hero-left">
+          <div class="page-number">Chapter 02</div>
+          <div class="page-title">GDP & <span>Growth</span></div>
+          <div class="page-desc">How we measure an economy, what makes it grow, and when it falls apart.</div>
+        </div>
+      </div>
+
+      <div class="grid g4" style="margin-bottom:20px">
+        <div class="card">
+          <div class="card-label">GDP formula</div>
+          <div class="card-value" style="font-size:18px;color:var(--accent)">C+I+G+(X−M)</div>
+          <div class="card-sub">Expenditure approach</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Boom</div>
+          <div class="card-value" style="color:var(--green)">↑ Growth</div>
+          <div class="card-sub">Economy expanding</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Recession</div>
+          <div class="card-value" style="color:var(--accent5)">↓ Shrink</div>
+          <div class="card-sub">2+ quarters contracting</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Depression</div>
+          <div class="card-value red">↓↓ Severe</div>
+          <div class="card-sub">Prolonged deep slump</div>
+        </div>
+      </div>
+
+      <div class="grid g2" style="margin-bottom:20px">
+        <div class="content-card">
+          <div class="section-title">GDP Components (Typical Economy)</div>
+          <div class="bar-row">
+            <div class="bar-meta"><span>C — Consumption (you buying stuff)</span><span style="color:var(--accent4)">~60%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:60%;background:var(--accent4)"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-meta"><span>I — Investment (businesses building)</span><span style="color:var(--green)">~18%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:18%;background:var(--green)"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-meta"><span>G — Government spending</span><span style="color:var(--accent5)">~17%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:17%;background:var(--accent5)"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-meta"><span>X−M — Net exports</span><span style="color:var(--accent2)">~5%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:5%;background:var(--accent2)"></div></div>
+          </div>
+
+          <div class="section-title" style="margin-top:24px">3 Ways to Calculate GDP</div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(108,223,250,0.12);color:var(--accent4)">①</div>
+            <div class="concept-body">
+              <div class="concept-name">Production approach</div>
+              <div class="concept-def">Sum value added at each stage. Don't count flour AND bread — just the bread. Otherwise you're double counting, and that's cheating.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(76,250,170,0.12);color:var(--green)">②</div>
+            <div class="concept-body">
+              <div class="concept-name">Income approach</div>
+              <div class="concept-def">Sum all incomes earned: wages, profits, rents, interest. All roads lead to the same number.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(250,170,108,0.12);color:var(--accent5)">③</div>
+            <div class="concept-body">
+              <div class="concept-name">Expenditure approach</div>
+              <div class="concept-def">C + I + G + (X − M). The most common. Add up every dollar spent in the economy.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <div class="section-title">What GDP Misses</div>
+          <div class="concept">
+            <div class="concept-body">
+              <div class="concept-name">Unpaid labor <span class="badge badge-red">gap</span></div>
+              <div class="concept-def">Housework, caregiving, volunteering — all economically valuable, none counted in GDP.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-body">
+              <div class="concept-name">Black market activity <span class="badge badge-red">gap</span></div>
+              <div class="concept-def">Underground economies can be massive — especially in developing nations. Completely invisible to GDP.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-body">
+              <div class="concept-name">Happiness & wellbeing <span class="badge badge-red">gap</span></div>
+              <div class="concept-def">GDP doesn't care if you're happy. GDP from selling weapons counts the same as GDP from education.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-body">
+              <div class="concept-name">GDP per capita <span class="badge badge-green">better</span></div>
+              <div class="concept-def">GDP ÷ population. Fairer for comparing living standards. Still flawed — like a microwave with no door.</div>
+            </div>
+          </div>
+
+          <div class="section-title" style="margin-top:24px">Inflation Types</div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(250,170,108,0.12);color:var(--accent5)">D↑</div>
+            <div class="concept-body">
+              <div class="concept-name">Demand-pull</div>
+              <div class="concept-def">Demand outpaces supply → prices rise. Too much money chasing too few goods.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(250,108,108,0.12);color:var(--accent3)">S↓</div>
+            <div class="concept-body">
+              <div class="concept-name">Cost-push</div>
+              <div class="concept-def">Supply collapses but demand holds → prices rise anyway. Oil shocks are the classic example.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(123,108,250,0.12);color:var(--accent2)">☠️</div>
+            <div class="concept-body">
+              <div class="concept-name">Stagflation</div>
+              <div class="concept-def">Both demand AND supply collapse. High prices + recession. More existential dread than regular inflation.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         PAGE: MONEY & BANKS
+    ════════════════════════════════ -->
+    <div class="page" id="page-money">
+      <div class="page-hero">
+        <div class="page-hero-left">
+          <div class="page-number">Chapter 03</div>
+          <div class="page-title">Money & <span>Banks</span></div>
+          <div class="page-desc">What money actually is, how banks create it from nothing, and who controls it all.</div>
+        </div>
+      </div>
+
+      <div class="grid g4" style="margin-bottom:20px">
+        <div class="card">
+          <div class="card-label">Functions of money</div>
+          <div class="card-value accent" style="font-size:18px">3 roles</div>
+          <div class="card-sub">Medium · Unit of account · Store</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Zimbabwe inflation (2008)</div>
+          <div class="card-value red" style="font-size:16px">89.7 sextillion%</div>
+          <div class="card-sub">Hyperinflation in action</div>
+        </div>
+        <div class="card">
+          <div class="card-label">US national debt</div>
+          <div class="card-value" style="color:var(--accent5)">>$34T</div>
+          <div class="card-sub">And counting fast</div>
+        </div>
+        <div class="card">
+          <div class="card-label">FDIC protects up to</div>
+          <div class="card-value" style="color:var(--green)">$250K</div>
+          <div class="card-sub">Per depositor, per bank</div>
+        </div>
+      </div>
+
+      <div class="grid g2" style="margin-bottom:20px">
+        <div class="content-card">
+          <div class="section-title">How Banks Create Money</div>
+          <div class="flow" style="flex-direction:column;align-items:stretch">
+            <div class="flow-box hi" style="padding:12px 16px">You deposit $100 in the bank</div>
+            <div style="text-align:center;color:var(--dim);padding:4px 0">↓</div>
+            <div class="flow-box" style="padding:12px 16px">Bank keeps ~10% in reserve ($10)</div>
+            <div style="text-align:center;color:var(--dim);padding:4px 0">↓</div>
+            <div class="flow-box" style="padding:12px 16px">Bank lends $90 — typed into someone's account</div>
+            <div style="text-align:center;color:var(--dim);padding:4px 0">↓</div>
+            <div class="flow-box end" style="padding:12px 16px">New money created — fractional reserve banking</div>
+          </div>
+          <div style="margin-top:14px;padding:12px 14px;border-radius:8px;border:1px solid rgba(250,170,108,0.25);background:rgba(250,170,108,0.07);font-size:12px;color:var(--accent5)">
+            ⚠️ Bank run risk: if everyone withdraws at once, the bank collapses. Deposit insurance (FDIC in the US) exists to prevent panic.
+          </div>
+
+          <div class="section-title" style="margin-top:24px">History of Money</div>
+          <div class="pill-row">
+            <span class="pill">🪨 Rocks</span>
+            <span class="pill">🐄 Cattle</span>
+            <span class="pill">🥇 Gold coins</span>
+            <span class="pill">📜 Paper notes</span>
+            <span class="pill">💳 Credit cards</span>
+            <span class="pill">💻 Digital numbers</span>
+            <span class="pill">🪙 Crypto</span>
+          </div>
+          <div style="font-size:12px;color:var(--muted);margin-top:10px">What makes something money: <strong style="color:var(--text);font-weight:500">trust</strong>. If enough people believe it's money — it is. When that trust collapses (hyperinflation), money becomes not money.</div>
+        </div>
+
+        <div class="content-card">
+          <div class="section-title">Interest Rate Simulator</div>
+          <div class="control-group">
+            <div class="control-label"><span>Central bank interest rate</span><span id="rate-val">5%</span></div>
+            <input type="range" min="0" max="20" value="5" id="rate-slider" oninput="updateRate()">
+          </div>
+          <div class="outcome-box" id="rate-outcome">
+            <div class="outcome-title">Moderate borrowing</div>
+            <div class="outcome-desc">Balanced growth — economy neither overheating nor cooling</div>
+          </div>
+
+          <div class="section-title" style="margin-top:24px">Monetary Policy</div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(250,108,108,0.12);color:var(--accent3)">🔒</div>
+            <div class="concept-body">
+              <div class="concept-name">Tight policy <span class="badge badge-red">fights inflation</span></div>
+              <div class="concept-def">High rates → expensive borrowing → less spending → economy cools</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(76,250,170,0.12);color:var(--green)">🔓</div>
+            <div class="concept-body">
+              <div class="concept-name">Loose policy <span class="badge badge-green">boosts growth</span></div>
+              <div class="concept-def">Low rates → cheap borrowing → more spending & investment → economy heats up</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(123,108,250,0.12);color:var(--accent2)">QE</div>
+            <div class="concept-body">
+              <div class="concept-name">Quantitative easing</div>
+              <div class="concept-def">Central bank buys bonds from commercial banks to pump money in. Printing money with extra steps and spreadsheets.</div>
+            </div>
+          </div>
+
+          <div class="section-title" style="margin-top:24px">Government Debt</div>
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot-col"><div class="tl-dot" style="background:var(--green)"></div><div class="tl-line"></div></div>
+              <div><div class="tl-title">Budget surplus</div><div class="tl-desc">Tax revenue > spending. Rare — like a fully funded public library.</div></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot-col"><div class="tl-dot" style="background:var(--accent5)"></div><div class="tl-line"></div></div>
+              <div><div class="tl-title">Budget deficit → bonds</div><div class="tl-desc">Government borrows by issuing bonds (IOUs with interest). Repeat yearly = national debt.</div></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot-col"><div class="tl-dot" style="background:var(--accent3)"></div><div class="tl-line"></div></div>
+              <div><div class="tl-title">Debt servicing</div><div class="tl-desc">Borrow money to pay back money you already borrowed. Gets ugly fast.</div></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot-col"><div class="tl-dot" style="background:var(--accent3)"></div></div>
+              <div><div class="tl-title">Default</div><div class="tl-desc">Stop paying. Greece 2012, Sri Lanka 2022, Argentina — nine times.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         PAGE: TRADE & CURRENCY
+    ════════════════════════════════ -->
+    <div class="page" id="page-trade">
+      <div class="page-hero">
+        <div class="page-hero-left">
+          <div class="page-number">Chapter 04</div>
+          <div class="page-title">Trade & <span>Currency</span></div>
+          <div class="page-desc">Why countries trade, how exchange rates work, and what happens when supply chains break.</div>
+        </div>
+      </div>
+
+      <div class="grid g2" style="margin-bottom:20px">
+        <div class="content-card">
+          <div class="section-title">Comparative Advantage — Worked Example</div>
+          <div class="compare-grid">
+            <div class="compare-col" style="border-top:3px solid var(--accent)">
+              <div class="compare-col-head" style="color:var(--accent)">🇧🇷 Brazil</div>
+              <p>To grow 1 ton of coffee: give up <strong style="color:var(--text)">1 ton of corn</strong></p>
+              <div style="margin-top:10px;padding:8px;border-radius:6px;background:rgba(76,250,170,0.08);font-size:12px;color:var(--green)">✓ Comparative advantage in coffee → export it</div>
+            </div>
+            <div class="compare-col" style="border-top:3px solid var(--accent4)">
+              <div class="compare-col-head" style="color:var(--accent4)">🇨🇦 Canada</div>
+              <p>To grow 1 ton of coffee: give up <strong style="color:var(--text)">2 tons of corn</strong></p>
+              <div style="margin-top:10px;padding:8px;border-radius:6px;background:rgba(108,223,250,0.08);font-size:12px;color:var(--accent4)">✓ Comparative advantage in corn → export it</div>
+            </div>
+          </div>
+          <div style="margin-top:12px;font-size:13px;color:var(--muted)">Both countries gain through specialization — even if one country is worse at producing both goods. Trade isn't about being the best; it's about being the least worst at the right thing.</div>
+
+          <div class="section-title" style="margin-top:24px">Protectionism Tools</div>
+          <div class="pill-row">
+            <span class="pill" style="border-color:rgba(250,108,108,0.3);color:var(--accent3)">Tariffs (import tax)</span>
+            <span class="pill" style="border-color:rgba(250,170,108,0.3);color:var(--accent5)">Quotas (quantity limits)</span>
+            <span class="pill" style="border-color:rgba(76,250,170,0.3);color:var(--green)">Subsidies (help locals)</span>
+            <span class="pill" style="border-color:rgba(250,108,108,0.3);color:var(--accent3)">Embargoes (full ban)</span>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--muted)">Protectionism shields domestic industries short-term — but raises prices and reduces efficiency in the long run. Politicians love it. Economists hate it.</div>
+        </div>
+
+        <div class="content-card">
+          <div class="section-title">Exchange Rates & Currency</div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(200,240,60,0.12);color:var(--accent)">FX</div>
+            <div class="concept-body">
+              <div class="concept-name">Forex market</div>
+              <div class="concept-def">Japan sells cars to US and wants yen, not dollars. Currencies get exchanged constantly. The forex market is the world's largest financial market.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(108,223,250,0.12);color:var(--accent4)">↑↓</div>
+            <div class="concept-body">
+              <div class="concept-name">Floating vs fixed</div>
+              <div class="concept-def">Floating: moves with supply & demand (USD, EUR). Fixed: pegged to another currency or gold, maintained by force or willpower.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(250,170,108,0.12);color:var(--accent5)">↓$</div>
+            <div class="concept-body">
+              <div class="concept-name">Depreciation</div>
+              <div class="concept-def">Your currency loses value → exports cheaper (good for trade), imports expensive (bad for buying stuff).</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(76,250,170,0.12);color:var(--green)">↑$</div>
+            <div class="concept-body">
+              <div class="concept-name">Appreciation</div>
+              <div class="concept-def">Your currency gains value → buy more foreign stuff (good), but your exports get expensive (bad for local producers).</div>
+            </div>
+          </div>
+
+          <div class="section-title" style="margin-top:24px">Supply Chain Fragility</div>
+          <div class="compare-grid">
+            <div class="compare-col">
+              <div class="compare-col-head">🚢 Suez Canal 2021</div>
+              <p>One ship (Ever Given) blocked 12% of global trade, delayed 400 ships, cost ~$10B/day. One boat. One canal.</p>
+            </div>
+            <div class="compare-col">
+              <div class="compare-col-head">💻 Chip shortage 2020</div>
+              <p>Semiconductor shortage made used cars more expensive than new ones. Supply shock from a few ultra-specialized factories in East Asia.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         PAGE: LABOR & FINANCE
+    ════════════════════════════════ -->
+    <div class="page" id="page-labor">
+      <div class="page-hero">
+        <div class="page-hero-left">
+          <div class="page-number">Chapter 05</div>
+          <div class="page-title">Labor & <span>Finance</span></div>
+          <div class="page-desc">Jobs as markets, wages, unemployment, stocks, bonds, and the risk-return trade-off.</div>
+        </div>
+      </div>
+
+      <div class="grid g2" style="margin-bottom:20px">
+        <div class="content-card">
+          <div class="section-title">Types of Unemployment</div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(108,223,250,0.12);color:var(--accent4)">F</div>
+            <div class="concept-body">
+              <div class="concept-name">Frictional <span class="badge badge-cyan">normal</span></div>
+              <div class="concept-def">Between jobs — temporarily searching for a better fit. Healthy part of a dynamic economy.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(250,170,108,0.12);color:var(--accent5)">S</div>
+            <div class="concept-body">
+              <div class="concept-name">Structural <span class="badge badge-yellow">skills gap</span></div>
+              <div class="concept-def">Skills mismatch — your job was automated, offshored, or made obsolete. Requires retraining.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(250,108,108,0.12);color:var(--accent3)">C</div>
+            <div class="concept-body">
+              <div class="concept-name">Cyclical <span class="badge badge-red">recession-driven</span></div>
+              <div class="concept-def">Demand drops in a downturn and firms cut staff. Disappears when the economy recovers.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(76,250,170,0.12);color:var(--green)">Sc</div>
+            <div class="concept-body">
+              <div class="concept-name">Seasonal</div>
+              <div class="concept-def">Time-based patterns. Santa is unemployed in February. Ski instructors in summer.</div>
+            </div>
+          </div>
+          <div style="margin-top:12px;padding:12px 14px;border-radius:8px;background:var(--bg3);font-size:12px;color:var(--muted)">
+            💡 If you stop looking for work, you exit the unemployment statistics — you become "statistically invisible." The real rate is always higher than reported.
+          </div>
+        </div>
+
+        <div class="content-card">
+          <div class="section-title">Financial Assets</div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(123,108,250,0.12);color:var(--accent2)">S</div>
+            <div class="concept-body">
+              <div class="concept-name">Stocks <span class="badge badge-purple">ownership</span></div>
+              <div class="concept-def">Company slices. Rise on expectations, not just profits. Efficient market hypothesis: all info is already priced in — you can't consistently beat the market.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(76,250,170,0.12);color:var(--green)">B</div>
+            <div class="concept-body">
+              <div class="concept-name">Bonds <span class="badge badge-green">lending</span></div>
+              <div class="concept-def">Loans to governments or companies. Boring, but important. Bond prices fall when interest rates rise — that rule alone nukes economies.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(250,170,108,0.12);color:var(--accent5)">D</div>
+            <div class="concept-body">
+              <div class="concept-name">Derivatives <span class="badge badge-yellow">bets on bets</span></div>
+              <div class="concept-def">Options, futures, swaps. Useful for hedging risk. Also capable of causing the 2008 financial crisis.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(250,108,108,0.12);color:var(--accent3)">C</div>
+            <div class="concept-body">
+              <div class="concept-name">Crypto <span class="badge badge-red">volatile</span></div>
+              <div class="concept-def">Decentralized blockchain coins. Could be the future of money or a Ponzi scheme with extra steps. Mostly a casino disguised as innovation.</div>
+            </div>
+          </div>
+          <div style="margin-top:14px;padding:12px 14px;border-radius:8px;background:rgba(200,240,60,0.07);border:1px solid rgba(200,240,60,0.15);font-size:12px;color:var(--accent)">
+            📌 Risk-return trade-off: Safe assets earn little. Risky ones might pay huge or nothing. Diversify. Don't put all eggs in one meme stock.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         PAGE: ECONOMIC SYSTEMS
+    ════════════════════════════════ -->
+    <div class="page" id="page-systems">
+      <div class="page-hero">
+        <div class="page-hero-left">
+          <div class="page-number">Chapter 06</div>
+          <div class="page-title">Economic <span>Systems</span></div>
+          <div class="page-desc">Capitalism, socialism, communism, and the mixed reality everyone actually lives in.</div>
+        </div>
+      </div>
+
+      <div class="system-grid" style="margin-bottom:20px">
+        <div class="system-card" style="border-top-color:var(--accent4)">
+          <div class="system-card-title" style="color:var(--accent4)">Capitalism</div>
+          <p>Private ownership, free markets, profit motive. The dominant global system.</p>
+          <div class="system-pros-cons">
+            <div style="color:var(--green)">✓ Innovation, efficiency, individual freedom</div>
+            <div style="color:var(--accent3)">✗ Inequality, monopolies, market failures</div>
+          </div>
+        </div>
+        <div class="system-card" style="border-top-color:var(--green)">
+          <div class="system-card-title" style="color:var(--green)">Socialism</div>
+          <p>Collective ownership and redistribution. Society pools resources and shares benefits.</p>
+          <div class="system-pros-cons">
+            <div style="color:var(--green)">✓ Equality, social safety nets, healthcare</div>
+            <div style="color:var(--accent3)">✗ Can reduce incentives, harder to scale</div>
+          </div>
+        </div>
+        <div class="system-card" style="border-top-color:var(--accent3)">
+          <div class="system-card-title" style="color:var(--accent3)">Communism</div>
+          <p>No private property, full state planning. Looks good on paper. Looks terrible in bread lines.</p>
+          <div class="system-pros-cons">
+            <div style="color:var(--green)">✓ Total equality in theory</div>
+            <div style="color:var(--accent3)">✗ Famine (USSR grain quotas), inefficiency, authoritarianism</div>
+          </div>
+        </div>
+        <div class="system-card" style="border-top-color:var(--accent2)">
+          <div class="system-card-title" style="color:var(--accent2)">Mixed economy</div>
+          <p>The actual reality. Free markets + government intervention in different proportions.</p>
+          <div class="system-pros-cons">
+            <div style="color:var(--green)">✓ USA, China, India, Germany — all mixed</div>
+            <div style="color:var(--muted)">The US has subsidies, social security, and the TSA. China has billionaires.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-card" style="margin-bottom:20px">
+        <div class="section-title">Country Examples</div>
+        <div class="grid g2">
+          <div class="concept" style="padding:10px 0">
+            <div class="concept-chip" style="background:rgba(76,250,170,0.12);color:var(--green)">🇸🇪</div>
+            <div class="concept-body">
+              <div class="concept-name">Scandinavia — democratic socialism</div>
+              <div class="concept-def">High taxes, strong social programs, but free markets still run most of the economy</div>
+            </div>
+          </div>
+          <div class="concept" style="padding:10px 0">
+            <div class="concept-chip" style="background:rgba(108,223,250,0.12);color:var(--accent4)">🇺🇸</div>
+            <div class="concept-body">
+              <div class="concept-name">USA — market capitalism (with caveats)</div>
+              <div class="concept-def">Subsidies, public schools, Medicare, Social Security, the TSA. Definitely mixed.</div>
+            </div>
+          </div>
+          <div class="concept" style="padding:10px 0">
+            <div class="concept-chip" style="background:rgba(250,108,108,0.12);color:var(--accent3)">🇨🇳</div>
+            <div class="concept-body">
+              <div class="concept-name">China — state capitalism</div>
+              <div class="concept-def">Government directs the economy strategically, but has billionaires and stock exchanges</div>
+            </div>
+          </div>
+          <div class="concept" style="padding:10px 0">
+            <div class="concept-chip" style="background:rgba(250,170,108,0.12);color:var(--accent5)">🇯🇵</div>
+            <div class="concept-body">
+              <div class="concept-name">Japan — debt extreme</div>
+              <div class="concept-def">National debt over 260% of GDP — but stable because most creditors are domestic</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-card">
+        <div class="section-title">The 3 Fundamental Economic Questions</div>
+        <div class="three-q">
+          <div class="three-q-card">
+            <div class="three-q-icon">🏭</div>
+            <div class="three-q-title" style="color:var(--accent4)">What to make?</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:6px">Which goods & services to produce given scarce resources</div>
+          </div>
+          <div class="three-q-card">
+            <div class="three-q-icon">⚙️</div>
+            <div class="three-q-title" style="color:var(--green)">How to make it?</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:6px">Which production methods and technologies to use</div>
+          </div>
+          <div class="three-q-card">
+            <div class="three-q-icon">🎯</div>
+            <div class="three-q-title" style="color:var(--accent5)">Who gets it?</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:6px">How output is distributed across the population</div>
+          </div>
+        </div>
+        <div style="font-size:13px;color:var(--muted);margin-top:16px;text-align:center">Every economic system — capitalism, socialism, communism, mixed — is just a different answer to these three questions. No one has nailed it perfectly yet.</div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         PAGE: BEHAVIORAL
+    ════════════════════════════════ -->
+    <div class="page" id="page-behavioral">
+      <div class="page-hero">
+        <div class="page-hero-left">
+          <div class="page-number">Chapter 07</div>
+          <div class="page-title">Behavioral <span>Economics</span></div>
+          <div class="page-desc">Traditional economics assumes humans are rational. LOL. Real humans are chaos merchants.</div>
+        </div>
+      </div>
+
+      <div class="grid g2" style="margin-bottom:20px">
+        <div class="content-card">
+          <div class="section-title">Cognitive Biases</div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(200,240,60,0.12);color:var(--accent)">HD</div>
+            <div class="concept-body">
+              <div class="concept-name">Hyperbolic discounting</div>
+              <div class="concept-def">$5 now feels better than $50 later. We dramatically over-weight the present moment. This is why you eat the cake and skip the gym.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(250,108,108,0.12);color:var(--accent3)">LA</div>
+            <div class="concept-body">
+              <div class="concept-name">Loss aversion</div>
+              <div class="concept-def">Losing $20 hurts more than gaining $20 feels good. Losses loom about twice as large as equivalent gains psychologically.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(250,170,108,0.12);color:var(--accent5)">AB</div>
+            <div class="concept-body">
+              <div class="concept-name">Anchoring bias</div>
+              <div class="concept-def">If I say a phone costs $10,000 first, then $999 suddenly feels like a steal. First numbers we see become anchors — even irrelevant ones.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(123,108,250,0.12);color:var(--accent2)">HB</div>
+            <div class="concept-body">
+              <div class="concept-name">Herd behavior</div>
+              <div class="concept-def">Everyone panic-buys toilet paper → so do you. We follow crowds, especially in uncertainty. Markets crash partly because of herd behavior.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-chip" style="background:rgba(108,223,250,0.12);color:var(--accent4)">SC</div>
+            <div class="concept-body">
+              <div class="concept-name">Sunk cost fallacy</div>
+              <div class="concept-def">Sitting through a terrible Marvel sequel because "I already watched the first eight." Past costs shouldn't affect future decisions — but they do.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <div class="section-title">Nudges — Design for Better Decisions</div>
+          <div class="concept">
+            <div class="concept-body">
+              <div class="concept-name">Default options</div>
+              <div class="concept-def">Auto-enroll people in retirement savings → participation rates skyrocket. We go with the default. Change the default, change the behavior.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-body">
+              <div class="concept-name">Loss framing</div>
+              <div class="concept-def">"You'll save $200" vs "You're losing $200 by not doing this" — same facts, wildly different response rates. Loss framing wins because of loss aversion.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-body">
+              <div class="concept-name">Social proof</div>
+              <div class="concept-def">"9 out of 10 of your neighbors pay their taxes on time" → compliance goes up. We look to others to know what's normal.</div>
+            </div>
+          </div>
+          <div class="concept">
+            <div class="concept-body">
+              <div class="concept-name">Commitment devices</div>
+              <div class="concept-def">Locking your future self into good behavior. Savings accounts you can't touch. Pre-commitments to gym classes you've already paid for.</div>
+            </div>
+          </div>
+
+          <div style="margin-top:16px;padding:14px 16px;border-radius:var(--radius-sm);background:rgba(200,240,60,0.07);border:1px solid rgba(200,240,60,0.15)">
+            <div style="font-size:13px;font-weight:500;color:var(--accent);margin-bottom:6px">Key insight</div>
+            <div style="font-size:12px;color:var(--muted)">Traditional economics: humans are perfectly rational utility-maximizers. Behavioral economics: humans are predictably irrational. Policy should account for real human behavior, not the idealized version. That's why governments and apps nudge us — because left alone, we'd spend our retirement fund on Uber Eats.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         PAGE: QUIZ
+    ════════════════════════════════ -->
+    <div class="page" id="page-quiz">
+      <div class="page-hero">
+        <div class="page-hero-left">
+          <div class="page-number">Chapter 08</div>
+          <div class="page-title">Quick <span>Quiz</span></div>
+          <div class="page-desc">8 questions across all topics. Test what you've absorbed.</div>
+        </div>
+      </div>
+
+      <div class="content-card">
+        <div class="quiz-wrap" id="quiz-container"></div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+// ── NAVIGATION ──
+const pages = ['foundations','gdp','money','trade','labor','systems','behavioral','quiz'];
+const titles = {
+  foundations: 'Foundations',
+  gdp: 'GDP & Growth',
+  money: 'Money & Banks',
+  trade: 'Trade & Currency',
+  labor: 'Labor & Finance',
+  systems: 'Economic Systems',
+  behavioral: 'Behavioral Economics',
+  quiz: 'Quick Quiz'
+};
+
+function go(id) {
+  pages.forEach(p => {
+    document.getElementById('page-'+p).classList.remove('active');
+  });
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const navItems = document.querySelectorAll('.nav-item');
+  navItems.forEach(n => {
+    if(n.getAttribute('onclick') && n.getAttribute('onclick').includes("'"+id+"'")) {
+      n.classList.add('active');
+    }
+  });
+  document.getElementById('topbar-title').textContent = titles[id];
+  if(id === 'quiz') renderQuiz();
+  closeSidebar();
+  return false;
+}
+
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+
+// ── SUPPLY & DEMAND ──
+function updateSD() {
+  const s = +document.getElementById('supply').value;
+  const d = +document.getElementById('demand').value;
+  document.getElementById('sval').textContent = s;
+  document.getElementById('dval').textContent = d;
+  const p = document.getElementById('sd-price');
+  const dt = document.getElementById('sd-detail');
+  if (d > s+3) { p.textContent='📈 Severe shortage'; dt.textContent='Demand far exceeds supply → prices spike sharply'; }
+  else if (d > s+1) { p.textContent='↑ Prices rising'; dt.textContent='Demand above supply → upward price pressure'; }
+  else if (s > d+3) { p.textContent='📉 Large surplus'; dt.textContent='Supply far exceeds demand → prices fall sharply'; }
+  else if (s > d+1) { p.textContent='↓ Prices falling'; dt.textContent='Supply above demand → downward price pressure'; }
+  else { p.textContent='⚖️ Equilibrium'; dt.textContent='Supply meets demand — price is stable and markets clear'; }
+}
+
+// ── INTEREST RATE ──
+function updateRate() {
+  const r = +document.getElementById('rate-slider').value;
+  document.getElementById('rate-val').textContent = r + '%';
+  const o = document.getElementById('rate-outcome');
+  let title, desc;
+  if (r <= 1) { title='🔥 Near-zero rates'; desc='Extremely cheap borrowing. Risk of asset bubbles and inflation. Stimulus territory.'; }
+  else if (r <= 4) { title='💚 Loose policy'; desc='Cheap borrowing encourages spending & investment. Economy heats up.'; }
+  else if (r <= 7) { title='⚖️ Moderate rates'; desc='Balanced growth. Borrowing accessible. Economy neither overheating nor cooling.'; }
+  else if (r <= 12) { title='❄️ Tight policy'; desc='Expensive borrowing cools demand. Inflation targeted. Growth slows.'; }
+  else { title='🛑 Very tight'; desc='Borrowing nearly stops. Sharp economic slowdown. Inflation should drop.'; }
+  o.innerHTML = `<div class="outcome-title">${title}</div><div class="outcome-desc">${desc}</div>`;
+}
+
+// ── QUIZ ──
+const questions = [
+  { q:'What is the fundamental problem economics exists to solve?', opts:['Inflation and deflation','Scarcity of resources','Unemployment rates','Government spending'], ans:1 },
+  { q:'Comparative advantage means you should specialize in…', opts:['Whatever you produce most of','What you\'re best at in absolute terms','What you\'re least worst at relative to others','The highest-value product available'], ans:2 },
+  { q:'In the GDP formula C+I+G+(X−M), what does the "M" represent?', opts:['Monetary policy','Manufacturing output','Imports','Marginal cost'], ans:2 },
+  { q:'What happens when a central bank raises interest rates?', opts:['Economy heats up and inflation rises','Borrowing becomes cheaper for everyone','Economy tends to cool down, reducing inflation','Government can borrow more freely'], ans:2 },
+  { q:'Fractional reserve banking means banks…', opts:['Keep 100% of deposits locked away','Only lend to other governments','Lend out most deposits, keeping just a fraction as reserve','Invest deposits directly in gold'], ans:1 },
+  { q:'Loss aversion in behavioral economics means…', opts:['Investors always avoid risky assets','Losing $20 hurts more psychologically than gaining $20 feels good','People naturally save rather than spend','Consumers prefer cheaper goods in all situations'], ans:1 },
+  { q:'Which type of unemployment describes someone who quit to find a better job?', opts:['Structural','Cyclical','Seasonal','Frictional'], ans:3 },
+  { q:'Stagflation is the combination of…', opts:['High growth and low prices','Rapid GDP increase and falling unemployment','Economic stagnation AND high inflation at the same time','Falling interest rates and rising wages'], ans:2 },
+];
+
+let qi = 0, score = 0, answered = false;
+let quizInitted = false;
+
+function renderQuiz() {
+  quizInitted = true;
+  if (qi >= questions.length) {
+    const pct = Math.round((score / questions.length) * 100);
+    const msg = score >= 7 ? '🎉 Economics ace — genuinely impressive.' : score >= 5 ? '📚 Solid grasp. Review the chapters you missed.' : '🔄 Keep studying. Go through each section and try again.';
+    document.getElementById('quiz-container').innerHTML = `
+      <div class="quiz-result">
+        <div class="quiz-score-big">${score}/${questions.length}</div>
+        <div style="font-size:14px;color:var(--muted);margin-top:8px;font-family:var(--font-mono)">${pct}% correct</div>
+        <div class="quiz-result-msg">${msg}</div>
+        <button class="retry-btn" onclick="qi=0;score=0;answered=false;renderQuiz()">Retry quiz ↺</button>
+      </div>`;
+    updateProgress();
+    return;
+  }
+  const q = questions[qi];
+  document.getElementById('quiz-container').innerHTML = `
+    <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${(qi/questions.length)*100}%"></div></div>
+    <div class="quiz-q-num">Question ${qi+1} of ${questions.length} — Score: ${score}</div>
+    <div class="quiz-question">${q.q}</div>
+    <div class="quiz-options">
+      ${q.opts.map((o,i) => `<button class="quiz-opt" onclick="checkAns(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
+    </div>
+    <div id="quiz-fb" style="display:none"></div>`;
+}
+
+function checkAns(i) {
+  if (answered) return;
+  answered = true;
+  const q = questions[qi];
+  const btns = document.querySelectorAll('.quiz-opt');
+  btns.forEach(b => b.style.pointerEvents = 'none');
+  btns[i].classList.add(i === q.ans ? 'correct' : 'wrong');
+  if (i !== q.ans) btns[q.ans].classList.add('correct');
+  if (i === q.ans) score++;
+  const fb = document.getElementById('quiz-fb');
+  fb.style.display = 'block';
+  fb.className = 'quiz-feedback ' + (i === q.ans ? 'correct-fb' : 'wrong-fb');
+  fb.innerHTML = (i === q.ans ? '✓ Correct!' : `✗ The right answer was: <strong>${String.fromCharCode(65+q.ans)}. ${q.opts[q.ans]}</strong>`)
+    + `<br><br><button class="quiz-next" onclick="qi++;answered=false;renderQuiz()">Next question →</button>`;
+  updateProgress();
+}
+
+function updateProgress() {
+  document.getElementById('progress-pill').textContent = `${score} / ${qi < questions.length ? qi : questions.length} answered`;
+}
+</script>
+</body>
+</html>

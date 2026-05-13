@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Docs — macOS Keyboard Shortcuts</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #161b27;
+    --surface2: #1e2535;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #e8eaf0;
+    --muted: #7a8499;
+    --dim: #4a5168;
+
+    --blue:   #3b82f6;
+    --blue-bg:#1e2d4a;
+    --blue-light:#93c5fd;
+
+    --teal:   #14b8a6;
+    --teal-bg:#0d2e2b;
+    --teal-light:#5eead4;
+
+    --purple: #a78bfa;
+    --purple-bg:#1e1a35;
+    --purple-light:#c4b5fd;
+
+    --indigo: #818cf8;
+    --indigo-bg:#1a1e38;
+    --indigo-light:#a5b4fc;
+
+    --green:  #4ade80;
+    --green-bg:#0d2b1a;
+    --green-light:#86efac;
+
+    --emerald:#10b981;
+    --emerald-bg:#0a2b1e;
+    --emerald-light:#6ee7b7;
+
+    --pink:   #f472b6;
+    --pink-bg:#2b1028;
+    --pink-light:#fbcfe8;
+
+    --orange: #fb923c;
+    --orange-bg:#2b1a0d;
+    --orange-light:#fdba74;
+
+    --amber:  #fbbf24;
+    --amber-bg:#2b2008;
+    --amber-light:#fde68a;
+
+    --key-bg: #252d40;
+    --key-border: rgba(255,255,255,0.18);
+    --key-shadow: 0 2px 0 rgba(0,0,0,0.6);
+    --key-color: #c8d0e8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── PAGE LAYOUT ── */
+  .page {
+    width: 794px;
+    min-height: 1123px;
+    margin: 0 auto 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── COVER PAGE ── */
+  .cover {
+    min-height: 1123px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0;
+  }
+  .cover-hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 60px 60px;
+    position: relative;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, #1a2540 0%, var(--surface) 70%);
+  }
+  .cover-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(59,130,246,0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(167,139,250,0.08) 0%, transparent 50%),
+      radial-gradient(circle at 50% 90%, rgba(20,184,166,0.06) 0%, transparent 40%);
+    pointer-events: none;
+  }
+  .cover-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--blue);
+    background: var(--blue-bg);
+    border: 1px solid rgba(59,130,246,0.25);
+    padding: 6px 16px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .cover-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 64px;
+    font-weight: 800;
+    line-height: 1.0;
+    text-align: center;
+    letter-spacing: -2px;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #e8eaf0 0%, #93c5fd 50%, #c4b5fd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .cover-sub {
+    font-size: 18px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 56px;
+    font-weight: 400;
+  }
+  .cover-keys {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 56px;
+  }
+  .cover-key-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 10px 16px;
+  }
+  .cover-key-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+  .cover-stats {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 16px;
+    width: 100%;
+    max-width: 600px;
+  }
+  .cover-stat {
+    text-align: center;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .cover-stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--blue-light), var(--purple-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+  }
+  .cover-stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .cover-toc {
+    background: var(--surface2);
+    border-top: 1px solid var(--border);
+    padding: 32px 60px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .cover-toc-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .cover-toc-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── CONTENT PAGES ── */
+  .content-page {
+    padding: 0;
+  }
+  .page-header {
+    padding: 24px 40px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface2);
+  }
+  .page-header-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .page-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.08em;
+  }
+  .page-body {
+    padding: 32px 40px;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 36px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  .section-count {
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 3px 8px;
+    border-radius: 100px;
+    margin-left: auto;
+    font-weight: 600;
+  }
+
+  /* ── SHORTCUT GRID ── */
+  .shortcut-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+  }
+  .shortcut-grid.cols-1 { grid-template-columns: 1fr; }
+  .shortcut-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  .shortcut-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 12px;
+    border-radius: 7px;
+    gap: 16px;
+    transition: background 0.15s;
+  }
+  .shortcut-row:hover { background: rgba(255,255,255,0.04); }
+  .shortcut-row:nth-child(odd) { background: rgba(255,255,255,0.025); }
+  .shortcut-row:nth-child(odd):hover { background: rgba(255,255,255,0.05); }
+
+  .shortcut-label {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 400;
+    flex: 1;
+    min-width: 0;
+  }
+  .shortcut-keys {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .key {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--key-bg);
+    border: 1px solid var(--key-border);
+    border-bottom: 2px solid rgba(0,0,0,0.5);
+    border-radius: 5px;
+    padding: 3px 7px;
+    color: var(--key-color);
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+  .key.accent { color: var(--blue-light); border-color: rgba(59,130,246,0.3); }
+  .key-plus {
+    font-size: 10px;
+    color: var(--dim);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── TWO-COL LAYOUT ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+  /* ── TIP BOX ── */
+  .tip-box {
+    background: var(--blue-bg);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .tip-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .tip-text { font-size: 12px; color: var(--blue-light); line-height: 1.6; }
+  .tip-text strong { font-weight: 600; }
+
+  /* ── MOUSE SECTION ── */
+  .mouse-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .mouse-card {
+    border-radius: 10px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .mouse-action {
+    font-size: 24px;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .mouse-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .mouse-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 12px 40px;
+    border-top: 1px solid var(--border);
+    background: var(--surface2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .footer-hint {
+    font-size: 10px;
+    color: var(--dim);
+  }
+
+  /* ── LEGEND BAR ── */
+  .legend-bar {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 20px;
+    margin-bottom: 28px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .legend-key {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    min-width: 20px;
+    text-align: center;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: #fff; }
+    .page {
+      border: none; border-radius: 0;
+      margin: 0; width: 100%;
+      page-break-after: always;
+      background: #fff;
+    }
+    .page-footer { position: static; }
+    :root {
+      --bg: #fff; --surface: #fff; --surface2: #f5f5f7;
+      --border: #e5e7eb; --border2: #d1d5db;
+      --text: #111827; --muted: #6b7280; --dim: #9ca3af;
+      --key-bg: #f0f2f5; --key-border: #d1d5db; --key-color: #374151;
+      --blue-bg: #eff6ff; --blue-light: #1d4ed8; --blue: #2563eb;
+      --teal-bg: #f0fdfa; --teal-light: #0d9488; --teal: #0d9488;
+      --purple-bg: #faf5ff; --purple-light: #7c3aed; --purple: #7c3aed;
+      --indigo-bg: #eef2ff; --indigo-light: #4338ca; --indigo: #4338ca;
+      --green-bg: #f0fdf4; --green-light: #15803d; --green: #16a34a;
+      --emerald-bg: #ecfdf5; --emerald-light: #065f46; --emerald: #059669;
+      --pink-bg: #fdf2f8; --pink-light: #be185d; --pink: #ec4899;
+      --orange-bg: #fff7ed; --orange-light: #c2410c; --orange: #ea580c;
+      --amber-bg: #fffbeb; --amber-light: #92400e; --amber: #d97706;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE 1 — COVER
+══════════════════════════════════════════════════════════ -->
+<div class="page cover">
+  <div class="cover-hero">
+    <div class="cover-badge">macOS · Google Docs · Complete Reference</div>
+    <div class="cover-title">Keyboard<br>Shortcuts</div>
+    <div class="cover-sub">Every shortcut you need — organized, visual, always at hand</div>
+
+    <div class="cover-keys">
+      <div class="cover-key-group">
+        <span class="key">⌘</span>
+        <span class="cover-key-label">Command</span>
+      </div>
+      <div class="cover-key-group">
+        <span class="key">⌥</span>
+        <span class="cover-key-label">Option / Alt</span>
+      </div>
+      <div class="cover-key-group">
+        <span class="key">⇧</span>
+        <span class="cover-key-label">Shift</span>
+      </div>
+      <div class="cover-key-group">
+        <span class="key">^</span>
+        <span class="cover-key-label">Control</span>
+      </div>
+      <div class="cover-key-group">
+        <span class="key">Fn</span>
+        <span class="cover-key-label">Function</span>
+      </div>
+      <div class="cover-key-group">
+        <span class="key">↵</span>
+        <span class="cover-key-label">Return</span>
+      </div>
+      <div class="cover-key-group">
+        <span class="key">⌫</span>
+        <span class="cover-key-label">Delete / Backspace</span>
+      </div>
+    </div>
+
+    <div class="cover-stats">
+      <div class="cover-stat"><span class="cover-stat-num">90+</span><span class="cover-stat-label">Shortcuts</span></div>
+      <div class="cover-stat"><span class="cover-stat-num">9</span><span class="cover-stat-label">Categories</span></div>
+      <div class="cover-stat"><span class="cover-stat-num">5</span><span class="cover-stat-label">Pages</span></div>
+      <div class="cover-stat"><span class="cover-stat-num">∞</span><span class="cover-stat-label">Time Saved</span></div>
+    </div>
+  </div>
+
+  <div class="cover-toc">
+    <div class="cover-toc-item"><span class="cover-toc-dot" style="background:var(--blue)"></span>Basic Actions &amp; File Ops</div>
+    <div class="cover-toc-item"><span class="cover-toc-dot" style="background:var(--purple)"></span>Format Text</div>
+    <div class="cover-toc-item"><span class="cover-toc-dot" style="background:var(--indigo)"></span>Format Paragraphs</div>
+    <div class="cover-toc-item"><span class="cover-toc-dot" style="background:var(--green)"></span>Select &amp; Navigate</div>
+    <div class="cover-toc-item"><span class="cover-toc-dot" style="background:var(--pink)"></span>Comments &amp; Footnotes</div>
+    <div class="cover-toc-item"><span class="cover-toc-dot" style="background:var(--orange)"></span>Media &amp; Images</div>
+    <div class="cover-toc-item"><span class="cover-toc-dot" style="background:var(--teal)"></span>Find, Tools &amp; Menus</div>
+    <div class="cover-toc-item"><span class="cover-toc-dot" style="background:var(--amber)"></span>Mouse Shortcuts</div>
+    <div class="cover-toc-item"><span class="cover-toc-dot" style="background:var(--emerald)"></span>Power User Tips</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE 2 — BASIC ACTIONS + FORMAT TEXT
+══════════════════════════════════════════════════════════ -->
+<div class="page content-page" style="padding-bottom:52px">
+  <div class="page-header">
+    <span class="page-header-title">Basic Actions · Format Text</span>
+    <span class="page-num">02 / 05</span>
+  </div>
+  <div class="page-body">
+
+    <!-- LEGEND -->
+    <div class="legend-bar">
+      <div class="legend-item"><span class="legend-key">⌘</span> Command</div>
+      <div class="legend-item"><span class="legend-key">⌥</span> Option</div>
+      <div class="legend-item"><span class="legend-key">⇧</span> Shift</div>
+      <div class="legend-item"><span class="legend-key">^</span> Control</div>
+      <div class="legend-item"><span class="legend-key">Fn</span> Function</div>
+      <div class="legend-item"><span class="legend-key">↵</span> Return</div>
+      <div class="legend-item"><span class="legend-key">⌫</span> Backspace</div>
+      <div class="legend-item"><span class="legend-key">→</span> Arrow keys</div>
+    </div>
+
+    <div class="two-col">
+
+      <!-- LEFT: BASIC ACTIONS -->
+      <div>
+        <div class="section">
+          <div class="section-header">
+            <div class="section-icon" style="background:var(--blue-bg)">⚡</div>
+            <span class="section-title" style="color:var(--blue-light)">Basic Actions</span>
+            <span class="section-count" style="background:var(--blue-bg);color:var(--blue-light)">14</span>
+          </div>
+          <div class="shortcut-grid cols-1">
+            <div class="shortcut-row"><span class="shortcut-label">Copy</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">C</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Cut</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">X</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Paste</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">V</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Paste without formatting</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">V</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Undo</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">Z</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Redo</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">Z</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Repeat last action</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">Y</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Select all</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">A</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Save</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">S</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Print</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">P</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Open document</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">O</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Add / edit link</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">K</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Launch link</span><div class="shortcut-keys"><span class="key">⌥</span><span class="key-plus">+</span><span class="key">↵</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Add page break</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">↵</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Enter compact mode</span><div class="shortcut-keys"><span class="key">^</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">F</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Word count</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">C</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Version history</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">H</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: FORMAT TEXT -->
+      <div>
+        <div class="section">
+          <div class="section-header">
+            <div class="section-icon" style="background:var(--purple-bg)">✦</div>
+            <span class="section-title" style="color:var(--purple-light)">Format Text</span>
+            <span class="section-count" style="background:var(--purple-bg);color:var(--purple-light)">13</span>
+          </div>
+          <div class="shortcut-grid cols-1">
+            <div class="shortcut-row"><span class="shortcut-label">Bold</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">B</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Italic</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">I</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Underline</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">U</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Strikethrough</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">X</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Superscript</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">.</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Subscript</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">,</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Increase font size</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">&gt;</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Decrease font size</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">&lt;</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Increase font size +1pt</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">&gt;</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Decrease font size −1pt</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">&lt;</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Copy text formatting</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">C</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Paste text formatting</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">V</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Clear all formatting</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">\</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Check spelling / grammar</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">X</span></div></div>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          <span class="tip-icon">💡</span>
+          <span class="tip-text"><strong>Pro tip:</strong> Use <span style="font-family:'JetBrains Mono',monospace;font-size:11px">⌘ + ⌥ + C</span> then <span style="font-family:'JetBrains Mono',monospace;font-size:11px">⌘ + ⌥ + V</span> to clone formatting from one selection to another — like a format paintbrush but faster.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer">
+    <span class="footer-brand">Google Docs · macOS Shortcuts</span>
+    <span class="footer-hint">Tip: ⌘+Z is your best friend — undo anything</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE 3 — FORMAT PARAGRAPHS + FIND & MENUS
+══════════════════════════════════════════════════════════ -->
+<div class="page content-page" style="padding-bottom:52px">
+  <div class="page-header">
+    <span class="page-header-title">Format Paragraphs · Find &amp; Replace · Menus</span>
+    <span class="page-num">03 / 05</span>
+  </div>
+  <div class="page-body">
+    <div class="two-col">
+
+      <!-- LEFT: PARAGRAPHS -->
+      <div>
+        <div class="section">
+          <div class="section-header">
+            <div class="section-icon" style="background:var(--indigo-bg)">¶</div>
+            <span class="section-title" style="color:var(--indigo-light)">Format Paragraphs</span>
+            <span class="section-count" style="background:var(--indigo-bg);color:var(--indigo-light)">15</span>
+          </div>
+          <div class="shortcut-grid cols-1">
+            <div class="shortcut-row"><span class="shortcut-label">Normal text style</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">0</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Heading 1</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">1</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Heading 2</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">2</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Heading 3</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">3</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Headings 4 – 6</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">4–6</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Left align</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">L</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Center align</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">E</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Right align</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">R</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Justify</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">J</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Increase indent</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">]</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Decrease indent</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">[</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Numbered list</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">7</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Bulleted list</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">8</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Move paragraph up</span><div class="shortcut-keys"><span class="key">^</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">↑</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Move paragraph down</span><div class="shortcut-keys"><span class="key">^</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">↓</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Line spacing: single</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">1</span><span style="font-size:10px;color:var(--dim);font-style:italic;margin-left:4px">*in line spacing menu</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: FIND + MENUS -->
+      <div>
+        <div class="section">
+          <div class="section-header">
+            <div class="section-icon" style="background:var(--teal-bg)">🔍</div>
+            <span class="section-title" style="color:var(--teal-light)">Find &amp; Replace</span>
+            <span class="section-count" style="background:var(--teal-bg);color:var(--teal-light)">7</span>
+          </div>
+          <div class="shortcut-grid cols-1">
+            <div class="shortcut-row"><span class="shortcut-label">Find in document</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">F</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Find and replace</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">H</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Find next result</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">G</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Find previous result</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">G</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Find in menus</span><div class="shortcut-keys"><span class="key">⌥</span><span class="key-plus">+</span><span class="key">/</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Access context menu</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">\</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Browser context menu</span><div class="shortcut-keys"><span class="key">⇧</span><span class="key-plus">+</span><span class="key">Right-click</span></div></div>
+          </div>
+        </div>
+
+        <div class="section" style="margin-top:24px">
+          <div class="section-header">
+            <div class="section-icon" style="background:var(--amber-bg)">☰</div>
+            <span class="section-title" style="color:var(--amber-light)">Menu Navigation</span>
+            <span class="section-count" style="background:var(--amber-bg);color:var(--amber-light)">9</span>
+          </div>
+          <div class="shortcut-grid cols-1">
+            <div class="shortcut-row"><span class="shortcut-label">File menu</span><div class="shortcut-keys"><span class="key">^</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">F</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Edit menu</span><div class="shortcut-keys"><span class="key">^</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">E</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">View menu</span><div class="shortcut-keys"><span class="key">^</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">V</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Insert menu</span><div class="shortcut-keys"><span class="key">^</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">I</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Format menu</span><div class="shortcut-keys"><span class="key">^</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">O</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Tools menu</span><div class="shortcut-keys"><span class="key">^</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">T</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Help menu</span><div class="shortcut-keys"><span class="key">^</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">H</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Accessibility menu</span><div class="shortcut-keys"><span class="key">^</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">A</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Input tools menu</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">K</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer">
+    <span class="footer-brand">Google Docs · macOS Shortcuts</span>
+    <span class="footer-hint">All menu shortcuts use ^ + ⌥ + first letter</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE 4 — SELECT TEXT + NAVIGATE + COMMENTS
+══════════════════════════════════════════════════════════ -->
+<div class="page content-page" style="padding-bottom:52px">
+  <div class="page-header">
+    <span class="page-header-title">Select Text · Navigate · Comments &amp; Footnotes</span>
+    <span class="page-num">04 / 05</span>
+  </div>
+  <div class="page-body">
+    <div class="two-col">
+
+      <!-- LEFT -->
+      <div>
+        <div class="section">
+          <div class="section-header">
+            <div class="section-icon" style="background:var(--green-bg)">▌</div>
+            <span class="section-title" style="color:var(--green-light)">Select Text — Keyboard</span>
+            <span class="section-count" style="background:var(--green-bg);color:var(--green-light)">11</span>
+          </div>
+          <div class="shortcut-grid cols-1">
+            <div class="shortcut-row"><span class="shortcut-label">Select all</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">A</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Select one char left</span><div class="shortcut-keys"><span class="key">⇧</span><span class="key-plus">+</span><span class="key">←</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Select one char right</span><div class="shortcut-keys"><span class="key">⇧</span><span class="key-plus">+</span><span class="key">→</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Select word left</span><div class="shortcut-keys"><span class="key">⌥</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">←</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Select word right</span><div class="shortcut-keys"><span class="key">⌥</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">→</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Select previous line</span><div class="shortcut-keys"><span class="key">⇧</span><span class="key-plus">+</span><span class="key">↑</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Select next line</span><div class="shortcut-keys"><span class="key">⇧</span><span class="key-plus">+</span><span class="key">↓</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Select to line start</span><div class="shortcut-keys"><span class="key">⇧</span><span class="key-plus">+</span><span class="key">Fn</span><span class="key-plus">+</span><span class="key">←</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Select to line end</span><div class="shortcut-keys"><span class="key">⇧</span><span class="key-plus">+</span><span class="key">Fn</span><span class="key-plus">+</span><span class="key">→</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Select to doc start</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">↑</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Select to doc end</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">↓</span></div></div>
+          </div>
+        </div>
+
+        <div class="section" style="margin-top:24px">
+          <div class="section-header">
+            <div class="section-icon" style="background:var(--emerald-bg)">↗</div>
+            <span class="section-title" style="color:var(--emerald-light)">Navigation &amp; Editing</span>
+            <span class="section-count" style="background:var(--emerald-bg);color:var(--emerald-light)">10</span>
+          </div>
+          <div class="shortcut-grid cols-1">
+            <div class="shortcut-row"><span class="shortcut-label">Move one word left</span><div class="shortcut-keys"><span class="key">⌥</span><span class="key-plus">+</span><span class="key">←</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Move one word right</span><div class="shortcut-keys"><span class="key">⌥</span><span class="key-plus">+</span><span class="key">→</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Move to line start</span><div class="shortcut-keys"><span class="key">Fn</span><span class="key-plus">+</span><span class="key">←</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Move to line end</span><div class="shortcut-keys"><span class="key">Fn</span><span class="key-plus">+</span><span class="key">→</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Move to doc start</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">↑</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Move to doc end</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">↓</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Scroll up (page up)</span><div class="shortcut-keys"><span class="key">Fn</span><span class="key-plus">+</span><span class="key">↑</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Scroll down (page down)</span><div class="shortcut-keys"><span class="key">Fn</span><span class="key-plus">+</span><span class="key">↓</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Delete word to left</span><div class="shortcut-keys"><span class="key">⌥</span><span class="key-plus">+</span><span class="key">⌫</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Delete word to right</span><div class="shortcut-keys"><span class="key">⌥</span><span class="key-plus">+</span><span class="key">Fn</span><span class="key-plus">+</span><span class="key">⌫</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div>
+        <div class="section">
+          <div class="section-header">
+            <div class="section-icon" style="background:var(--pink-bg)">💬</div>
+            <span class="section-title" style="color:var(--pink-light)">Comments &amp; Footnotes</span>
+            <span class="section-count" style="background:var(--pink-bg);color:var(--pink-light)">9</span>
+          </div>
+          <div class="shortcut-grid cols-1">
+            <div class="shortcut-row"><span class="shortcut-label">Add comment</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">M</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Access discussion thread</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">A</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Enter current comment</span><div class="shortcut-keys"><span class="key">^</span><span class="key-plus">+</span><span class="key">↵</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Resolve comment</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">E</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Add footnote</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">F</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Go to current footnote</span><div class="shortcut-keys"><span class="key">^⌘</span><span class="key-plus">hold</span><span class="key">E</span><span class="key-plus">then</span><span class="key">F</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Go to next footnote</span><div class="shortcut-keys"><span class="key">^⌘</span><span class="key-plus">hold</span><span class="key">N</span><span class="key-plus">then</span><span class="key">F</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Go to previous footnote</span><div class="shortcut-keys"><span class="key">^⌘</span><span class="key-plus">hold</span><span class="key">P</span><span class="key-plus">then</span><span class="key">F</span></div></div>
+          </div>
+        </div>
+
+        <!-- SELECT TEXT: MOUSE -->
+        <div class="section" style="margin-top:24px">
+          <div class="section-header">
+            <div class="section-icon" style="background:var(--orange-bg)">🖱</div>
+            <span class="section-title" style="color:var(--orange-light)">Select Text — Mouse</span>
+          </div>
+          <div class="mouse-grid">
+            <div class="mouse-card" style="background:var(--surface2);border-color:var(--border2)">
+              <span class="mouse-action">2×</span>
+              <span class="mouse-label">Select Word</span>
+              <span class="mouse-desc">Double-click any word to select it instantly</span>
+            </div>
+            <div class="mouse-card" style="background:var(--surface2);border-color:var(--border2)">
+              <span class="mouse-action">3×</span>
+              <span class="mouse-label">Select Paragraph</span>
+              <span class="mouse-desc">Triple-click to select the full paragraph</span>
+            </div>
+            <div class="mouse-card" style="background:var(--surface2);border-color:var(--border2)">
+              <span class="mouse-action">2×+</span>
+              <span class="mouse-label">Word-by-Word</span>
+              <span class="mouse-desc">Double-click then drag to extend word by word</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Select list items note -->
+        <div class="tip-box" style="margin-top:16px">
+          <span class="tip-icon">📋</span>
+          <span class="tip-text">
+            <strong>List item selection:</strong><br>
+            Select current list item: hold <span style="font-family:'JetBrains Mono',monospace;font-size:11px">^+⌘+⇧</span> then press <span style="font-family:'JetBrains Mono',monospace;font-size:11px">E</span> then <span style="font-family:'JetBrains Mono',monospace;font-size:11px">I</span><br>
+            Select all items at level: hold <span style="font-family:'JetBrains Mono',monospace;font-size:11px">^+⌘+⇧</span> then press <span style="font-family:'JetBrains Mono',monospace;font-size:11px">E</span> then <span style="font-family:'JetBrains Mono',monospace;font-size:11px">O</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer">
+    <span class="footer-brand">Google Docs · macOS Shortcuts</span>
+    <span class="footer-hint">⌥+← / ⌥+→ jumps whole words — massive speed boost</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     PAGE 5 — MEDIA + POWER USER TIPS
+══════════════════════════════════════════════════════════ -->
+<div class="page content-page" style="padding-bottom:52px">
+  <div class="page-header">
+    <span class="page-header-title">Media &amp; Images · Power User Tips</span>
+    <span class="page-num">05 / 05</span>
+  </div>
+  <div class="page-body">
+    <div class="two-col">
+
+      <!-- LEFT: MEDIA -->
+      <div>
+        <div class="section">
+          <div class="section-header">
+            <div class="section-icon" style="background:var(--orange-bg)">🖼</div>
+            <span class="section-title" style="color:var(--orange-light)">Media &amp; Images</span>
+            <span class="section-count" style="background:var(--orange-bg);color:var(--orange-light)">12</span>
+          </div>
+          <div class="shortcut-grid cols-1">
+            <div class="shortcut-row"><span class="shortcut-label">Add alt text to image</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">⌥</span><span class="key-plus">+</span><span class="key">Y</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Make media larger</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">^</span><span class="key-plus">+</span><span class="key">K</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Make media smaller</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">^</span><span class="key-plus">+</span><span class="key">J</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Make media wider</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">^</span><span class="key-plus">+</span><span class="key">B</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Make media narrower</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">^</span><span class="key-plus">+</span><span class="key">W</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Make media taller</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">^</span><span class="key-plus">+</span><span class="key">I</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Make media shorter</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">^</span><span class="key-plus">+</span><span class="key">Q</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Rotate 15° clockwise</span><div class="shortcut-keys"><span class="key">⌥</span><span class="key-plus">+</span><span class="key">→</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Rotate 15° counter-clockwise</span><div class="shortcut-keys"><span class="key">⌥</span><span class="key-plus">+</span><span class="key">←</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Rotate 1° clockwise</span><div class="shortcut-keys"><span class="key">⌥</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">→</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Rotate 1° counter-clockwise</span><div class="shortcut-keys"><span class="key">⌥</span><span class="key-plus">+</span><span class="key">⇧</span><span class="key-plus">+</span><span class="key">←</span></div></div>
+            <div class="shortcut-row"><span class="shortcut-label">Exit drawing editor</span><div class="shortcut-keys"><span class="key">⌘</span><span class="key-plus">+</span><span class="key">Esc</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: POWER TIPS -->
+      <div>
+        <div class="section">
+          <div class="section-header">
+            <div class="section-icon" style="background:var(--emerald-bg)">⚑</div>
+            <span class="section-title" style="color:var(--emerald-light)">Power User Combos</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+
+            <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px 16px">
+              <div style="font-size:12px;font-weight:600;color:var(--emerald-light);margin-bottom:6px;letter-spacing:0.04em">FORMAT PAINTER</div>
+              <div style="font-size:12px;color:var(--muted);line-height:1.7">Select source text → <span class="key" style="font-size:10px">⌘+⌥+C</span> → select target → <span class="key" style="font-size:10px">⌘+⌥+V</span><br>Clones all formatting in one move.</div>
+            </div>
+
+            <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px 16px">
+              <div style="font-size:12px;font-weight:600;color:var(--emerald-light);margin-bottom:6px;letter-spacing:0.04em">QUICK HEADING HIERARCHY</div>
+              <div style="font-size:12px;color:var(--muted);line-height:1.7"><span class="key" style="font-size:10px">⌘+⌥+1</span> → H1 &nbsp;·&nbsp; <span class="key" style="font-size:10px">⌘+⌥+2</span> → H2 &nbsp;·&nbsp; <span class="key" style="font-size:10px">⌘+⌥+0</span> → Normal<br>Structure a whole doc without touching the toolbar.</div>
+            </div>
+
+            <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px 16px">
+              <div style="font-size:12px;font-weight:600;color:var(--emerald-light);margin-bottom:6px;letter-spacing:0.04em">JUMP TO ANY MENU</div>
+              <div style="font-size:12px;color:var(--muted);line-height:1.7">Press <span class="key" style="font-size:10px">⌥+/</span> to open a menu search. Type anything — insert table, page numbers, image — and hit Enter.<br>Fastest way to find buried features.</div>
+            </div>
+
+            <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px 16px">
+              <div style="font-size:12px;font-weight:600;color:var(--emerald-light);margin-bottom:6px;letter-spacing:0.04em">WORD-BY-WORD MOVEMENT</div>
+              <div style="font-size:12px;color:var(--muted);line-height:1.7"><span class="key" style="font-size:10px">⌥+←/→</span> jumps word by word. Add <span class="key" style="font-size:10px">⇧</span> to select while jumping. Add <span class="key" style="font-size:10px">⌫</span> to delete the previous word instantly.</div>
+            </div>
+
+            <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px 16px">
+              <div style="font-size:12px;font-weight:600;color:var(--emerald-light);margin-bottom:6px;letter-spacing:0.04em">MOVE PARAGRAPHS FAST</div>
+              <div style="font-size:12px;color:var(--muted);line-height:1.7">Click inside any paragraph, then <span class="key" style="font-size:10px">^+⇧+↑/↓</span> to reorder it without cut-paste. Works with list items too.</div>
+            </div>
+
+            <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px 16px">
+              <div style="font-size:12px;font-weight:600;color:var(--emerald-light);margin-bottom:6px;letter-spacing:0.04em">VERSION HISTORY SHORTCUT</div>
+              <div style="font-size:12px;color:var(--muted);line-height:1.7">Press <span class="key" style="font-size:10px">⌘+⌥+⇧+H</span> to jump straight to version history. Useful for recovering deleted content or reviewing edits.</div>
+            </div>
+
+            <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px 16px">
+              <div style="font-size:12px;font-weight:600;color:var(--emerald-light);margin-bottom:6px;letter-spacing:0.04em">COMPACT MODE</div>
+              <div style="font-size:12px;color:var(--muted);line-height:1.7">Press <span class="key" style="font-size:10px">^+⇧+F</span> to hide all toolbars and get a distraction-free full-screen writing mode. Press again to exit.</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM: QUICK CHEATSHEET STRIP -->
+    <div style="margin-top:28px;background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:20px 24px">
+      <div style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:14px">Most-Used Shortcuts at a Glance</div>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px">
+        <div style="text-align:center;padding:10px 6px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--blue-light);margin-bottom:4px">⌘Z</div>
+          <div style="font-size:10px;color:var(--muted)">Undo</div>
+        </div>
+        <div style="text-align:center;padding:10px 6px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--blue-light);margin-bottom:4px">⌘F</div>
+          <div style="font-size:10px;color:var(--muted)">Find</div>
+        </div>
+        <div style="text-align:center;padding:10px 6px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--purple-light);margin-bottom:4px">⌘B</div>
+          <div style="font-size:10px;color:var(--muted)">Bold</div>
+        </div>
+        <div style="text-align:center;padding:10px 6px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--purple-light);margin-bottom:4px">⌘I</div>
+          <div style="font-size:10px;color:var(--muted)">Italic</div>
+        </div>
+        <div style="text-align:center;padding:10px 6px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--purple-light);margin-bottom:4px">⌘\</div>
+          <div style="font-size:10px;color:var(--muted)">Clear Format</div>
+        </div>
+        <div style="text-align:center;padding:10px 6px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--teal-light);margin-bottom:4px">⌘K</div>
+          <div style="font-size:10px;color:var(--muted)">Add Link</div>
+        </div>
+        <div style="text-align:center;padding:10px 6px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--green-light);margin-bottom:4px">⌘A</div>
+          <div style="font-size:10px;color:var(--muted)">Select All</div>
+        </div>
+        <div style="text-align:center;padding:10px 6px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--green-light);margin-bottom:4px">⌘⌥M</div>
+          <div style="font-size:10px;color:var(--muted)">Comment</div>
+        </div>
+        <div style="text-align:center;padding:10px 6px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--indigo-light);margin-bottom:4px">⌘⌥0</div>
+          <div style="font-size:10px;color:var(--muted)">Normal Text</div>
+        </div>
+        <div style="text-align:center;padding:10px 6px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--indigo-light);margin-bottom:4px">⌘⌥1</div>
+          <div style="font-size:10px;color:var(--muted)">Heading 1</div>
+        </div>
+        <div style="text-align:center;padding:10px 6px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--amber-light);margin-bottom:4px">⌥/</div>
+          <div style="font-size:10px;color:var(--muted)">Menu Search</div>
+        </div>
+        <div style="text-align:center;padding:10px 6px;background:var(--bg);border-radius:8px;border:1px solid var(--border)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--amber-light);margin-bottom:4px">⌘⇧C</div>
+          <div style="font-size:10px;color:var(--muted)">Word Count</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer">
+    <span class="footer-brand">Google Docs · macOS Shortcuts — Complete Reference</span>
+    <span class="footer-hint">Print: Cmd+P → Save as PDF for best results</span>
+  </div>
+</div>
+
+</body>
+</html>
