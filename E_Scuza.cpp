@@ -69,7 +69,8 @@ void solve(){
     }
     while(q--){
         ll val; cin>>val;
-        int idx = upper_bound(all(mx), val) - mx.begin() - 1;
+        int idx = upper_bound(all(mx), val) - mx.begin();
+        --idx;
         cout<<prfx[idx]<<" ";
     }
     cout<<nl;
