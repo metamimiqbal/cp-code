@@ -98,39 +98,42 @@ const int dy[] = {1, -1, 0, 0};
 // [ The Great Adventure ] 
 void solve() {
     ll n; cin>>n;
-    vector<vector<ll>>a(n+1, vector<ll>(n+1));
-
-    rep(i, 1, n+1) {
-        rep(j, 1, n+1) {
-            cin>>a[i][j];
+    string a, b; cin>>a>>b;
+    VEC sunno(n), ek(n);
+    rep(i, 0, n) {
+        if(i == 0) {
+            if(a[i] == '0') sunno[i] = 1;
+            else ek[i] = 1;
+        } else {
+            if(a[i] == '0') sunno[i] = sunno[i-1] + 1, ek[i] = ek[i-1];
+            else ek[i] = ek[i-1] + 1, sunno[i] = sunno[i-1];
         }
     }
+    // dbg("sunno");
+    // printv(sunno);
+    // dbg("ek");
+    // printv(ek);
 
-    ll ans = 0;
-    ll gameofthrones = n/2;
-    rep(i, 1, gameofthrones+1) {    
-        // dbg("ki hocce bara nice");
-        VEC p, q, r, s;
-        rep(j, i, (n-i+1)+1) p.pb(a[i][j]);
-        rep(j, i, (n-i+1)+1) q.pb(a[j][i]);
-        rep(j, i, (n-i+1)+1) r.pb(a[j][n-i+1]);
-        rep(j, i, (n-i+1)+1) s.pb(a[n-i+1][j]);
-
-        reverse(all(q));
-        reverse(all(s));
-        rep(k, 0, (ll)p.size()) { 
-            ll sunno = 0;
-            sunno += (p[k] == 0);
-            sunno += (q[k] == 0);
-            sunno += (r[k] == 0);
-            sunno += (s[k] == 0);
-
-            ans += min(sunno, 4 - sunno);
+    // algorithm: jkn a[i] != b[i] also ek[i] != sunno[i] -> print no;
+    ll flip = 0;
+    rrep(i, n-1, 0) {
+        if(flip & 1) {
+            if(a[i] == '0') a[i] = '1';
+            else a[i] = '0';
         }
-        // p.clear(), q.clear(), r.clear(), s.clear();
+
+        // dbg(flip);
+        if(sunno[i] == ek[i] && a[i] != b[i]) ++flip;
+        else if(a[i] != b[i]) {
+            // dbg(flip);
+            // dbg(i);
+            // dbg(a[i]), dbg(b[i]);
+            no; return;
+        }
     }
-    cout<<ans<<nl;
+    yes;
 }
+
 
 // [ Black Pearl ] 
 signed main() {

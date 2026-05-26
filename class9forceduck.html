@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Force — Class 9/10 (2026 NCTB-style)</title>
+  <style>
+    /* Basic layout */
+    :root{
+      --bg:#0f1724; --card:#0b1220; --accent:#06b6d4; --muted:#94a3b8; --text:#e6eef6;
+    }
+    html,body{height:100%}
+    body{
+      margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background:linear-gradient(180deg,#071025 0%, #07182a 50%, #081025 100%); color:var(--text);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    header{
+      padding:18px 24px; display:flex; gap:16px; align-items:center;
+      border-bottom:1px solid rgba(255,255,255,0.03);
+      position:sticky; top:0; backdrop-filter:blur(6px); z-index:10;
+    }
+    header h1{margin:0;font-size:1.05rem; letter-spacing:0.4px}
+    header nav{margin-left:auto; display:flex; gap:12px; align-items:center}
+    .btn{
+      background:linear-gradient(90deg,var(--accent),#7c3aed); color:#021018; padding:8px 12px; border-radius:8px;
+      font-weight:600; border:none; cursor:pointer;
+    }
+    .container{max-width:1100px;margin:26px auto;padding:0 20px; display:grid; grid-template-columns:320px 1fr; gap:22px;}
+    /* sidebar */
+    .sidebar{background:linear-gradient(180deg,#061024,#071428); border-radius:12px; padding:16px; border:1px solid rgba(255,255,255,0.03)}
+    .toc{list-style:none;padding:0;margin:0; display:flex; flex-direction:column; gap:8px}
+    .toc button{background:transparent;border:none;color:var(--muted);text-align:left;padding:8px;border-radius:8px;cursor:pointer}
+    .toc button.active{color:var(--text);background:rgba(255,255,255,0.02)}
+    .small{font-size:0.85rem;color:var(--muted)}
+    /* main card */
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:12px; padding:20px; border:1px solid rgba(255,255,255,0.03)}
+    h2{margin:4px 0 12px 0}
+    h3{margin:12px 0}
+    p{color:var(--muted); line-height:1.5}
+    /* key boxes */
+    .key{background:linear-gradient(90deg,#05202a,#032431); padding:12px;border-radius:10px; color:var(--text); margin:10px 0; border:1px solid rgba(255,255,255,0.03)}
+    /* interactive area */
+    .sim-row{display:flex; gap:16px; flex-wrap:wrap}
+    .sim{flex:1; min-width:260px; background:linear-gradient(180deg,#031521,#082036); padding:12px;border-radius:10px; border:1px solid rgba(255,255,255,0.03)}
+    canvas{background:linear-gradient(180deg,#07172b,#021017); border-radius:8px; width:100%; height:250px; display:block}
+    /* controls */
+    label{display:block;font-size:0.85rem;margin-top:8px;color:var(--muted)}
+    input[type=range]{width:100%}
+    input[type=number]{width:100%; padding:6px;border-radius:6px;border:1px solid rgba(255,255,255,0.06); background:transparent;color:var(--text)}
+    .row{display:flex; gap:8px}
+    .row > *{flex:1}
+    /* animated arrows & SVG */
+    .force-diagram{display:flex; gap:12px; align-items:center; justify-content:center; padding:12px}
+    .vector{stroke:var(--accent); stroke-width:3; stroke-linecap:round; fill:none; marker-end:url(#arrow)}
+    /* quiz */
+    .quiz-q{background:#021522;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03)}
+    .quiz-options{display:flex; flex-direction:column; gap:8px; margin-top:8px}
+    .opt{background:transparent;border:1px solid rgba(255,255,255,0.04); padding:8px;border-radius:8px;cursor:pointer;color:var(--muted)}
+    .opt.correct{background:linear-gradient(90deg,#063b2e,#0a6b4f); color:#dff5ea; border-color:rgba(0,0,0,0.2)}
+    .opt.wrong{background:linear-gradient(90deg,#4a1a1a,#6b1515); color:#ffdede}
+    /* notes/print */
+    @media print{body{background:#fff;color:#000} header, .sidebar{display:none} .container{grid-template-columns:1fr}}
+    /* CSS animations */
+    .pulse{animation:pulse 1.6s infinite}
+    @keyframes pulse{
+      0%{transform:scale(1); opacity:1}
+      50%{transform:scale(1.06); opacity:0.85}
+      100%{transform:scale(1); opacity:1}
+    }
+    .shake{animation:shake 0.6s}
+    @keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-4px)}100%{transform:translateX(0)}}
+    /* responsive */
+    @media (max-width:940px){.container{grid-template-columns:1fr} header{flex-wrap:wrap}}
+    footer{padding:18px 24px;color:var(--muted);text-align:center;font-size:0.88rem}
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Force — Class 9/10</h1>
+      <div class="small">Basic mechanics, vectors, Newton's laws, friction & applications</div>
+    </div>
+    <nav>
+      <button class="btn" id="printBtn">Print Notes</button>
+      <button class="btn" id="toggleTheme">Toggle Light</button>
+    </nav>
+  </header>
+
+  <div class="container">
+    <aside class="sidebar card" aria-label="Contents">
+      <h3 style="margin-top:0">Contents</h3>
+      <ul class="toc" id="toc">
+        <li><button data-target="intro" class="active">Introduction & Concept</button></li>
+        <li><button data-target="vectors">Vectors & Representation</button></li>
+        <li><button data-target="newton">Newton's Laws</button></li>
+        <li><button data-target="friction">Friction</button></li>
+        <li><button data-target="work-energy">Work, Energy & Power</button></li>
+        <li><button data-target="examples">Worked Examples</button></li>
+        <li><button data-target="quiz">Quiz</button></li>
+        <li><button data-target="notes">Printable Notes</button></li>
+      </ul>
+      <div style="margin-top:12px" class="small">
+        Estimated time: <strong>70–90 min</strong> interactive lesson
+      </div>
+      <div style="margin-top:14px" class="small">Animations use HTML5 canvas & SVG; accessible on modern browsers.</div>
+    </aside>
+
+    <main>
+      <section id="intro" class="card">
+        <h2>What is Force?</h2>
+        <p>Force is an interaction that can change the motion of an object — it can cause acceleration, deceleration, or deformation. In SI units force is measured in newtons (N): 1 N = 1 kg·m/s².</p>
+
+        <div class="key">
+          <strong>Key definition:</strong> Force is a vector quantity with magnitude and direction. Represented commonly as F. SI unit: newton (N).
+        </div>
+
+        <h3>Everyday examples</h3>
+        <ul>
+          <li>Push or pull on a door</li>
+          <li>Friction between shoes and ground</li>
+          <li>Gravitational pull of the Earth (weight)</li>
+        </ul>
+
+        <h3>Animated concept</h3>
+        <div class="sim-row">
+          <div class="sim">
+            <canvas id="pushCanvas" width="600" height="240" aria-label="Pushing box simulation"></canvas>
+            <label class="small">Force magnitude (N)</label>
+            <input id="pushForce" type="range" min="0" max="100" value="30">
+          </div>
+
+          <div class="sim">
+            <div style="display:flex;gap:8px;align-items:center;">
+              <div style="flex:1">
+                <label class="small">Mass (kg)</label>
+                <input id="mass" type="number" value="5" min="0.5" step="0.5">
+              </div>
+              <div style="flex:1">
+                <label class="small">Friction coeff μ</label>
+                <input id="mu" type="number" value="0.2" min="0" max="1" step="0.01">
+              </div>
+            </div>
+            <div class="small" style="margin-top:8px">Observe acceleration formula a = (F - f)/m where f = μ·N</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="vectors" class="card" style="margin-top:18px">
+        <h2>Vectors & Representation</h2>
+        <p>Force must be shown with magnitude and direction. We add forces vectorially using head-to-tail method or components (x,y).</p>
+
+        <div class="force-diagram">
+          <svg width="420" height="180" viewBox="0 0 420 180" role="img" aria-label="Vector addition diagram">
+            <defs>
+              <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                <path d="M0,0 L10,4 L0,8 z" fill="#06b6d4"></path>
+              </marker>
+            </defs>
+            <rect x="0" y="0" width="420" height="180" fill="transparent"></rect>
+            <!-- Vector A -->
+            <line id="vA" x1="50" y1="120" x2="170" y2="60" class="vector" />
+            <!-- Vector B (head-to-tail) -->
+            <line id="vB" x1="170" y1="60" x2="300" y2="80" class="vector" stroke="#7c3aed"/>
+            <!-- Resultant -->
+            <line id="vR" x1="50" y1="120" x2="300" y2="80" class="vector" stroke="#ffd166"/>
+            <text x="150" y="50" fill="#9fe9f5">A</text>
+            <text x="280" y="90" fill="#d9c9ff">B</text>
+            <text x="180" y="140" fill="#ffe1a3">Resultant R</text>
+          </svg>
+        </div>
+
+        <h3>Component method</h3>
+        <p>Resolve a force into perpendicular components. For a force F at angle θ: Fx = F cosθ, Fy = F sinθ.</p>
+
+        <div class="key">
+          Example: If F = 20 N at 30°, Fx = 20 cos30° ≈ 17.32 N, Fy ≈ 10 N.
+        </div>
+
+        <h3>Interactive vector addition</h3>
+        <div class="sim-row">
+          <div class="sim">
+            <canvas id="vecCanvas" width="600" height="260"></canvas>
+            <label class="small">A magnitude</label>
+            <input id="Amag" type="range" min="0" max="50" value="20">
+            <label class="small">A angle (deg)</label>
+            <input id="Aang" type="range" min="-180" max="180" value="30">
+            <label class="small">B magnitude</label>
+            <input id="Bmag" type="range" min="0" max="50" value="25">
+            <label class="small">B angle (deg)</label>
+            <input id="Bang" type="range" min="-180" max="180" value="10">
+          </div>
+
+          <div class="sim">
+            <div class="small">Resultant magnitude and direction</div>
+            <div style="font-size:1.3rem;margin-top:10px" id="resVec">R = 32.0 N, θ = 18°</div>
+            <div style="margin-top:14px" class="small">Component breakdown</div>
+            <div style="margin-top:8px">
+              <div>Rx = <span id="Rx">0</span> N</div>
+              <div>Ry = <span id="Ry">0</span> N</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="newton" class="card" style="margin-top:18px">
+        <h2>Newton's Laws of Motion</h2>
+        <ol>
+          <li><strong>First law (Inertia):</strong> A body remains at rest or in uniform motion unless acted upon by a net external force.</li>
+          <li><strong>Second law:</strong> Net force = mass × acceleration (ΣF = m a).</li>
+          <li><strong>Third law:</strong> For every action there is an equal and opposite reaction.</li>
+        </ol>
+
+        <div class="key">
+          Use ΣF = m a in component form: ΣFx = m ax, ΣFy = m ay.
+        </div>
+
+        <h3>Simulation: Newton's second law</h3>
+        <div class="sim-row">
+          <div class="sim">
+            <canvas id="newtonCanvas" width="600" height="240"></canvas>
+            <label class="small">Applied force F (N)</label>
+            <input id="Fapp" type="range" min="0" max="200" value="50">
+            <label class="small">Mass m (kg)</label>
+            <input id="m2" type="range" min="0.5" max="50" step="0.5" value="10">
+          </div>
+          <div class="sim">
+            <div class="small">Outputs</div>
+            <div style="font-size:1.2rem;margin-top:8px">Acceleration: <span id="accOut">0</span> m/s²</div>
+            <div style="margin-top:8px" class="small">Velocity and position update in simulation (real-time)</div>
+            <button class="btn" id="resetNewt">Reset</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="friction" class="card" style="margin-top:18px">
+        <h2>Friction</h2>
+        <p>Friction is a resistive force that opposes motion (or attempted motion). Two main types: static friction (fs ≤ μs N) and kinetic friction (fk = μk N).</p>
+        <div class="key">
+          Typical relation: fk = μk N. Static friction adjusts up to a maximum μs N.
+        </div>
+
+        <h3>Interactive: Block on incline</h3>
+        <div class="sim-row">
+          <div class="sim">
+            <canvas id="inclineCanvas" width="560" height="260"></canvas>
+            <label class="small">Incline angle (°)</label>
+            <input id="inclineAng" type="range" min="0" max="60" value="25">
+            <label class="small">μk</label>
+            <input id="mu_k" type="range" min="0" max="1" step="0.01" value="0.18">
+            <label class="small">Mass (kg)</label>
+            <input id="mass_incline" type="number" value="4" step="0.1">
+          </div>
+
+          <div class="sim">
+            <div class="small">Computed forces</div>
+            <div style="margin-top:8px">Parallel component: <span id="Fpar">0</span> N</div>
+            <div>Normal: <span id="Fnorm">0</span> N</div>
+            <div>Friction: <span id="Ffric">0</span> N</div>
+            <div style="margin-top:8px">Will block slide? <strong id="willSlide">?</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="work-energy" class="card" style="margin-top:18px">
+        <h2>Work, Energy & Power</h2>
+        <p>Work done by a constant force F along displacement s: W = F·s·cosθ. Kinetic energy KE = 1/2 m v². Work–energy theorem: Net work = ΔKE. Power P = W/t = F·v.</p>
+
+        <div class="key">Remember: Work is scalar. Positive when force has component along displacement.</div>
+
+        <h3>Interactive: Push and KE</h3>
+        <div class="sim-row">
+          <div class="sim">
+            <label class="small">Force (N)</label>
+            <input id="workF" type="range" min="0" max="120" value="40">
+            <label class="small">Mass (kg)</label>
+            <input id="workM" type="number" min="0.5" step="0.5" value="6">
+            <label class="small">Displacement (m)</label>
+            <input id="workS" type="number" min="0" step="0.5" value="8">
+            <div style="margin-top:10px" class="small">Computed work and final speed (no friction)</div>
+            <div style="margin-top:8px">Work W = <span id="workOut">0</span> J</div>
+            <div>Final speed v = <span id="vOut">0</span> m/s</div>
+          </div>
+
+          <div class="sim">
+            <canvas id="workCanvas" width="360" height="220"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section id="examples" class="card" style="margin-top:18px">
+        <h2>Worked Examples (step-by-step)</h2>
+
+        <h3>Example 1 — Box on floor</h3>
+        <div class="small">A 10 kg box is pushed with horizontal force 40 N. Friction coefficient μk = 0.2. Find acceleration.</div>
+        <div class="key" style="margin-top:8px">
+          1) Normal N = mg = 10×9.8 = 98 N<br>
+          2) Friction fk = μk N = 0.2×98 = 19.6 N<br>
+          3) Net horizontal force = 40 − 19.6 = 20.4 N<br>
+          4) Acceleration = Fnet/m = 20.4/10 = 2.04 m/s²
+        </div>
+
+        <h3>Example 2 — Inclined plane</h3>
+        <div class="small">Find minimum μs to keep a 5 kg block at rest on a 30° incline.</div>
+        <div class="key" style="margin-top:8px">
+          Component down slope = mg sin30 = 5×9.8×0.5 = 24.5 N.<br>
+          Normal = mg cos30 = 5×9.8×0.866 = 42.4 N.<br>
+          μs(min) = (mg sinθ)/N = tanθ = tan30 = 0.577 → μs ≥ 0.577.
+        </div>
+      </section>
+
+      <section id="quiz" class="card" style="margin-top:18px">
+        <h2>Quick Quiz</h2>
+        <div id="quizArea">
+          <!-- quiz populated by JS -->
+        </div>
+        <div style="margin-top:12px">
+          <button class="btn" id="nextQ">Next Question</button>
+          <button class="btn" id="showScore">Show Score</button>
+          <div style="margin-top:8px" class="small">Progress: <span id="qProgress">0/0</span></div>
+        </div>
+      </section>
+
+      <section id="notes" class="card" style="margin-top:18px">
+        <h2>Printable Summary Notes</h2>
+        <div class="small">
+          Save or print for revision. (Click Print Notes in header).
+        </div>
+        <div style="margin-top:10px">
+          <strong>Definitions:</strong>
+          <ul>
+            <li>Force: interaction that changes motion; vector; unit N.</li>
+            <li>Weight: gravitational force W = mg.</li>
+            <li>Friction: fk = μk N; fs ≤ μs N.</li>
+            <li>Newton's 2nd law: ΣF = m a.</li>
+            <li>Work: W = F s cosθ; KE = 1/2 m v².</li>
+          </ul>
+        </div>
+        <div style="margin-top:8px">
+          <strong>Formulas at a glance</strong>
+          <table style="width:100%;border-collapse:collapse;margin-top:8px">
+            <tr><td style="border:1px solid rgba(255,255,255,0.04);padding:8px">Resultant</td><td style="border:1px solid rgba(255,255,255,0.04);padding:8px">R = √(ΣFx² + ΣFy²)</td></tr>
+            <tr><td style="border:1px solid rgba(255,255,255,0.04);padding:8px">Acceleration</td><td style="border:1px solid rgba(255,255,255,0.04);padding:8px">a = ΣF / m</td></tr>
+            <tr><td style="border:1px solid rgba(255,255,255,0.04);padding:8px">Work</td><td style="border:1px solid rgba(255,255,255,0.04);padding:8px">W = F s cosθ</td></tr>
+            <tr><td style="border:1px solid rgba(255,255,255,0.04);padding:8px">Power</td><td style="border:1px solid rgba(255,255,255,0.04);padding:8px">P = W / t = F v</td></tr>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    Chapter: Force — Summary interactive lesson & printable notes • Date: May 26, 2026
+  </footer>
+
+  <script>
+    // Utility
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => document.querySelectorAll(sel);
+
+    // TOC navigation
+    document.querySelectorAll('#toc button').forEach(btn=>{
+      btn.addEventListener('click', ()=> {
+        document.querySelectorAll('#toc button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        const target = document.getElementById(btn.dataset.target);
+        target.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+    });
+
+    // Print notes
+    document.getElementById('printBtn').addEventListener('click', ()=> window.print());
+
+    // Theme toggle (simple)
+    const toggle = document.getElementById('toggleTheme');
+    let light=false;
+    toggle.addEventListener('click', ()=>{
+      light = !light;
+      if(light){
+        document.documentElement.style.setProperty('--bg','#f6f9fb');
+        document.documentElement.style.setProperty('--card','#ffffff');
+        document.documentElement.style.setProperty('--accent','#0ea5a4');
+        document.documentElement.style.setProperty('--muted','#475569');
+        document.documentElement.style.setProperty('--text','#071021');
+      } else {
+        document.documentElement.style.setProperty('--bg','#0f1724');
+        document.documentElement.style.setProperty('--card','#0b1220');
+        document.documentElement.style.setProperty('--accent','#06b6d4');
+        document.documentElement.style.setProperty('--muted','#94a3b8');
+        document.documentElement.style.setProperty('--text','#e6eef6');
+      }
+    });
+
+    /* ========== Intro: Push box sim ========== */
+    (function(){
+      const canvas = document.getElementById('pushCanvas'); const ctx = canvas.getContext('2d');
+      let force = +$('#pushForce').value;
+      let m = +$('#mass').value;
+      let mu = +$('#mu').value;
+      let x = 40, v=0;
+      function draw(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        // ground
+        ctx.fillStyle='#06202b'; ctx.fillRect(0,200,canvas.width,40);
+        // box
+        ctx.fillStyle='#0ea5a4'; ctx.fillRect(x,160,80,40);
+        // arrow showing force
+        if(force>0){
+          ctx.strokeStyle='#06b6d4'; ctx.lineWidth=6; ctx.beginPath();
+          ctx.moveTo(x+40,140); ctx.lineTo(x+40+Math.min(force*1.2,220),140); ctx.stroke();
+          // arrowhead
+          ctx.fillStyle='#06b6d4'; ctx.beginPath();
+          ctx.moveTo(x+40+Math.min(force*1.2,220),140); ctx.lineTo(x+34+Math.min(force*1.2,220),134);
+          ctx.lineTo(x+34+Math.min(force*1.2,220),146); ctx.closePath(); ctx.fill();
+        }
+        // Text
+        ctx.fillStyle='#cfeff3'; ctx.font='14px sans-serif';
+        ctx.fillText('Force = '+force.toFixed(1)+' N', 10, 20);
+        ctx.fillText('Mass = '+m+' kg, μ = '+mu, 10, 40);
+        // friction and net force display
+        const N = m*9.8;
+        const f = mu*N;
+        const a = Math.max((force - f)/m, 0);
+        ctx.fillText('Friction ≈ '+f.toFixed(1)+' N',10,60);
+        ctx.fillText('Acceleration ≈ '+a.toFixed(2)+' m/s²',10,80);
+      }
+      function step(){
+        // simple physics
+        const N = m*9.8; const f = mu*N;
+        const a = Math.max((force - f)/m, 0);
+        v += a*0.04;
+        x += v*0.04;
+        if(x>canvas.width-120){ x = 40; v=0; }
+        draw();
+        requestAnimationFrame(step);
+      }
+      $('#pushForce').addEventListener('input', e=> force=+e.target.value);
+      $('#mass').addEventListener('change', e=> m=+e.target.value);
+      $('#mu').addEventListener('change', e=> mu=+e.target.value);
+      draw(); step();
+    })();
+
+    /* ========== Vector addition sim ========== */
+    (function(){
+      const cnv = document.getElementById('vecCanvas'); const ctx = cnv.getContext('2d');
+      const Amag = $('#Amag'), Aang = $('#Aang'), Bmag = $('#Bmag'), Bang = $('#Bang');
+      const RxEl = $('#Rx'), RyEl = $('#Ry'), resEl = $('#resVec');
+      function draw(){
+        ctx.clearRect(0,0,cnv.width,cnv.height);
+        ctx.translate(0.5,0.5); // crisp lines
+        const ox = 80, oy = 180;
+        const a = +Amag.value, Adeg = +Aang.value * Math.PI/180;
+        const b = +Bmag.value, Bdeg = +Bang.value * Math.PI/180;
+        const ax = a*Math.cos(Adeg), ay = -a*Math.sin(Adeg);
+        const bx = b*Math.cos(Bdeg), by = -b*Math.sin(Bdeg);
+        const rx = ax+bx, ry = ay+by;
+        const R = Math.sqrt(rx*rx + ry*ry);
+        const theta = Math.atan2(-ry, rx) * 180/Math.PI; // to degrees
+        // axes
+        ctx.strokeStyle='rgba(255,255,255,0.04)'; ctx.beginPath();
+        ctx.moveTo(0,oy); ctx.lineTo(cnv.width,oy); ctx.moveTo(ox,0); ctx.lineTo(ox,cnv.height); ctx.stroke();
+        // draw A
+        ctx.strokeStyle='#06b6d4'; ctx.lineWidth=3; ctx.beginPath();
+        ctx.moveTo(ox,oy); ctx.lineTo(ox+ax*6, oy+ay*6); ctx.stroke();
+        // head
+        drawArrowHead(ctx, ox+ax*6, oy+ay*6, Math.atan2(ay, ax));
+        // draw B from head of A
+        ctx.strokeStyle='#7c3aed'; ctx.beginPath();
+        ctx.moveTo(ox+ax*6, oy+ay*6); ctx.lineTo(ox+ax*6+bx*6, oy+ay*6+by*6); ctx.stroke();
+        drawArrowHead(ctx, ox+ax*6+bx*6, oy+ay*6+by*6, Math.atan2(by, bx));
+        // resultant from origin
+        ctx.strokeStyle='#ffd166'; ctx.beginPath(); ctx.moveTo(ox,oy); ctx.lineTo(ox+rx*6, oy+ry*6); ctx.stroke();
+        drawArrowHead(ctx, ox+rx*6, oy+ry*6, Math.atan2(ry, rx));
+        // numbers
+        RxEl.textContent = rx.toFixed(2);
+        RyEl.textContent = (-ry).toFixed(2);
+        resEl.textContent = 'R = '+R.toFixed(2)+' N, θ = '+theta.toFixed(1)+'°';
+        ctx.setTransform(1,0,0,1,0,0);
+      }
+      function drawArrowHead(ctx,x,y,ang){
+        ctx.save(); ctx.translate(x,y); ctx.rotate(ang);
+        ctx.fillStyle='#fff'; ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-8,-5); ctx.lineTo(-8,5); ctx.closePath(); ctx.fill();
+        ctx.restore();
+      }
+      [Amag,Aang,Bmag,Bang].forEach(el=>el.addEventListener('input', draw));
+      draw();
+    })();
+
+    /* ========== Newton sim ========== */
+    (function(){
+      const canvas = $('#newtonCanvas'); const ctx = canvas.getContext('2d');
+      const Fapp = $('#Fapp'), m2 = $('#m2');
+      const accOut = $('#accOut'), reset = $('#resetNewt');
+      let x=40, v=0;
+      let paused=false;
+      function draw(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        // ground
+        ctx.fillStyle='#04161d'; ctx.fillRect(0,190,canvas.width,50);
+        // cart
+        ctx.fillStyle='#7c3aed'; ctx.fillRect(x,150,80,40);
+        // force arrow
+        const F = +Fapp.value;
+        ctx.strokeStyle='#06b6d4'; ctx.lineWidth=6; ctx.beginPath();
+        ctx.moveTo(x+40,140); ctx.lineTo(x+40+Math.min(F*1.6,300),140); ctx.stroke();
+        // text
+        ctx.fillStyle='#cfeff3'; ctx.font='14px sans-serif';
+        ctx.fillText('F = '+F+' N, m = '+(+m2.value)+' kg',10,20);
+      }
+      function step(){
+        if(!paused){
+          const F = +Fapp.value; const m = +m2.value;
+          const a = F / m;
+          v += a*0.02;
+          x += v*0.02;
+          if(x>canvas.width-120){ x=40; v=0; }
+          accOut.textContent = a.toFixed(2);
+          draw();
+        }
+        requestAnimationFrame(step);
+      }
+      reset.addEventListener('click', ()=>{ x=40; v=0; m2.value=10; Fapp.value=50; });
+      step();
+    })();
+
+    /* ========== Incline & Friction sim ========== */
+    (function(){
+      const canvas = $('#inclineCanvas'); const ctx = canvas.getContext('2d');
+      const angle = $('#inclineAng'), mu_k = $('#mu_k'), mass_incline = $('#mass_incline');
+      const Fpar = $('#Fpar'), Fnorm = $('#Fnorm'), Ffric = $('#Ffric'), willSlide = $('#willSlide');
+      function draw(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        const angDeg = +angle.value; const ang = angDeg*Math.PI/180;
+        // draw incline
+        ctx.fillStyle='#022b3a';
+        ctx.beginPath();
+        ctx.moveTo(40,200);
+        ctx.lineTo(40+300*Math.cos(ang),200-300*Math.sin(ang));
+        ctx.lineWidth=6; ctx.strokeStyle='#084b61'; ctx.stroke();
+        // block position
+        const bx = 40+80*Math.cos(ang), by = 200-80*Math.sin(ang);
+        ctx.fillStyle='#ffd166'; ctx.fillRect(bx-18, by-18,36,36);
+        // forces (gravity down)
+        const m = +mass_incline.value;
+        const g = 9.8;
+        const F_parallel = m*g*Math.sin(ang);
+        const F_normal = m*g*Math.cos(ang);
+        const F_fric = +mu_k.value * F_normal;
+        Fpar.textContent = F_parallel.toFixed(2);
+        Fnorm.textContent = F_normal.toFixed(2);
+        Ffric.textContent = F_fric.toFixed(2);
+        willSlide.textContent = (F_parallel > F_fric) ? 'Yes' : 'No';
+        // draw vectors (parallel, normal)
+        // parallel arrow
+        ctx.strokeStyle='#06b6d4'; ctx.lineWidth=3;
+        ctx.beginPath(); ctx.moveTo(bx,by); ctx.lineTo(bx + 40*Math.cos(ang), by + 40*Math.sin(ang)); ctx.stroke();
+        // normal arrow (perp)
+        ctx.strokeStyle='#7c3aed'; ctx.beginPath(); ctx.moveTo(bx,by); ctx.lineTo(bx - 30*Math.sin(ang), by + 30*Math.cos(ang)); ctx.stroke();
+        // labels
+        ctx.fillStyle='#dff5ea'; ctx.font='13px sans-serif';
+        ctx.fillText('mg', bx+8, by+8);
+      }
+      [angle, mu_k, mass_incline].forEach(el=>el.addEventListener('input', draw));
+      draw();
+    })();
+
+    /* ========== Work & KE sim ========== */
+    (function(){
+      const workF = $('#workF'), workM = $('#workM'), workS = $('#workS');
+      const workOut = $('#workOut'), vOut = $('#vOut');
+      function compute(){
+        const F = +workF.value, m = +workM.value, s = +workS.value;
+        const W = F*s;
+        const v = Math.sqrt(Math.max(0, 2*W/m));
+        workOut.textContent = W.toFixed(1);
+        vOut.textContent = v.toFixed(2);
+      }
+      [workF, workM, workS].forEach(el=>el.addEventListener('input', compute));
+      compute();
+      // small canvas animation
+      const c = $('#workCanvas'), ctx = c.getContext('2d');
+      let pos = 10, speed = 0;
+      function step(){
+        ctx.clearRect(0,0,c.width,c.height);
+        ctx.fillStyle='#021522'; ctx.fillRect(0,0,c.width,c.height);
+        ctx.fillStyle='#ffd166'; ctx.fillRect(10+pos,160,40,30);
+        // update pos proportional to force
+        const F = +workF.value; speed = 0.02*F; pos += speed;
+        if(pos>c.width-120) pos=10;
+        requestAnimationFrame(step);
+      }
+      step();
+    })();
+
+    /* ========== Quiz logic ========== */
+    (function(){
+      const quizData = [
+        {q:'What is the SI unit of force?', a:['N (newton)','J (joule)','kg (kilogram)','W (watt)'], correct:0},
+        {q:'If net force on an object is zero, its acceleration is:', a:['Zero','Constant non-zero','Increasing','Decreasing'], correct:0},
+        {q:'Formula: kinetic friction fk equals:', a:['μk N','μs N','mg sinθ','1/2 m v²'], correct:0},
+        {q:'Newton\'s third law pairs:', a:['Action and reaction','Force and mass','Velocity and acceleration','Work and energy'], correct:0},
+        {q:'Work done is maximum when force is at what angle to displacement?', a:['0°','90°','180°','45°'], correct:0}
+      ];
+      let idx = 0, score = 0, answered=false;
+      const qa = $('#quizArea'), prog = $('#qProgress'), next = $('#nextQ'), show = $('#showScore');
+      function render(){
+        const item = quizData[idx];
+        prog.textContent = (idx+1)+'/'+quizData.length;
+        qa.innerHTML = '';
+        const qDiv = document.createElement('div'); qDiv.className='quiz-q';
+        qDiv.innerHTML = '<strong>Q'+(idx+1)+'.</strong> '+item.q;
+        const opts = document.createElement('div'); opts.className='quiz-options';
+        item.a.forEach((opt, i)=>{
+          const b = document.createElement('button'); b.className='opt'; b.textContent = opt;
+          b.addEventListener('click', ()=>{
+            if(answered) return;
+            answered=true;
+            if(i===item.correct){ b.classList.add('correct'); score++; }
+            else { b.classList.add('wrong'); // reveal correct
+              opts.querySelectorAll('.opt')[item.correct].classList.add('correct');
+            }
+          });
+          opts.appendChild(b);
+        });
+        qDiv.appendChild(opts); qa.appendChild(qDiv);
+      }
+      next.addEventListener('click', ()=>{
+        idx = (idx+1)%quizData.length; answered=false; render();
+      });
+      show.addEventListener('click', ()=> alert('Score: '+score+' / '+quizData.length));
+      render();
+      // return quiz state for related search invocation later
+      window._quizState = {quizData};
+    })();
+
+    /* ========== Accessibility small enhancements ========== */
+    document.querySelectorAll('input[type=range]').forEach(r=>{
+      r.addEventListener('keydown', e=>{
+        if(e.key==='ArrowLeft' || e.key==='ArrowDown') r.value = Math.max(+r.min, +r.value- (r.step? +r.step:1));
+        if(e.key==='ArrowRight' || e.key==='ArrowUp') r.value = Math.min(+r.max, +r.value+ (r.step? +r.step:1));
+        r.dispatchEvent(new Event('input'));
+      });
+    });
+
+    // End of script
+  </script>
+</body>
+</html>

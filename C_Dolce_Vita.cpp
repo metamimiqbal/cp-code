@@ -97,37 +97,27 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ The Great Adventure ] 
 void solve() {
-    ll n; cin>>n;
-    vector<vector<ll>>a(n+1, vector<ll>(n+1));
+    ll n, x; cin>>n>>x;
+    VEC v(n+1);
+    rep(i, 1, n+1) cin>>v[i];
 
-    rep(i, 1, n+1) {
-        rep(j, 1, n+1) {
-            cin>>a[i][j];
-        }
-    }
+    sort(all(v));
 
+    ll pfx = 0;
     ll ans = 0;
-    ll gameofthrones = n/2;
-    rep(i, 1, gameofthrones+1) {    
-        // dbg("ki hocce bara nice");
-        VEC p, q, r, s;
-        rep(j, i, (n-i+1)+1) p.pb(a[i][j]);
-        rep(j, i, (n-i+1)+1) q.pb(a[j][i]);
-        rep(j, i, (n-i+1)+1) r.pb(a[j][n-i+1]);
-        rep(j, i, (n-i+1)+1) s.pb(a[n-i+1][j]);
-
-        reverse(all(q));
-        reverse(all(s));
-        rep(k, 0, (ll)p.size()) { 
-            ll sunno = 0;
-            sunno += (p[k] == 0);
-            sunno += (q[k] == 0);
-            sunno += (r[k] == 0);
-            sunno += (s[k] == 0);
-
-            ans += min(sunno, 4 - sunno);
+    rep(i, 1, n+1) {
+        ll val = v[i];
+        v[i] += pfx;
+        pfx += val;
+        // dbg(pfx);
+        // dbg(v[i]);
+        if(v[i] <= x) {
+            ++ans;
+            ll valu = (x - v[i])/i;
+            ans += valu;
+            // cout<<"narena "<<x<<spc<<v[i]<<spc<<i<<nl;
+            // dbg(valu);
         }
-        // p.clear(), q.clear(), r.clear(), s.clear();
     }
     cout<<ans<<nl;
 }
