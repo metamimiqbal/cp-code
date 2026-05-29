@@ -97,22 +97,25 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ The Great Adventure ] 
 void solve() {
-    ll n; cin>>n;
-    vector<vector<ll>>a(n+1, vector<ll>(n+1));
+    ll n; char c; string s; cin>>n>>c>>s;
+    VEC v;
+    string cc = "";
+    rep(i, 0, n) cc += c;
+    if(s == cc) {
+        cout<<0<<nl; return;
+    }
+
 
     rep(i, 1, n+1) {
-        rep(j, 1, n+1) {
-            char c; cin>>c;
-            a[i][j] = c-'0';
+        bool ok = true;
+        for(int j = i; j<=n; j+=i) {
+            ok &= (s[j-1] == c);
+        }
+        if(ok) {
+            cout<<1<<nl<<i<<nl; return;
         }
     }
-
-    ll ans = 0;
-    ll gameofthrones = n/2;
-    rep(i, 1, gameofthrones+1) {    
-               
-    }
-    cout<<ans<<nl;
+    cout<<2<<nl<<n-1<<spc<<n<<nl;
 }
 
 // [ Black Pearl ] 

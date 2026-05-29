@@ -98,20 +98,17 @@ const int dy[] = {1, -1, 0, 0};
 // [ The Great Adventure ] 
 void solve() {
     ll n; cin>>n;
-    vector<vector<ll>>a(n+1, vector<ll>(n+1));
+    VEC b(n), a(n), net(n);
+    rep(i, 0, n) cin>>b[i];
+    rep(i, 0, n) cin>>a[i];
 
-    rep(i, 1, n+1) {
-        rep(j, 1, n+1) {
-            char c; cin>>c;
-            a[i][j] = c-'0';
-        }
-    }
-
+    rep(i, 0, n) net[i] = a[i]-b[i];
+    sort(all(net));
     ll ans = 0;
-    ll gameofthrones = n/2;
-    rep(i, 1, gameofthrones+1) {    
-               
-    }
+    for(int l = 0, r = n-1; l<r; ) {
+        if(net[l] + net[r] >= 0) ++ans, ++l, --r;
+        else ++l;
+    }   
     cout<<ans<<nl;
 }
 

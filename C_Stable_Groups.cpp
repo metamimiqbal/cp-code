@@ -97,29 +97,39 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ The Great Adventure ] 
 void solve() {
-    ll n; cin>>n;
-    vector<vector<ll>>a(n+1, vector<ll>(n+1));
+    ll n, k, x; cin>>n>>k>>x;
+    VEC v(n);
+    rep(i, 0, n) {
+        cin>>v[i];
+    }
+    sort(all(v));
 
-    rep(i, 1, n+1) {
-        rep(j, 1, n+1) {
-            char c; cin>>c;
-            a[i][j] = c-'0';
+    VEC df;
+    ll initials = 1;
+    rep(i, 1, n) {
+        ll dif = v[i] - v[i-1];
+        if(dif > x) {
+            ++initials;
+            ll kk = (dif + x - 1)/x - 1;
+            if(kk > 0) df.pb(kk);
         }
     }
+    sort(all(df));
 
-    ll ans = 0;
-    ll gameofthrones = n/2;
-    rep(i, 1, gameofthrones+1) {    
-               
+    ll merged = 0;
+    rep(i, 0, (ll)df.size()) {
+        if(df[i] <= k) k-=df[i], ++merged;
+        else break;
     }
-    cout<<ans<<nl;
+    // dbg(initials), dbg(merged);
+    cout<<initials - merged<<nl;
 }
 
 // [ Black Pearl ] 
 signed main() {
     Think_Like_Jack_Sparrow
 
-    int t; cin >> t; while(t--)
+    // int t; cin >> t; while(t--)
     solve();
 
     return 0;

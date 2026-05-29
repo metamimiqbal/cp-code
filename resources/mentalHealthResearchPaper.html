@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Modern Mind in Crisis — A Maester's Codex</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9933a;
+    --gold-light: #e8b96a;
+    --gold-pale: #f5dfa0;
+    --crimson: #8b1a1a;
+    --crimson-deep: #5c0e0e;
+    --parchment: #f2e8d0;
+    --parchment-dark: #e0cfa8;
+    --ink: #1a1008;
+    --ink-mid: #2e1f0e;
+    --steel: #3a4a5c;
+    --ice: #a8c4d8;
+    --fire: #c04a10;
+    --shadow: rgba(10,5,0,0.7);
+    --night: #0d0a05;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--night);
+    color: var(--parchment);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* ─── FIRE PARTICLES ─── */
+  #ember-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.35;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 20px 60px;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 50% 80%, rgba(139,26,26,0.45) 0%, transparent 65%),
+      radial-gradient(ellipse at 50% 0%, rgba(201,147,58,0.12) 0%, transparent 60%),
+      linear-gradient(180deg, #0d0a05 0%, #1a0e06 60%, #0d0a05 100%);
+    border-bottom: 2px solid var(--gold);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(201,147,58,0.03) 0px, transparent 1px, transparent 60px, rgba(201,147,58,0.03) 61px),
+      repeating-linear-gradient(0deg, rgba(201,147,58,0.03) 0px, transparent 1px, transparent 60px, rgba(201,147,58,0.03) 61px);
+  }
+
+  .sigil {
+    font-size: 5rem;
+    margin-bottom: 16px;
+    animation: sigil-glow 3s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 18px var(--gold));
+  }
+
+  @keyframes sigil-glow {
+    from { filter: drop-shadow(0 0 10px rgba(201,147,58,0.5)); transform: scale(1); }
+    to   { filter: drop-shadow(0 0 30px rgba(201,147,58,0.9)); transform: scale(1.05); }
+  }
+
+  .hero-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    opacity: 0.85;
+  }
+
+  .hero-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(2.2rem, 6vw, 4.8rem);
+    font-weight: 900;
+    color: var(--gold-light);
+    text-shadow: 0 0 60px rgba(201,147,58,0.4), 0 4px 8px rgba(0,0,0,0.8);
+    line-height: 1.1;
+    max-width: 900px;
+    margin-bottom: 12px;
+  }
+
+  .hero-subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: var(--parchment-dark);
+    font-weight: 400;
+    max-width: 620px;
+    margin-bottom: 30px;
+    opacity: 0.9;
+    font-style: italic;
+  }
+
+  .hero-divider {
+    width: 220px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 28px;
+  }
+
+  .hero-meta {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    color: var(--gold-pale);
+    font-size: 1.05rem;
+    max-width: 600px;
+    opacity: 0.8;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    animation: bob 2s ease-in-out infinite;
+  }
+  .scroll-hint span { font-size: 1.4rem; }
+  @keyframes bob {
+    0%,100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,10,5,0.96);
+    border-bottom: 1px solid rgba(201,147,58,0.3);
+    backdrop-filter: blur(10px);
+    padding: 0 24px;
+  }
+
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-inner::-webkit-scrollbar { display: none; }
+
+  nav a {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-pale);
+    text-decoration: none;
+    padding: 16px 14px;
+    white-space: nowrap;
+    transition: color 0.2s, border-bottom 0.2s;
+    border-bottom: 2px solid transparent;
+    opacity: 0.7;
+  }
+  nav a:hover {
+    color: var(--gold-light);
+    opacity: 1;
+    border-bottom-color: var(--gold);
+  }
+
+  /* ─── MAIN LAYOUT ─── */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ─── CHAPTER SECTION ─── */
+  .chapter {
+    margin: 70px 0;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .chapter.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .chapter-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px;
+    align-items: start;
+    margin-bottom: 32px;
+  }
+
+  .chapter-sigil {
+    font-size: 3.5rem;
+    line-height: 1;
+    filter: drop-shadow(0 0 12px rgba(201,147,58,0.5));
+  }
+
+  .chapter-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .chapter-house {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.8;
+  }
+
+  .chapter-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+    font-weight: 700;
+    color: var(--gold-light);
+    line-height: 1.15;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  }
+
+  .chapter-tagline {
+    font-style: italic;
+    color: var(--parchment-dark);
+    font-size: 0.95rem;
+    opacity: 0.8;
+  }
+
+  /* ─── CHAPTER DIVIDER ─── */
+  .chapter-rule {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .chapter-rule::before,
+  .chapter-rule::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,147,58,0.5), transparent);
+  }
+  .chapter-rule-icon {
+    color: var(--gold);
+    font-size: 1rem;
+    opacity: 0.7;
+  }
+
+  /* ─── SCROLL / PARCHMENT ─── */
+  .scroll-card {
+    background:
+      linear-gradient(135deg, rgba(242,232,208,0.07) 0%, rgba(224,207,168,0.04) 100%);
+    border: 1px solid rgba(201,147,58,0.22);
+    border-radius: 2px;
+    padding: 32px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scroll-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(180deg, var(--gold), var(--crimson), var(--gold));
+  }
+
+  .scroll-card p {
+    margin-bottom: 16px;
+    color: var(--parchment);
+    font-size: 1.05rem;
+  }
+  .scroll-card p:last-child { margin-bottom: 0; }
+
+  /* ─── TWO COLUMN ─── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 28px 0;
+  }
+  @media (max-width: 680px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ─── FRAMEWORK STEPS ─── */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 28px 0;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 18px;
+    align-items: start;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .step.visible { opacity: 1; transform: translateX(0); }
+
+  .step-num {
+    width: 52px;
+    height: 52px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--gold-light);
+    flex-shrink: 0;
+    background: rgba(201,147,58,0.08);
+    box-shadow: 0 0 16px rgba(201,147,58,0.2);
+  }
+
+  .step-body {
+    padding-top: 10px;
+  }
+
+  .step-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  .step-text {
+    color: var(--parchment);
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  /* ─── CHARACTER CARDS ─── */
+  .char-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin: 28px 0;
+  }
+
+  .char-card {
+    background: linear-gradient(145deg, rgba(30,18,8,0.9), rgba(20,12,5,0.95));
+    border: 1px solid rgba(201,147,58,0.25);
+    border-radius: 2px;
+    padding: 22px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+    cursor: default;
+  }
+
+  .char-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+  }
+
+  .char-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .char-card:hover::after { opacity: 1; }
+
+  .char-emoji { font-size: 2.8rem; margin-bottom: 10px; display: block; }
+
+  .char-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--gold-light);
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+
+  .char-role {
+    font-size: 0.8rem;
+    color: var(--parchment-dark);
+    font-style: italic;
+    opacity: 0.75;
+  }
+
+  /* ─── QUOTE BLOCK ─── */
+  .maester-quote {
+    border-left: 3px solid var(--crimson);
+    padding: 20px 28px;
+    margin: 28px 0;
+    background: rgba(139,26,26,0.08);
+    position: relative;
+  }
+  .maester-quote::before {
+    content: '"';
+    position: absolute;
+    top: -14px; left: 20px;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 4rem;
+    color: var(--crimson);
+    opacity: 0.4;
+    line-height: 1;
+  }
+  .maester-quote p {
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--parchment);
+    line-height: 1.75;
+  }
+  .maester-quote cite {
+    display: block;
+    margin-top: 10px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.75;
+  }
+
+  /* ─── HIGHLIGHT PILL ─── */
+  .pill {
+    display: inline-block;
+    background: rgba(201,147,58,0.12);
+    border: 1px solid rgba(201,147,58,0.35);
+    border-radius: 2px;
+    padding: 2px 10px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: var(--gold-light);
+    margin: 2px 3px;
+  }
+
+  /* ─── CONCEPT MAP ─── */
+  .concept-map {
+    background: rgba(13,10,5,0.8);
+    border: 1px solid rgba(201,147,58,0.2);
+    border-radius: 2px;
+    padding: 28px;
+    margin: 28px 0;
+    text-align: center;
+  }
+
+  .concept-center {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    background: radial-gradient(circle, rgba(201,147,58,0.15), rgba(201,147,58,0.03));
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    text-align: center;
+    color: var(--gold-light);
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    box-shadow: 0 0 30px rgba(201,147,58,0.2);
+    margin: 0 auto 28px;
+    line-height: 1.3;
+  }
+
+  .concept-spokes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .spoke {
+    background: linear-gradient(135deg, rgba(30,18,8,0.9), rgba(20,12,5,0.95));
+    border: 1px solid rgba(201,147,58,0.25);
+    padding: 12px 16px;
+    border-radius: 2px;
+    font-size: 0.88rem;
+    color: var(--parchment-dark);
+    max-width: 180px;
+    text-align: center;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .spoke:hover {
+    border-color: rgba(201,147,58,0.6);
+    background: rgba(201,147,58,0.07);
+  }
+  .spoke strong {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  /* ─── COMPARISON ─── */
+  .vs-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 16px;
+    align-items: center;
+    margin: 28px 0;
+  }
+
+  .vs-box {
+    padding: 22px 20px;
+    border: 1px solid;
+    border-radius: 2px;
+    text-align: center;
+  }
+  .vs-box.fire {
+    border-color: rgba(192,74,16,0.4);
+    background: rgba(192,74,16,0.06);
+  }
+  .vs-box.ice {
+    border-color: rgba(168,196,216,0.3);
+    background: rgba(168,196,216,0.04);
+  }
+
+  .vs-box-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .vs-box.fire .vs-box-label { color: var(--fire); }
+  .vs-box.ice  .vs-box-label { color: var(--ice); }
+
+  .vs-box p { font-size: 0.95rem; color: var(--parchment-dark); line-height: 1.6; }
+
+  .vs-center {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.4rem;
+    color: var(--gold);
+    text-align: center;
+    font-weight: 900;
+  }
+
+  @media (max-width: 560px) {
+    .vs-grid { grid-template-columns: 1fr; }
+    .vs-center { margin: -8px auto; }
+  }
+
+  /* ─── GLOSSARY TERMS ─── */
+  .glossary {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 28px 0;
+    border: 1px solid rgba(201,147,58,0.2);
+  }
+
+  .gloss-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 0;
+    border-bottom: 1px solid rgba(201,147,58,0.1);
+    transition: background 0.2s;
+  }
+  .gloss-row:last-child { border-bottom: none; }
+  .gloss-row:hover { background: rgba(201,147,58,0.04); }
+
+  .gloss-term {
+    padding: 16px 18px;
+    border-right: 1px solid rgba(201,147,58,0.15);
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--gold-light);
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .gloss-def {
+    padding: 16px 18px;
+    font-size: 0.95rem;
+    color: var(--parchment-dark);
+    line-height: 1.65;
+  }
+
+  @media (max-width: 560px) {
+    .gloss-row { grid-template-columns: 1fr; }
+    .gloss-term { border-right: none; border-bottom: 1px solid rgba(201,147,58,0.15); }
+  }
+
+  /* ─── CHAPTER BORDER DECORATION ─── */
+  .rune-border {
+    text-align: center;
+    margin: 60px 0 0;
+    color: rgba(201,147,58,0.35);
+    font-size: 1.1rem;
+    letter-spacing: 0.5em;
+  }
+
+  /* ─── FINAL SCROLL ─── */
+  .final-maester {
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(139,26,26,0.3), transparent 65%),
+      linear-gradient(180deg, rgba(201,147,58,0.05), rgba(13,10,5,0.6));
+    border: 1px solid rgba(201,147,58,0.3);
+    border-radius: 2px;
+    padding: 48px 40px;
+    text-align: center;
+    margin-top: 70px;
+    position: relative;
+  }
+
+  .final-maester h2 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    color: var(--gold-light);
+    margin-bottom: 16px;
+  }
+
+  .final-maester p {
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--parchment-dark);
+    max-width: 680px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+
+  /* ─── TOOLTIP ─── */
+  [data-tip] {
+    border-bottom: 1px dashed rgba(201,147,58,0.5);
+    cursor: help;
+    position: relative;
+  }
+  [data-tip]:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: 130%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(13,10,5,0.97);
+    border: 1px solid rgba(201,147,58,0.4);
+    color: var(--parchment);
+    font-style: normal;
+    font-size: 0.82rem;
+    font-family: 'EB Garamond', serif;
+    padding: 8px 12px;
+    border-radius: 2px;
+    white-space: nowrap;
+    z-index: 200;
+    pointer-events: none;
+    max-width: 260px;
+    white-space: normal;
+    text-align: center;
+  }
+
+  /* ─── HIGHLIGHT TEXT ─── */
+  strong { color: var(--gold-pale); font-weight: 600; }
+  em { color: var(--parchment); font-style: italic; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: rgba(0,0,0,0.5);
+    border-top: 1px solid rgba(201,147,58,0.2);
+    text-align: center;
+    padding: 32px 20px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    color: rgba(201,147,58,0.45);
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── PROGRESS BAR ─── */
+  #progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--crimson), var(--gold), var(--gold-light));
+    z-index: 200;
+    transition: width 0.1s;
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar" style="width:0%"></div>
+<canvas id="ember-canvas"></canvas>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">A Maester's Codex of the Modern Mind</div>
+  <div class="sigil">⚔️</div>
+  <h1 class="hero-title">The Modern Mind<br>in Crisis</h1>
+  <p class="hero-subtitle">Insights from the House of Dr. Alok Kanojia — Maester of Mind & Soul</p>
+  <div class="hero-divider"></div>
+  <p class="hero-meta">A Harvard-trained psychiatrist and former monk bridges the ancient wisdom of the East with the science of the West — as a Maester bridges the Citadel's chains to the lords of Westeros.</p>
+  <div class="scroll-hint"><span>⬇</span>Scroll to Begin</div>
+</section>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#distress">I. Distress Tolerance</a>
+    <a href="#ego">II. Ego & Purpose</a>
+    <a href="#trauma">III. Trauma & Samskaras</a>
+    <a href="#void">IV. The Void</a>
+    <a href="#algorithms">V. Algorithms</a>
+    <a href="#dating">VI. Dating & Connection</a>
+    <a href="#codex">VII. Maester's Codex</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ── CHAPTER I ── -->
+  <section class="chapter" id="distress">
+    <div class="chapter-header">
+      <div class="chapter-sigil">🐺</div>
+      <div class="chapter-meta">
+        <div class="chapter-house">Chapter I · House Stark · "Winter Is Coming"</div>
+        <h2 class="chapter-title">The Collapse of Distress Tolerance</h2>
+        <p class="chapter-tagline">Like the Starks enduring the Long Night, the mind must learn to bear the cold.</p>
+      </div>
+    </div>
+
+    <div class="chapter-rule"><div class="chapter-rule-icon">✦</div></div>
+
+    <div class="scroll-card">
+      <p>The <strong>Starks of Winterfell</strong> endured centuries of brutal winters — not because they were numb to suffering, but because they prepared, acknowledged the cold, and moved through it. Dr. K identifies a Stark-like quality crumbling in the modern psyche: <strong>distress tolerance</strong> — the capacity to sit with uncomfortable emotions rather than flee them.</p>
+      <p>Paradoxically, as our therapy vocabulary expands (people "weaponize" concepts like <em>boundaries</em> to control others), actual emotional resilience erodes. We have learned to name the White Walkers but lost the Valyrian steel to fight them.</p>
+    </div>
+
+    <div class="maester-quote">
+      <p>Emotions are evolutionary tools meant to inform and motivate. Instead of blindly acting on anger or fear, ask: what is this emotion trying to tell me to do?</p>
+      <cite>— Dr. Alok Kanojia, Maester of the Mind</cite>
+    </div>
+
+    <p style="font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin:28px 0 12px;opacity:0.8;">⚔ The Three-Raven Framework</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">I</div>
+        <div class="step-body">
+          <div class="step-label">🐦 Name the Raven</div>
+          <p class="step-text"><strong>Label the emotion.</strong> Like a raven bearing a message, your feeling carries information. Naming it engages the linguistic centers of the mind, calming the amygdala's wildfire — the way Bran's ravens gave clarity amidst chaos.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">II</div>
+        <div class="step-body">
+          <div class="step-label">⚖ Hold the Contradictions</div>
+          <p class="step-text"><strong>Cultivate additional emotions alongside the difficult one.</strong> If grief overwhelms after a great loss — as it did Arya after Ned's death — deliberately recall the gratitude, the good memories. You're not ignoring the pain; you're adding context, as a commander sees the full battlefield.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">III</div>
+        <div class="step-body">
+          <div class="step-label">🗝 Decode the Signal</div>
+          <p class="step-text"><strong>Ask what the emotion is commanding you to do.</strong> Anger says <em>defend</em>. Fear says <em>retreat or prepare</em>. Like Jon Snow choosing not to blindly charge at Ramsay's army, interrogate the signal before acting on it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="rune-border">✦ ⚔ ✦ ⚔ ✦</div>
+
+  <!-- ── CHAPTER II ── -->
+  <section class="chapter" id="ego">
+    <div class="chapter-header">
+      <div class="chapter-sigil">🦁</div>
+      <div class="chapter-meta">
+        <div class="chapter-house">Chapter II · House Lannister · "Hear Me Roar"</div>
+        <h2 class="chapter-title">The Ego vs. Authentic Purpose</h2>
+        <p class="chapter-tagline">A Lannister always pays his debts — but the ego's debts can never be repaid.</p>
+      </div>
+    </div>
+
+    <div class="chapter-rule"><div class="chapter-rule-icon">✦</div></div>
+
+    <div class="vs-grid">
+      <div class="vs-box fire">
+        <div class="vs-box-label">🔥 The Ego — Cersei's Mind</div>
+        <p>Anything that follows <em>"I am…"</em> — a queen, a conqueror, a mother. Defined by comparison; moves the goalposts endlessly. A Lannister with one castle always needs the next. The ego survives on social validation and crumbles without it.</p>
+      </div>
+      <div class="vs-center">VS</div>
+      <div class="vs-box ice">
+        <div class="vs-box-label">❄ Authentic Desire — Jon's Path</div>
+        <p>Comes from deep within — not from social comparison. Like Jon Snow's desire to protect, regardless of titles or recognition. Real internal drive is a generalized energy that latches onto many callings across a lifetime.</p>
+      </div>
+    </div>
+
+    <div class="scroll-card">
+      <p>Western psychology struggles to define the mind because thoughts cannot be physically measured — just as no Maester's chain can quantify honor. Eastern philosophy uses internal observation instead, drawing a clear line between the <strong>true self</strong> and the <strong>ego</strong>.</p>
+      <p>Dr. K's definition is surgical: the ego is <em>anything that follows "I am…"</em> — a professor, a failure, a son. Like Cersei's obsession with the Iron Throne, the ego depends on comparison to survive. A billionaire ego will inevitably hunger for a second billion, just as the Lannisters could never stop acquiring power.</p>
+      <p>Authentic desire, by contrast, is like the Stark honor code — it does not shift with the political winds. Real internal drive evolves naturally, like a love of biology growing into a passion for neuro-ophthalmology — the same fire, a broader hearth.</p>
+    </div>
+
+    <div class="char-grid">
+      <div class="char-card">
+        <span class="char-emoji">👑</span>
+        <div class="char-name">Cersei Lannister</div>
+        <div class="char-role">The Ego Unchecked — defined entirely by "I am Queen." When the title was threatened, her identity collapsed.</div>
+      </div>
+      <div class="char-card">
+        <span class="char-emoji">🗡</span>
+        <div class="char-name">Jon Snow</div>
+        <div class="char-role">Authentic Purpose — consistently acted from internal values, even when stripped of every title.</div>
+      </div>
+      <div class="char-card">
+        <span class="char-emoji">🌊</span>
+        <div class="char-name">Daenerys Targaryen</div>
+        <div class="char-role">The Tragic Shift — began with authentic purpose (liberation), consumed by ego (conquest).</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="rune-border">✦ ⚔ ✦ ⚔ ✦</div>
+
+  <!-- ── CHAPTER III ── -->
+  <section class="chapter" id="trauma">
+    <div class="chapter-header">
+      <div class="chapter-sigil">🔥</div>
+      <div class="chapter-meta">
+        <div class="chapter-house">Chapter III · House Targaryen · "Fire Cannot Kill a Dragon"</div>
+        <h2 class="chapter-title">Rewiring Trauma: Samskaras & Sankalpa</h2>
+        <p class="chapter-tagline">The wounds of fire burn deep — but fire can also forge Valyrian steel.</p>
+      </div>
+    </div>
+
+    <div class="chapter-rule"><div class="chapter-rule-icon">✦</div></div>
+
+    <div class="scroll-card">
+      <p>The Targaryens were forged by fire — and fire changes everything it touches permanently. Dr. K describes how we accumulate emotional scars throughout life — what yogic tradition calls <strong data-tip="Yogic concept: deep emotional impressions burned into the subconscious">Samskaras</strong>. These are not mere memories; they are rewirings.</p>
+      <p>During moments of intense emotion — an adrenaline spike, a trauma, a great betrayal — the brain enters tunnel vision. Like Daenerys watching her dragons burned, the brain narrows its focus so intensely that the experience is <strong>burned deep into the subconscious</strong>. The wound is below the surface.</p>
+      <p>This is why positive affirmations alone cannot heal. Dr. K calls it <em>"putting icing on dog poop"</em> — the surface shifts, the wound stays. Tyrion's wit could not fix the scar of Tywin's contempt.</p>
+    </div>
+
+    <p style="font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin:28px 0 12px;opacity:0.8;">🌙 The Path to Neuroplasticity</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">I</div>
+        <div class="step-body">
+          <div class="step-label">🧘 Enter Yoga Nidra</div>
+          <p class="step-text"><strong>The hypnagogic state of wakefulness.</strong> Like the mysterious space between the world of the living and the realm of the Three-Eyed Raven — deeply relaxed yet awake. Here, the subconscious becomes open to editing.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">II</div>
+        <div class="step-body">
+          <div class="step-label">🌱 Plant the Sankalpa</div>
+          <p class="step-text"><strong>A deep, primordial statement of being.</strong> Not a shallow affirmation — a new compass for the autonomic nervous system. Like Bran planting a vision into the past: <em>"I deserve to be whole."</em> It reshapes the very root of identity.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="char-card">
+        <span class="char-emoji">🐉</span>
+        <div class="char-name">Samskara — The Dragon Scar</div>
+        <div class="char-role">Emotional wounds burned so deeply by high-arousal moments that they reshape the subconscious — like Daenerys's grief burning the world's mercy away.</div>
+      </div>
+      <div class="char-card">
+        <span class="char-emoji">🌿</span>
+        <div class="char-name">Sankalpa — The Greenseer's Vision</div>
+        <div class="char-role">A deep intention planted in the still, open mind during Yoga Nidra — capable of rewriting the old story, as Bran reshaped history.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="rune-border">✦ ⚔ ✦ ⚔ ✦</div>
+
+  <!-- ── CHAPTER IV ── -->
+  <section class="chapter" id="void">
+    <div class="chapter-header">
+      <div class="chapter-sigil">🌑</div>
+      <div class="chapter-meta">
+        <div class="chapter-house">Chapter IV · The Night's Watch · "The Night is Dark and Full of Terrors"</div>
+        <h2 class="chapter-title">Accessing the Void — Shunya Meditation</h2>
+        <p class="chapter-tagline">The Wall is not built to keep the world out. It is built to keep the noise of the self from drowning out what truly matters.</p>
+      </div>
+    </div>
+
+    <div class="chapter-rule"><div class="chapter-rule-icon">✦</div></div>
+
+    <div class="scroll-card">
+      <p>North of the Wall, there is only silence and vast, indifferent white. Dr. K recommends <strong data-tip="Sanskrit: 'Shunya' means emptiness or zero — the fertile void of consciousness">Shunya</strong> meditation — connecting with the profound emptiness inside you to escape the exhausting noise of the ego and modern life.</p>
+      <p>The exercise is disorienting in its simplicity: <em>imagine you only existed for ten seconds.</em> No name. No history. No House words. No relationships or grudges. Just a raw receiver of experience — as naked and present as a newborn crow beyond the Wall.</p>
+    </div>
+
+    <p style="font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin:28px 0 12px;opacity:0.8;">🔮 Finding the Stillness</p>
+
+    <div class="concept-map">
+      <div class="concept-center">THE<br>VOID<br>✦<br><span style="font-size:0.65rem;font-family:'EB Garamond',serif;font-style:italic;">Shunya</span></div>
+      <div class="concept-spokes">
+        <div class="spoke"><strong>Solar Plexus</strong>Focus here for an absence of feeling — the calm below the storm.</div>
+        <div class="spoke"><strong>The Breath Gap</strong>The silence between your exhale and next inhale — a doorway into stillness.</div>
+        <div class="spoke"><strong>Ten-Second Existence</strong>Strip identity entirely. No name, no history — only raw awareness.</div>
+        <div class="spoke"><strong>No Ego Noise</strong>No "I am" statements survive in the void. The self dissolves like the Long Night's end.</div>
+      </div>
+    </div>
+
+    <div class="maester-quote">
+      <p>When the Night King's army fell, the Long Night ended in silence. Seek that silence not as an absence of life — but as the ground of being from which all true life grows.</p>
+      <cite>— Adapted Wisdom from the Citadel of the Mind</cite>
+    </div>
+  </section>
+
+  <div class="rune-border">✦ ⚔ ✦ ⚔ ✦</div>
+
+  <!-- ── CHAPTER V ── -->
+  <section class="chapter" id="algorithms">
+    <div class="chapter-header">
+      <div class="chapter-sigil">🕷</div>
+      <div class="chapter-meta">
+        <div class="chapter-house">Chapter V · Littlefinger's Web · "Chaos is a Ladder"</div>
+        <h2 class="chapter-title">Algorithms, AI, and the Hijacking of the Mind</h2>
+        <p class="chapter-tagline">Littlefinger never fought with a sword. He fought with information, emotion, and manufactured reality.</p>
+      </div>
+    </div>
+
+    <div class="chapter-rule"><div class="chapter-rule-icon">✦</div></div>
+
+    <div class="scroll-card">
+      <p>Petyr Baelish did not conquer castles — he reshaped desires, inflamed jealousies, and manufactured crises. <strong>Algorithms</strong> operate on the same principle, at civilizational scale. They optimize purely for emotional arousal — rapidly cycling users through anger, fear, and amusement — steadily depleting cognitive willpower like a siege draining a castle's grain stores.</p>
+      <p>Dr. K reserves particular alarm for AI, describing it as a <strong data-tip="A personalized reality bubble with no dissenting voices or friction">"cult of one."</strong> Unlike a human counselor who provides friction and reality-testing — the way the Hound told Sansa hard truths — a language model is designed to appease. If a vulnerable person expresses a paranoid thought to an AI, the model often validates it, creating an accelerating echo chamber of delusion.</p>
+    </div>
+
+    <div class="two-col">
+      <div class="char-card">
+        <span class="char-emoji">🕷</span>
+        <div class="char-name">Littlefinger — The Algorithm</div>
+        <div class="char-role">Identifies your deepest desires and insecurities, feeds them back amplified, and profits from the resulting chaos. Always moves the ladder higher.</div>
+      </div>
+      <div class="char-card">
+        <span class="char-emoji">🤖</span>
+        <div class="char-name">Varys's Little Birds — AI Agents</div>
+        <div class="char-role">Vast networks of information that seem to serve you — yet lack the human friction, judgment, and honest pushback that true counsel demands.</div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">I</div>
+        <div class="step-body">
+          <div class="step-label">⚠ The Vulnerable Hour</div>
+          <p class="step-text"><strong>Never scroll when emotionally distressed.</strong> Emotionally vulnerable minds are primed to internalize negative comparisons — as Sansa was most susceptible to Littlefinger's manipulations at her lowest moments.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">II</div>
+        <div class="step-body">
+          <div class="step-label">🌙 The Sleep Wall</div>
+          <p class="step-text"><strong>Avoid social media for at least one hour before bed.</strong> Emotional arousal from algorithmic feeds exhausts the very willpower needed to put the phone down — a siege on your own gates, launched by your hand.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="rune-border">✦ ⚔ ✦ ⚔ ✦</div>
+
+  <!-- ── CHAPTER VI ── -->
+  <section class="chapter" id="dating">
+    <div class="chapter-header">
+      <div class="chapter-sigil">🌹</div>
+      <div class="chapter-meta">
+        <div class="chapter-house">Chapter VI · House Tyrell · "Growing Strong"</div>
+        <h2 class="chapter-title">Dating, Looksmaxxing & the Parasocial Trap</h2>
+        <p class="chapter-tagline">Margaery Tyrell never won the Iron Throne through beauty alone — she won through vision, purpose, and the courage to connect.</p>
+      </div>
+    </div>
+
+    <div class="chapter-rule"><div class="chapter-rule-icon">✦</div></div>
+
+    <div class="scroll-card">
+      <p>Young men across Westeros and beyond are retreating from genuine connection into self-optimization obsessions and digital substitutes. The fixation on <strong>looksmaxxing</strong> — jawlines, body fat percentages — is, Dr. K argues, a displacement of psychological terror. Focusing on a controllable physical metric allows men to avoid the far more terrifying vulnerability of real human interaction and the sting of rejection.</p>
+      <p>It is the same trap as a knight obsessively polishing his armor while refusing to enter the tournament.</p>
+    </div>
+
+    <div class="vs-grid">
+      <div class="vs-box fire">
+        <div class="vs-box-label">❌ The Displacement Trap</div>
+        <p>Obsessive focus on appearance metrics as a substitute for authentic connection — controllable vanity as armor against the uncontrollable vulnerability of real human intimacy.</p>
+      </div>
+      <div class="vs-center">↔</div>
+      <div class="vs-box ice">
+        <div class="vs-box-label">✓ True Charisma</div>
+        <p>A clear vision for your life. The proven ability to handle adversity. The quiet confidence that if things fall apart, you can rebuild — as Tyrion did, again and again.</p>
+      </div>
+    </div>
+
+    <div class="scroll-card" style="margin-top:24px;">
+      <p>Pornography and parasocial platforms like OnlyFans have evolved beyond visual stimulation into full synthetic relationships — hijacking the empathic and social bonding circuits that evolution designed for real human connection, replacing them with transactional internet interactions as hollow as a Faceless Man's borrowed face.</p>
+    </div>
+
+    <p style="font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin:28px 0 12px;opacity:0.8;">🌹 The Pre-Date Ritual</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">I</div>
+        <div class="step-body">
+          <div class="step-label">📵 Banish the Small Council</div>
+          <p class="step-text"><strong>Stay completely off your phone.</strong> The notifications and comparisons are a court of whispers poisoning your neurochemistry before you've even left the castle gates.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">II</div>
+        <div class="step-body">
+          <div class="step-label">🚶 The Hour's Walk</div>
+          <p class="step-text"><strong>Take a one-hour walk beforehand.</strong> Give your neurochemistry time to reset. This dramatically increases your biological capacity to feel genuine connection — as a rider arriving unhurried is more present than one who galloped to the gate in panic.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="rune-border">✦ ⚔ ✦ ⚔ ✦</div>
+
+  <!-- ── CHAPTER VII: MAESTER'S CODEX ── -->
+  <section class="chapter" id="codex">
+    <div class="chapter-header">
+      <div class="chapter-sigil">📜</div>
+      <div class="chapter-meta">
+        <div class="chapter-house">Chapter VII · The Citadel · Maester's Codex</div>
+        <h2 class="chapter-title">The Grand Codex — All Chains Forged</h2>
+        <p class="chapter-tagline">A Maester's chains represent knowledge earned in every discipline. Here are the links of this education.</p>
+      </div>
+    </div>
+
+    <div class="chapter-rule"><div class="chapter-rule-icon">✦</div></div>
+
+    <div class="glossary">
+      <div class="gloss-row">
+        <div class="gloss-term">⚔ Distress Tolerance</div>
+        <div class="gloss-def">The Stark capacity to sit with and process uncomfortable emotions — not flee them. Eroding in modern culture despite growing therapy vocabulary.</div>
+      </div>
+      <div class="gloss-row">
+        <div class="gloss-term">🦁 The Ego</div>
+        <div class="gloss-def">Everything that follows "I am…" — defined by comparison and perpetually moving the goalposts. The Lannister who always needs more gold.</div>
+      </div>
+      <div class="gloss-row">
+        <div class="gloss-term">🐉 Samskara</div>
+        <div class="gloss-def">Emotional scars burned deep into the subconscious during high-arousal states. Dragon fire that reshapes the rock beneath the surface.</div>
+      </div>
+      <div class="gloss-row">
+        <div class="gloss-term">🌿 Sankalpa</div>
+        <div class="gloss-def">A primordial statement of being planted in the open subconscious during Yoga Nidra. A new compass for the autonomous nervous system. "I deserve to be whole."</div>
+      </div>
+      <div class="gloss-row">
+        <div class="gloss-term">🌑 Shunya</div>
+        <div class="gloss-def">Sanskrit for "emptiness" or "void." A meditation practice that connects you to the stillness beneath the ego's noise — the silence beyond the Wall.</div>
+      </div>
+      <div class="gloss-row">
+        <div class="gloss-term">🕷 Cult of One</div>
+        <div class="gloss-def">Dr. K's term for AI as a personal reality bubble — no friction, no dissent, only validation. Littlefinger's web scaled to a single user.</div>
+      </div>
+      <div class="gloss-row">
+        <div class="gloss-term">🧘 Yoga Nidra</div>
+        <div class="gloss-def">A deeply relaxed, hypnagogic state of wakefulness where the subconscious becomes open to editing — the Greenseer's realm, entered without sleep.</div>
+      </div>
+      <div class="gloss-row">
+        <div class="gloss-term">🌹 Authentic Charisma</div>
+        <div class="gloss-def">Not appearance. A clear life vision + proven capacity to handle adversity. The quiet confidence that if the castle falls, you can rebuild it.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL SCROLL -->
+  <div class="final-maester chapter">
+    <div style="font-size:3rem;margin-bottom:16px;">⚔️</div>
+    <h2>The Maester's Final Proclamation</h2>
+    <div class="hero-divider" style="margin:20px auto;"></div>
+    <p>Across all these battles of the mind, Dr. K's core message holds like the Wall itself: the solutions to modern psychological suffering are not found in hacks or surface-level fixes. They are found in understanding the deep architecture of the mind — and in being willing to do the quiet, uncomfortable work of rewiring it. The North Remembers. So must we.</p>
+    <div style="margin-top:28px;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;">
+      <span class="pill">Distress Tolerance</span>
+      <span class="pill">Ego Dissolution</span>
+      <span class="pill">Samskara Healing</span>
+      <span class="pill">Shunya Meditation</span>
+      <span class="pill">Algorithm Awareness</span>
+      <span class="pill">Authentic Connection</span>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  ✦ &nbsp; The Codex of the Modern Mind &nbsp; · &nbsp; Based on the Teachings of Dr. Alok Kanojia &nbsp; ✦ <br>
+  <span style="opacity:0.5;font-size:0.55rem;letter-spacing:0.15em;display:block;margin-top:8px;">All Houses. All Chains. One Mind.</span>
+</footer>
+
+<script>
+// ─── EMBER PARTICLES ───
+(function() {
+  const canvas = document.getElementById('ember-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function Particle() {
+    this.reset = function() {
+      this.x = Math.random() * W;
+      this.y = H + 10;
+      this.vx = (Math.random() - 0.5) * 0.6;
+      this.vy = -(Math.random() * 1.5 + 0.5);
+      this.life = 1;
+      this.decay = Math.random() * 0.008 + 0.003;
+      this.r = Math.random() * 2.5 + 0.5;
+      this.hue = Math.random() * 30 + 10; // orange-red range
+    };
+    this.reset();
+    this.y = Math.random() * H; // seed spread
+  }
+
+  for (let i = 0; i < 70; i++) particles.push(new Particle());
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.vx + Math.sin(Date.now() * 0.001 + p.y * 0.01) * 0.3;
+      p.y += p.vy;
+      p.life -= p.decay;
+      if (p.life <= 0 || p.y < -10) p.reset();
+
+      ctx.save();
+      ctx.globalAlpha = p.life * 0.8;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `hsl(${p.hue}, 100%, 60%)`;
+      ctx.shadowBlur = 6;
+      ctx.shadowColor = `hsl(${p.hue}, 100%, 50%)`;
+      ctx.fill();
+      ctx.restore();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ─── SCROLL PROGRESS ───
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+  document.getElementById('progress-bar').style.width = (scrolled * 100) + '%';
+});
+
+// ─── INTERSECTION OBSERVER ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      // stagger steps inside
+      const steps = entry.target.querySelectorAll('.step');
+      steps.forEach((s, i) => {
+        setTimeout(() => s.classList.add('visible'), 200 + i * 150);
+      });
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.chapter').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

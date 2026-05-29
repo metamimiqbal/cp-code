@@ -98,21 +98,8 @@ const int dy[] = {1, -1, 0, 0};
 // [ The Great Adventure ] 
 void solve() {
     ll n; cin>>n;
-    vector<vector<ll>>a(n+1, vector<ll>(n+1));
-
-    rep(i, 1, n+1) {
-        rep(j, 1, n+1) {
-            char c; cin>>c;
-            a[i][j] = c-'0';
-        }
-    }
-
-    ll ans = 0;
-    ll gameofthrones = n/2;
-    rep(i, 1, gameofthrones+1) {    
-               
-    }
-    cout<<ans<<nl;
+    rrep(i, 2*n, n+1) cout<<i<<spc;
+    cout<<nl;
 }
 
 // [ Black Pearl ] 

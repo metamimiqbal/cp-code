@@ -97,21 +97,63 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ The Great Adventure ] 
 void solve() {
-    ll n; cin>>n;
-    vector<vector<ll>>a(n+1, vector<ll>(n+1));
+    ll n, m; cin>>n>>m;
+    ll arr[n];
+    MAP mp;
+    for(auto &i: arr) {
+        cin>>i;
+        mp[i % m]++;
+        // dbg(i);
+        // dbg(i%m);
+    }
 
-    rep(i, 1, n+1) {
-        rep(j, 1, n+1) {
-            char c; cin>>c;
-            a[i][j] = c-'0';
+    // rep(i, 0, n) cout<<arr[i]<<spc;
+    // cout<<nl;
+ 
+    ll grped = 0;
+    ll isolated = 0;
+    bool sunnoRemainder = false;
+    ll ekebare_isolated = 0;
+
+    // dbg("MAP");
+    // for(auto [u, v]: mp) cout<<u<<spc<<v<<nl;
+    // dbg("End of Map");
+
+    for(auto [u, v]: mp) {
+        if(u % m == 0) {
+            sunnoRemainder = true;
+            continue;
+        }
+        // dbg("Within Map: "), dbg(u);
+        if(mp.count(m-u)) {
+            ll mx = max(mp[m-u], v);
+            ll mn = min(mp[m-u], v);
+            ++grped;
+            if(mx != mn) isolated += (mx - mn - 1);
+            // dbg(isolated);
+            // dbg(grped);
+            // dbg(u), dbg(m-u);
+        } else {
+            ekebare_isolated += v;
+            // cout<<"Ekebare Isolated: "<<u<<v<<" ta\n";
         }
     }
+    // dbg("MAP");
+    // for(auto [u, v]: mp) cout<<u<<spc<<v<<nl;
 
-    ll ans = 0;
-    ll gameofthrones = n/2;
-    rep(i, 1, gameofthrones+1) {    
-               
-    }
+    
+    grped = (grped + 1)/2;
+    isolated /= 2;
+
+    // dbg(ekebare_isolated);
+    // dbg(isolated);
+    // dbg(grped);
+    // dbg(sunnoRemainder);
+
+    ll val = grped + isolated + ekebare_isolated;
+    ll ans = (sunnoRemainder) ? val+1 : val;
+
+    // dbg(ans);
     cout<<ans<<nl;
 }
 

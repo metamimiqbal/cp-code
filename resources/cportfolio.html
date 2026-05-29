@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tamim | CSE Student & Hacker-in-Training</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:        #0a0c0f;
+      --surface:   #111418;
+      --border:    #1e2530;
+      --green:     #00ff9d;
+      --green-dim: #00cc7a;
+      --amber:     #ffb347;
+      --red:       #ff4757;
+      --blue:      #3ecfff;
+      --muted:     #4a5568;
+      --text:      #c8d6e5;
+      --text-dim:  #6b7a8d;
+      --white:     #f0f4f8;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Syne', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── SCANLINE OVERLAY ─────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* ─── NAV ──────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 48px;
+      background: rgba(10,12,15,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--green);
+      letter-spacing: 0.05em;
+    }
+
+    .nav-status {
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .nav-status .dot {
+      display: inline-block;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      margin-right: 6px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 12px;
+      color: var(--text-dim);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--green); }
+
+    /* ─── HERO ─────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 6rem 2rem 4rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero-tag {
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .hero-tag span { color: var(--green); }
+
+    .hero-name {
+      font-family: var(--font-sans);
+      font-size: clamp(3rem, 10vw, 7rem);
+      font-weight: 800;
+      line-height: 0.95;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-name .accent { color: var(--green); }
+
+    .terminal-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 2rem;
+      max-width: 560px;
+      position: relative;
+    }
+
+    .terminal-block::before {
+      content: '● ● ●';
+      display: block;
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .terminal-line {
+      font-size: 13px;
+      line-height: 1.9;
+    }
+
+    .terminal-line .prompt { color: var(--green); margin-right: 6px; }
+    .terminal-line .cmd    { color: var(--blue); }
+    .terminal-line .out    { color: var(--text); }
+    .terminal-line .key    { color: var(--amber); }
+
+    .cursor {
+      display: inline-block;
+      width: 9px; height: 1.1em;
+      background: var(--green);
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+      margin-left: 2px;
+    }
+
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.6rem 1.4rem;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--green);
+      color: #000;
+      font-weight: 700;
+      border: 1px solid var(--green);
+    }
+
+    .btn-primary:hover {
+      background: transparent;
+      color: var(--green);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    /* ─── SECTION BASE ─────────────────────────────── */
+    section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 0.4rem;
+    }
+
+    .section-title {
+      font-family: var(--font-sans);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 2rem;
+      letter-spacing: -0.02em;
+    }
+
+    /* ─── ABOUT ────────────────────────────────────── */
+    #about .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 640px) {
+      #about .about-grid { grid-template-columns: 1fr; }
+    }
+
+    .about-text {
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.9;
+    }
+
+    .about-text p + p { margin-top: 1rem; }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      transition: border-color 0.2s;
+    }
+
+    .stat-card:hover { border-color: var(--green); }
+
+    .stat-value {
+      font-family: var(--font-sans);
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--green);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── SKILLS TICKER ────────────────────────────── */
+    .skills-ticker {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 0.6rem 0;
+      margin: 3rem 0;
+      white-space: nowrap;
+    }
+
+    .ticker-inner {
+      display: inline-block;
+      animation: ticker 28s linear infinite;
+    }
+
+    .ticker-item {
+      display: inline-block;
+      margin: 0 1.5rem;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .ticker-item .dot { color: var(--green); margin-right: 6px; }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ─── LAB / PROJECTS ───────────────────────────── */
+    #lab .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    @media (max-width: 640px) {
+      #lab .projects-grid { grid-template-columns: 1fr; }
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.4rem;
+      transition: border-color 0.25s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--green);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+
+    .project-card:hover {
+      border-color: var(--green);
+      transform: translateY(-3px);
+    }
+
+    .project-card:hover::before { transform: scaleX(1); }
+
+    .project-tag {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 0.6rem;
+    }
+
+    .project-name {
+      font-family: var(--font-sans);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+
+    .project-desc {
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+
+    .project-tech {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .chip {
+      font-size: 10px;
+      padding: 2px 8px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── LEARNING ROADMAP ─────────────────────────── */
+    #roadmap {
+      border-top: 1px solid var(--border);
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .roadmap-list {
+      list-style: none;
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .roadmap-list::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 6px; bottom: 6px;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .roadmap-list li {
+      position: relative;
+      padding: 0.5rem 0 0.5rem 1.5rem;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .roadmap-list li::before {
+      content: '';
+      position: absolute;
+      left: -4px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      border: 1px solid var(--muted);
+    }
+
+    .roadmap-list li.done::before {
+      background: var(--green);
+      border-color: var(--green);
+      box-shadow: 0 0 6px var(--green);
+    }
+
+    .roadmap-list li.active::before {
+      background: var(--amber);
+      border-color: var(--amber);
+      box-shadow: 0 0 6px var(--amber);
+    }
+
+    .roadmap-list li .rl { color: var(--text-dim); margin-right: 8px; font-size: 11px; }
+    .roadmap-list li.done .item-name { color: var(--green); }
+    .roadmap-list li.active .item-name { color: var(--amber); }
+
+    /* ─── LINKS / COMMS ────────────────────────────── */
+    #links {
+      border-top: 1px solid var(--border);
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
+    .link-card {
+      display: block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .link-card:hover {
+      border-color: var(--green);
+      transform: translateY(-2px);
+      color: var(--white);
+    }
+
+    .link-icon {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .link-name {
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .link-handle {
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    /* ─── FOOTER ───────────────────────────────────── */
+    footer {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    /* ─── FADE-IN ON SCROLL ────────────────────────── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <span class="nav-logo">~/tamim $</span>
+    <span class="nav-status"><span class="dot"></span>CSE · RUET · 2nd Year</span>
+    <ul class="nav-links">
+      <li><a href="#hero">Init</a></li>
+      <li><a href="#about">System</a></li>
+      <li><a href="#lab">Lab</a></li>
+      <li><a href="#roadmap">Path</a></li>
+      <li><a href="#links">Comms</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <p class="hero-tag">[ <span>student</span> · developer · hacker-in-training ]</p>
+    <h1 class="hero-name">
+      Tamim<br /><span class="accent">_</span>
+    </h1>
+
+    <div class="terminal-block">
+      <div class="terminal-line">
+        <span class="prompt">▸</span><span class="cmd">whoami</span>
+      </div>
+      <div class="terminal-line">
+        <span class="out"><span class="key">name</span>: Tamim</span>
+      </div>
+      <div class="terminal-line">
+        <span class="out"><span class="key">degree</span>: BSc CSE, RUET — Year 2</span>
+      </div>
+      <div class="terminal-line">
+        <span class="out"><span class="key">interests</span>: competitive programming, web security</span>
+      </div>
+      <div class="terminal-line">
+        <span class="out"><span class="key">status</span>: learning, building, breaking stuff</span>
+      </div>
+      <div class="terminal-line">
+        <span class="prompt">▸</span><span class="cursor"></span>
+      </div>
+    </div>
+
+    <div class="hero-cta">
+      <a href="#lab" class="btn btn-primary">View Lab</a>
+      <a href="#links" class="btn btn-ghost">Contact</a>
+    </div>
+  </section>
+
+  <!-- SKILLS TICKER -->
+  <div class="skills-ticker">
+    <div class="ticker-inner" id="ticker"></div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="section-label fade-in">// 01 — System</p>
+    <h2 class="section-title fade-in">About Me</h2>
+
+    <div class="about-grid">
+      <div class="about-text fade-in">
+        <p>
+          Second-year Computer Science & Engineering student at
+          <strong style="color:var(--white)">Rajshahi University of Engineering & Technology (RUET)</strong>,
+          Bangladesh. I like understanding how things work — and how they break.
+        </p>
+        <p>
+          My foundation started with <strong style="color:var(--white)">CS50x</strong>, which gave me a solid grip on programming thinking. Since then I've been deep-diving into C++ for competitive programming on CodeChef, wrestling with Discrete Math, and slowly working my way into ethical hacking through PortSwigger Web Security Academy.
+        </p>
+        <p>
+          When I'm not solving problems or reading about web vulnerabilities, I'm probably messing around on my Mac, iPad, or figuring out why my phone's Wi-Fi isn't cooperating.
+        </p>
+      </div>
+
+      <div class="stat-grid fade-in">
+        <div class="stat-card">
+          <div class="stat-value">2nd</div>
+          <div class="stat-label">Year at RUET</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">C++</div>
+          <div class="stat-label">Primary Language</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">CS50x</div>
+          <div class="stat-label">Completed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">SQL</div>
+          <div class="stat-label">Database Skills</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LAB / PROJECTS -->
+  <section id="lab">
+    <p class="section-label fade-in">// 02 — Lab</p>
+    <h2 class="section-title fade-in">What I'm Working On</h2>
+
+    <div class="projects-grid">
+
+      <div class="project-card fade-in">
+        <p class="project-tag">Web Security</p>
+        <h3 class="project-name">PortSwigger Academy</h3>
+        <p class="project-desc">
+          Working through the Web Security Academy labs — SQL injection, XSS, IDOR, authentication bypasses. Learning to think like an attacker in a legal, structured environment.
+        </p>
+        <div class="project-tech">
+          <span class="chip">Burp Suite</span>
+          <span class="chip">HTTP</span>
+          <span class="chip">SQLi</span>
+          <span class="chip">XSS</span>
+        </div>
+      </div>
+
+      <div class="project-card fade-in">
+        <p class="project-tag">Competitive Programming</p>
+        <h3 class="project-name">CodeChef Grind</h3>
+        <p class="project-desc">
+          Practicing algorithms and data structures on CodeChef. Focused on building problem-solving speed and pattern recognition in C++.
+        </p>
+        <div class="project-tech">
+          <span class="chip">C++</span>
+          <span class="chip">STL</span>
+          <span class="chip">Algorithms</span>
+          <span class="chip">Data Structures</span>
+        </div>
+      </div>
+
+      <div class="project-card fade-in">
+        <p class="project-tag">Coursework</p>
+        <h3 class="project-name">Discrete Mathematics</h3>
+        <p class="project-desc">
+          Studying CSE 2101 — number theory, GCD/LCM, modular arithmetic, modular inverses, linear congruences. The backbone of cryptography and algorithm analysis.
+        </p>
+        <div class="project-tech">
+          <span class="chip">Number Theory</span>
+          <span class="chip">Modular Arithmetic</span>
+          <span class="chip">Graph Theory</span>
+        </div>
+      </div>
+
+      <div class="project-card fade-in">
+        <p class="project-tag">Coursework</p>
+        <h3 class="project-name">Vector Calculus</h3>
+        <p class="project-desc">
+          Math-2113 — Green's Theorem, Divergence Theorem, line and surface integrals. The math that sits beneath computer graphics, physics simulations, and ML.
+        </p>
+        <div class="project-tech">
+          <span class="chip">Green's Theorem</span>
+          <span class="chip">Divergence Theorem</span>
+          <span class="chip">Integration</span>
+        </div>
+      </div>
+
+      <div class="project-card fade-in">
+        <p class="project-tag">Database</p>
+        <h3 class="project-name">SQL Practice</h3>
+        <p class="project-desc">
+          Built a solid SQL foundation through CS50x. Comfortable with queries, joins, subqueries, and schema design. Slowly tying it into security — SQL injection is more interesting when you know the query language well.
+        </p>
+        <div class="project-tech">
+          <span class="chip">SQL</span>
+          <span class="chip">SQLite</span>
+          <span class="chip">Schema Design</span>
+        </div>
+      </div>
+
+      <div class="project-card fade-in">
+        <p class="project-tag">Self-study</p>
+        <h3 class="project-name">CS50x</h3>
+        <p class="project-desc">
+          Completed Harvard's CS50x — covered C, Python, SQL, web basics, algorithms, and memory management. The course that made computer science click.
+        </p>
+        <div class="project-tech">
+          <span class="chip">C</span>
+          <span class="chip">Python</span>
+          <span class="chip">Algorithms</span>
+          <span class="chip">CS Fundamentals</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section id="roadmap">
+    <p class="section-label fade-in">// 03 — Path</p>
+    <h2 class="section-title fade-in">Ethical Hacking Roadmap</h2>
+
+    <ul class="roadmap-list fade-in">
+      <li class="done">
+        <span class="rl">[done]</span>
+        <span class="item-name">CS50x — Programming Foundations</span>
+      </li>
+      <li class="done">
+        <span class="rl">[done]</span>
+        <span class="item-name">SQL & Database Fundamentals</span>
+      </li>
+      <li class="done">
+        <span class="rl">[done]</span>
+        <span class="item-name">C++ for Competitive Programming (CodeChef)</span>
+      </li>
+      <li class="active">
+        <span class="rl">[active]</span>
+        <span class="item-name">PortSwigger Web Security Academy — Labs</span>
+      </li>
+      <li class="active">
+        <span class="rl">[active]</span>
+        <span class="item-name">Burp Suite — Intercepting & Manipulating Requests</span>
+      </li>
+      <li>
+        <span class="rl">[next]</span>
+        <span class="item-name">TryHackMe — Guided CTF Practice</span>
+      </li>
+      <li>
+        <span class="rl">[next]</span>
+        <span class="item-name">Linux Fundamentals & Bash Scripting</span>
+      </li>
+      <li>
+        <span class="rl">[future]</span>
+        <span class="item-name">HackTheBox — Intermediate Challenges</span>
+      </li>
+      <li>
+        <span class="rl">[future]</span>
+        <span class="item-name">PicoCTF — Capture the Flag Competitions</span>
+      </li>
+      <li>
+        <span class="rl">[goal]</span>
+        <span class="item-name">Bug Bounty Hunting</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- LINKS -->
+  <section id="links">
+    <p class="section-label fade-in">// 04 — Comms</p>
+    <h2 class="section-title fade-in">Find Me</h2>
+
+    <div class="links-grid">
+      <a href="https://www.codechef.com" target="_blank" class="link-card fade-in">
+        <div class="link-icon">⚙️</div>
+        <div class="link-name">CodeChef</div>
+        <div class="link-handle">Competitive Programming</div>
+      </a>
+      <a href="https://portswigger.net/web-security" target="_blank" class="link-card fade-in">
+        <div class="link-icon">🔐</div>
+        <div class="link-name">PortSwigger</div>
+        <div class="link-handle">Web Security Labs</div>
+      </a>
+      <a href="https://t.me" target="_blank" class="link-card fade-in">
+        <div class="link-icon">✈️</div>
+        <div class="link-name">Telegram</div>
+        <div class="link-handle">Primary Contact</div>
+      </a>
+      <a href="https://ruet.ac.bd" target="_blank" class="link-card fade-in">
+        <div class="link-icon">🎓</div>
+        <div class="link-name">RUET</div>
+        <div class="link-handle">CSE, 2nd Year</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>tamim · ruet · bd</span>
+    <span style="color:var(--green)">$ uptime: learning</span>
+  </footer>
+
+  <script>
+    // ── Ticker ────────────────────────────────────────────────
+    const skills = [
+      'C++', 'SQL', 'Discrete Math', 'Competitive Programming',
+      'Web Security', 'Burp Suite', 'HTTP', 'SQLi', 'XSS',
+      'Algorithms', 'Data Structures', 'Linux', 'Vector Calculus',
+      'CodeChef', 'CS50x', 'PortSwigger', 'Number Theory',
+    ];
+
+    const ticker = document.getElementById('ticker');
+    const content = skills.map(s => `<span class="ticker-item"><span class="dot">◆</span>${s}</span>`).join('');
+    // Duplicate for seamless loop
+    ticker.innerHTML = content + content;
+
+    // ── Scroll fade-in ────────────────────────────────────────
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          // stagger siblings
+          const siblings = e.target.parentElement.querySelectorAll('.fade-in');
+          siblings.forEach((el, i) => {
+            setTimeout(() => el.classList.add('visible'), i * 80);
+          });
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
