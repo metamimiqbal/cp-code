@@ -96,17 +96,36 @@ const int dy[] = {1, -1, 0, 0};
 // const int dy[] = {-1, 0, 1,-1, 1,-1, 0, 1};
 
 // [ The Great Adventure ] 
+// ll bigmod(ll n, ll k) {
+//     ll calc = 1;
+//     while(k--) {
+//         calc = (calc * n) % mod;
+//     }
+
+//     return calc;
+// }
+
+ll bigmod(ll base, ll exp) {
+    ll result = 1;
+    base %= mod;
+    while (exp > 0) {
+        if (exp & 1) result = result * base % mod;
+        base = base * base % mod;
+        exp >>= 1;
+    }
+    return result;
+}
+
 void solve() {
-    string s = "Tamim Iqbal";
-    cout<<s.find("m")<<nl; // returns first occurance of "m" in the string s.
-    cout<<char('a'+25)<<nl;
+    ll n, k; cin>>n>>k;
+    cout<<bigmod(n, k)<<nl;
 }
 
 // [ Black Pearl ] 
 signed main() {
     Think_Like_Jack_Sparrow
 
-    // int t; cin >> t; while(t--)
+    int t; cin >> t; while(t--)
     solve();
 
     return 0;

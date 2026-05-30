@@ -95,15 +95,50 @@ const int dy[] = {1, -1, 0, 0};
 // const int dx[] = {-1,-1,-1, 0, 0, 1, 1, 1};
 // const int dy[] = {-1, 0, 1,-1, 1,-1, 0, 1};
 
+bool paylamKi(string s, string t) {
+    return s.find(t) != string::npos;
+}
+
 // [ The Great Adventure ] 
 void solve() {
-    ll n; cin>>n;
-    string s; cin>>s;
+    ll n; string s; cin>>n>>s;
 
-    rep(i, 1, 4) {
-        string checkingstring = "";
-        for(int j = 0; j < i; j++) {
-            checkingstring += 
+    // len-1
+    rep(i, 0, 26) {
+        string ss = "";
+        ss += ('a'+i);
+        if(!paylamKi(s, ss)) {
+            cout<<ss<<nl; return;
+        }
+    } 
+
+    // len-2
+    rep(i, 0, 26) {
+        rep(j, 0, 26) {
+            string ss = "";
+            ss += ('a' + i);
+            ss += ('a' + j);
+            // dbg(ss);
+            if(!paylamKi(s, ss)) {
+                cout<<ss<<nl; return;
+            }
+        }
+    }
+
+    // len-3
+    rep(i, 0, 26) {
+        rep(j, 0, 26) {
+            rep(k, 0, 26) {
+                string ss = "";
+                ss += ('a' + i);
+                ss += ('a' + j);
+                ss += ('a' + k);
+                
+                // dbg(ss);
+                if(!paylamKi(s, ss)) {
+                    cout<<ss<<nl; return;
+                }
+            }
         }
     }
 }

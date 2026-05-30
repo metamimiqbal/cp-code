@@ -97,16 +97,22 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ The Great Adventure ] 
 void solve() {
-    string s = "Tamim Iqbal";
-    cout<<s.find("m")<<nl; // returns first occurance of "m" in the string s.
-    cout<<char('a'+25)<<nl;
+    ll n; string s; cin>>n>>s;
+
+    ll cn0 = 0;
+    rep(i, 0, sz(s)) cn0 += (s[i]=='0');
+    
+    if(cn0 == 0) cout<<"DRAW\n";
+    else if(cn0 == 1) cout<<"BOB\n";
+    else if(cn0 & 1) cout<<"ALICE\n";
+    else cout<<"BOB\n";
 }
 
 // [ Black Pearl ] 
 signed main() {
     Think_Like_Jack_Sparrow
 
-    // int t; cin >> t; while(t--)
+    int t; cin >> t; while(t--)
     solve();
 
     return 0;
