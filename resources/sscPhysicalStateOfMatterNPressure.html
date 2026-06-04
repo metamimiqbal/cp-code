@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SSC Physics | Physical States of Matter & Pressure</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg2: #0f1524;
+    --bg3: #151c30;
+    --accent1: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #f59e0b;
+    --accent4: #10b981;
+    --accent5: #ef4444;
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+    --border: rgba(255,255,255,0.08);
+    --glow1: rgba(0,212,255,0.15);
+    --glow2: rgba(124,58,237,0.15);
+    --card: rgba(255,255,255,0.04);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ─── STARFIELD ─── */
+  #stars {
+    position: fixed; inset:0; z-index:0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(0,80,120,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(80,0,120,0.12) 0%, transparent 60%),
+                var(--bg);
+    pointer-events: none;
+  }
+  #stars::before, #stars::after {
+    content:'';
+    position:absolute; inset:0;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 25%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 70%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 45% 80%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 10%, rgba(255,255,255,0.4) 0%, transparent 100%);
+    animation: twinkle 4s ease-in-out infinite alternate;
+  }
+  #stars::after {
+    background-image:
+      radial-gradient(1px 1px at 20% 40%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 55%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 30%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 15% 85%, rgba(255,255,255,0.3) 0%, transparent 100%);
+    animation-delay: 2s;
+  }
+  @keyframes twinkle { from{opacity:.6} to{opacity:1} }
+
+  /* ─── LAYOUT ─── */
+  .wrapper { position:relative; z-index:1; max-width:980px; margin:0 auto; padding:0 20px 60px; }
+
+  /* ─── HERO ─── */
+  .hero {
+    text-align:center; padding: 70px 20px 50px;
+    position:relative;
+  }
+  .hero-badge {
+    display:inline-block;
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--accent1);
+    font-size:.75rem; letter-spacing:.15em; text-transform:uppercase;
+    padding:6px 18px; border-radius:100px;
+    margin-bottom:22px;
+    animation: fadeUp .8s ease both;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight:700;
+    line-height:1.15;
+    background: linear-gradient(135deg, #fff 30%, var(--accent1) 70%, var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    animation: fadeUp .8s .15s ease both;
+  }
+  .hero p {
+    color: var(--text2); font-size:1.05rem; margin-top:14px;
+    max-width:580px; margin-left:auto; margin-right:auto;
+    animation: fadeUp .8s .3s ease both;
+  }
+  .chapter-tag {
+    display:inline-flex; gap:18px; margin-top:28px;
+    animation: fadeUp .8s .45s ease both;
+  }
+  .chapter-tag span {
+    background: var(--card); border:1px solid var(--border);
+    padding:5px 14px; border-radius:8px; font-size:.8rem; color:var(--text2);
+  }
+  .chapter-tag span b { color:var(--accent3); }
+
+  /* ─── TOC ─── */
+  .toc {
+    background: var(--card); border:1px solid var(--border);
+    border-radius:16px; padding:28px 32px; margin-bottom:48px;
+    animation: fadeUp .8s .5s ease both;
+  }
+  .toc h3 { font-size:.9rem; letter-spacing:.12em; text-transform:uppercase; color:var(--accent1); margin-bottom:16px; }
+  .toc ol { padding-left:20px; }
+  .toc li { margin:6px 0; }
+  .toc a { color:var(--text2); text-decoration:none; font-size:.92rem; transition:color .2s; }
+  .toc a:hover { color:var(--accent1); }
+
+  /* ─── SECTION ─── */
+  .section {
+    margin-bottom:52px;
+    animation: fadeUp .7s ease both;
+    animation-play-state: paused;
+  }
+  .section.visible { animation-play-state: running; }
+
+  .section-title {
+    display:flex; align-items:center; gap:12px;
+    margin-bottom:24px;
+  }
+  .section-num {
+    width:36px; height:36px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:.85rem; font-weight:600; flex-shrink:0;
+  }
+  .section-title h2 {
+    font-family:'Playfair Display', serif;
+    font-size:1.6rem; font-weight:700;
+  }
+
+  /* ─── CARD ─── */
+  .card {
+    background: var(--card);
+    border:1px solid var(--border);
+    border-radius:14px; padding:24px 28px;
+    margin-bottom:18px;
+    transition: border-color .3s, transform .3s;
+  }
+  .card:hover { border-color:rgba(0,212,255,0.2); transform:translateY(-2px); }
+  .card h3 { font-size:1.05rem; font-weight:600; color:var(--accent1); margin-bottom:10px; }
+  .card p, .card li { font-size:.93rem; color:var(--text2); }
+  .card ul, .card ol { padding-left:18px; }
+  .card li { margin:5px 0; }
+
+  /* ─── FORMULA BOX ─── */
+  .formula {
+    background: rgba(124,58,237,0.1);
+    border:1px solid rgba(124,58,237,0.3);
+    border-radius:12px; padding:18px 24px; margin:14px 0;
+    font-family:'JetBrains Mono', monospace;
+    text-align:center;
+  }
+  .formula .eq { font-size:1.25rem; color:#c4b5fd; font-weight:600; }
+  .formula .where { font-size:.8rem; color:var(--text2); margin-top:8px; }
+
+  /* ─── HIGHLIGHT ─── */
+  .hl { color:var(--accent1); font-weight:600; }
+  .hl2 { color:var(--accent3); font-weight:600; }
+  .hl3 { color:var(--accent4); font-weight:600; }
+  .hl4 { color:#c4b5fd; font-weight:600; }
+  .hl5 { color:var(--accent5); font-weight:600; }
+
+  /* ─── GRID ─── */
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  @media(max-width:640px){ .grid2,.grid3{grid-template-columns:1fr;} }
+
+  /* ─── COMPARISON TABLE ─── */
+  .comp-table { width:100%; border-collapse:collapse; font-size:.88rem; }
+  .comp-table th {
+    background:rgba(0,212,255,0.1); color:var(--accent1);
+    padding:10px 14px; text-align:left; border:1px solid var(--border);
+    font-weight:600;
+  }
+  .comp-table td {
+    padding:9px 14px; border:1px solid var(--border); color:var(--text2);
+    vertical-align:top;
+  }
+  .comp-table tr:nth-child(even) td { background:rgba(255,255,255,0.02); }
+
+  /* ─── IMPORTANT BOX ─── */
+  .important {
+    border-left:3px solid var(--accent3);
+    background:rgba(245,158,11,0.07);
+    padding:14px 18px; border-radius:0 10px 10px 0;
+    margin:14px 0; font-size:.9rem; color:var(--text);
+  }
+  .note-box {
+    border-left:3px solid var(--accent4);
+    background:rgba(16,185,129,0.07);
+    padding:14px 18px; border-radius:0 10px 10px 0;
+    margin:14px 0; font-size:.9rem;
+  }
+
+  /* ─────────────────────────────────
+     ANIMATIONS / DIAGRAMS
+  ───────────────────────────────── */
+
+  /* --- STATE OF MATTER ANIMATION --- */
+  .states-demo {
+    display:flex; gap:16px; justify-content:center; flex-wrap:wrap;
+    padding:28px 0;
+  }
+  .state-box {
+    width:160px; height:160px; border-radius:16px;
+    border:1px solid var(--border); position:relative;
+    overflow:hidden; cursor:pointer;
+    background:rgba(0,0,0,0.3);
+    transition: transform .3s, border-color .3s;
+    flex-shrink:0;
+  }
+  .state-box:hover { transform:scale(1.06); }
+  .state-box.solid { border-color:rgba(0,212,255,0.4); }
+  .state-box.liquid { border-color:rgba(16,185,129,0.4); }
+  .state-box.gas { border-color:rgba(245,158,11,0.4); }
+  .state-box.plasma { border-color:rgba(239,68,68,0.4); }
+  .state-label {
+    position:absolute; bottom:8px; left:0; right:0;
+    text-align:center; font-size:.75rem; font-weight:600;
+    letter-spacing:.08em; text-transform:uppercase;
+  }
+  /* Particles */
+  .particle {
+    position:absolute; border-radius:50%;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+  /* SOLID particles — vibrate in place */
+  .solid .particle {
+    width:14px; height:14px;
+    background:var(--accent1);
+    box-shadow:0 0 6px var(--accent1);
+    animation: vibrate 0.5s ease-in-out infinite alternate;
+  }
+  @keyframes vibrate {
+    from { transform: translate(0,0); }
+    to   { transform: translate(2px,2px); }
+  }
+  /* LIQUID particles — slow flow */
+  .liquid .particle {
+    width:11px; height:11px;
+    background:var(--accent4);
+    box-shadow:0 0 6px var(--accent4);
+    animation: flow var(--dur,3s) ease-in-out infinite alternate;
+  }
+  @keyframes flow {
+    0%   { transform:translate(0,0) rotate(0deg); }
+    50%  { transform:translate(var(--tx,15px),var(--ty,10px)); }
+    100% { transform:translate(var(--tx2,-10px),var(--ty2,15px)); }
+  }
+  /* GAS particles — fast random */
+  .gas .particle {
+    width:8px; height:8px;
+    background:var(--accent3);
+    box-shadow:0 0 5px var(--accent3);
+    animation: gasMove var(--dur,1.5s) linear infinite;
+  }
+  @keyframes gasMove {
+    0%  { transform:translate(0,0); }
+    25% { transform:translate(var(--x1,40px),var(--y1,-30px)); }
+    50% { transform:translate(var(--x2,-20px),var(--y2,40px)); }
+    75% { transform:translate(var(--x3,30px),var(--y3,20px)); }
+    100%{ transform:translate(0,0); }
+  }
+  /* PLASMA */
+  .plasma .particle {
+    width:6px; height:6px;
+    background:var(--accent5);
+    box-shadow:0 0 8px #ff6b6b, 0 0 16px #ff9999;
+    animation: plasmaMove var(--dur,0.8s) linear infinite;
+  }
+  @keyframes plasmaMove {
+    0%  { transform:translate(0,0) scale(1); }
+    20% { transform:translate(var(--x1,50px),var(--y1,-40px)) scale(1.3); }
+    40% { transform:translate(var(--x2,-30px),var(--y2,50px)) scale(0.8); }
+    60% { transform:translate(var(--x3,40px),var(--y3,30px)) scale(1.2); }
+    80% { transform:translate(var(--x4,-50px),var(--y4,-20px)) scale(0.9); }
+    100%{ transform:translate(0,0) scale(1); }
+  }
+
+  /* --- PRESSURE ANIMATION --- */
+  .pressure-demo {
+    background:var(--card); border:1px solid var(--border);
+    border-radius:14px; padding:24px; margin:16px 0;
+  }
+  .pressure-canvas-wrap { text-align:center; }
+  canvas { border-radius:10px; max-width:100%; }
+
+  /* --- PASCAL ANIMATION --- */
+  .pascal-anim {
+    display:flex; justify-content:center; align-items:flex-end;
+    gap:0; margin:20px auto; width:fit-content;
+    position:relative;
+  }
+  .piston-container {
+    display:flex; flex-direction:column; align-items:center; gap:0;
+  }
+  .piston-label { font-size:.75rem; color:var(--text2); margin-bottom:6px; text-align:center; }
+  .piston {
+    width:60px; height:20px; background:var(--accent2);
+    border-radius:4px 4px 0 0;
+    position:relative; cursor:pointer;
+    animation: pistonPress 2s ease-in-out infinite;
+    box-shadow:0 0 10px var(--accent2);
+  }
+  .piston.big { width:120px; animation: pistonPressOut 2s ease-in-out infinite; }
+  @keyframes pistonPress {
+    0%,60%,100%{ transform:translateY(0); }
+    30%{ transform:translateY(10px); }
+  }
+  @keyframes pistonPressOut {
+    0%,60%,100%{ transform:translateY(0); }
+    30%{ transform:translateY(-12px); }
+  }
+  .cylinder {
+    border:2px solid rgba(255,255,255,0.15);
+    border-top:none;
+    background:rgba(0,212,255,0.05);
+  }
+  .cyl-small { width:60px; height:80px; border-radius:0 0 4px 4px; }
+  .cyl-big { width:120px; height:80px; border-radius:0 0 4px 4px; }
+  .connector {
+    height:30px; width:100%;
+    border-bottom:2px solid rgba(255,255,255,0.15);
+    border-left:2px solid rgba(255,255,255,0.15);
+    border-right:2px solid rgba(255,255,255,0.15);
+    background:rgba(0,212,255,0.03);
+    display:flex; align-items:center; justify-content:center;
+    font-size:.65rem; color:var(--accent1);
+  }
+  .fluid-fill {
+    position:absolute; bottom:0; left:0; right:0;
+    background:linear-gradient(to top, rgba(0,180,220,0.5), rgba(0,212,255,0.15));
+    border-radius:0 0 4px 4px;
+    animation: fluidRise 2s ease-in-out infinite;
+  }
+  @keyframes fluidRise {
+    0%,60%,100%{ height:50%; }
+    30%{ height:70%; }
+  }
+  .fluid-fill.big { animation: fluidBigRise 2s ease-in-out infinite; }
+  @keyframes fluidBigRise {
+    0%,60%,100%{ height:50%; }
+    30%{ height:30%; }
+  }
+
+  /* --- ATMOSPHERIC PRESSURE ANIM --- */
+  .atm-demo {
+    position:relative; width:100%; height:220px; overflow:hidden;
+    border-radius:14px; background:linear-gradient(to bottom, #0a0e2a, #1a3a5c);
+    margin:16px 0;
+  }
+  .atm-layer {
+    position:absolute; left:0; right:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:.72rem; font-weight:600;
+    letter-spacing:.06em; text-transform:uppercase;
+    border-bottom:1px solid rgba(255,255,255,0.07);
+  }
+  .earth {
+    position:absolute; bottom:0; left:0; right:0; height:40px;
+    background:linear-gradient(to top, #2d4a1e, #3d6b28);
+    display:flex; align-items:center; justify-content:center;
+    font-size:.8rem; color:#a3e635; font-weight:600;
+  }
+  .air-particle {
+    position:absolute; border-radius:50%;
+    background:rgba(148,210,255,0.6);
+    animation: drift linear infinite;
+    pointer-events:none;
+  }
+  @keyframes drift {
+    0%  { transform:translateX(0) translateY(0); opacity:.5; }
+    50% { opacity:1; }
+    100%{ transform:translateX(var(--dx,30px)) translateY(var(--dy,-40px)); opacity:.3; }
+  }
+  .pressure-arrow {
+    position:absolute; top:12px; left:50%; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:2px;
+    animation: arrowPulse 1.5s ease-in-out infinite;
+  }
+  @keyframes arrowPulse {
+    0%,100%{ opacity:.7; transform:translateX(-50%) translateY(0); }
+    50%{ opacity:1; transform:translateX(-50%) translateY(4px); }
+  }
+
+  /* --- ARCHIMEDES / BUOYANCY ANIM --- */
+  .buoy-demo {
+    position:relative; height:160px; border-radius:14px;
+    overflow:hidden;
+    background:linear-gradient(to bottom, #0a1628, #0a2a4a);
+    margin:16px 0;
+  }
+  .water-surface {
+    position:absolute; left:0; right:0; height:80px;
+    bottom:0;
+    background:rgba(0,150,220,0.25);
+    border-top:2px solid rgba(0,200,255,0.4);
+    animation: waveSurface 3s ease-in-out infinite;
+  }
+  @keyframes waveSurface {
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-4px); }
+  }
+  .floating-object {
+    position:absolute; width:50px; height:30px;
+    background:var(--accent3);
+    border-radius:6px;
+    left:50%; transform:translateX(-50%);
+    animation: floatObj 3s ease-in-out infinite;
+    box-shadow:0 4px 12px rgba(245,158,11,0.4);
+  }
+  @keyframes floatObj {
+    0%,100%{ bottom:68px; }
+    50%{ bottom:72px; }
+  }
+  .force-label {
+    position:absolute; font-size:.7rem; font-weight:600;
+    animation: none !important;
+  }
+
+  /* ─── TORRICELLI / BAROMETER ANIM ─── */
+  .baro-demo {
+    display:flex; justify-content:center; gap:40px; flex-wrap:wrap;
+    padding:16px 0;
+  }
+  .barometer {
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    position:relative;
+  }
+  .baro-tube {
+    width:32px; height:140px; position:relative;
+    background:rgba(255,255,255,0.06);
+    border:2px solid rgba(255,255,255,0.15);
+    border-bottom:none; border-radius:8px 8px 0 0;
+    overflow:hidden;
+  }
+  .baro-mercury {
+    position:absolute; bottom:0; left:0; right:0;
+    background:linear-gradient(to top, #9ca3af, #d1d5db);
+    border-radius:0;
+    animation: mercuryRise 3s ease-in-out infinite;
+  }
+  @keyframes mercuryRise {
+    0%,100%{ height:76%; }
+    50%{ height:78%; }
+  }
+  .baro-vacuum { position:absolute; top:4px; left:0; right:0; height:20%; font-size:.55rem; color:var(--text2); text-align:center; line-height:1.2; }
+  .baro-base {
+    width:90px; height:24px; background:rgba(255,255,255,0.06);
+    border:2px solid rgba(255,255,255,0.15);
+    border-radius:6px; display:flex; align-items:center; justify-content:center;
+    font-size:.65rem; color:var(--text2);
+    position:relative;
+  }
+  .baro-base-mercury {
+    position:absolute; left:8px; right:8px; top:4px; bottom:4px;
+    background:linear-gradient(to right, #9ca3af, #d1d5db);
+    border-radius:3px;
+  }
+  .baro-label { font-size:.75rem; color:var(--text2); text-align:center; }
+
+  /* ─── HYDRAULIC PRESS ANIM ─── */
+  .hydraulic-anim {
+    display:flex; justify-content:center;
+    padding:12px 0;
+  }
+
+  /* ─── DENSITY TABLE ─── */
+  .density-bar {
+    display:flex; align-items:center; gap:10px; margin:6px 0;
+  }
+  .density-bar-label { width:110px; font-size:.8rem; color:var(--text2); flex-shrink:0; }
+  .density-bar-fill {
+    height:18px; border-radius:4px;
+    background:linear-gradient(to right, var(--accent1), var(--accent2));
+    animation: barGrow 1.2s cubic-bezier(0.34,1.56,0.64,1) both;
+    transform-origin:left;
+  }
+  @keyframes barGrow { from{width:0!important} }
+  .density-bar-val { font-size:.78rem; color:var(--accent3); font-family:'JetBrains Mono',monospace; }
+
+  /* ─── STATES TRANSITION DIAGRAM ─── */
+  .transition-grid {
+    display:grid; grid-template-columns:repeat(3,1fr); gap:12px;
+    text-align:center; padding:12px 0;
+  }
+  .trans-item {
+    padding:12px 8px; border-radius:10px;
+    border:1px solid var(--border);
+    font-size:.8rem;
+    transition: transform .2s;
+  }
+  .trans-item:hover { transform:scale(1.05); }
+  .trans-item .arrow { font-size:1.2rem; margin:4px 0; }
+  .trans-item .name { font-weight:700; font-size:.85rem; }
+
+  /* ─── SCROLL REVEAL ─── */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(24px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    height:1px;
+    background:linear-gradient(to right, transparent, rgba(0,212,255,0.2), transparent);
+    margin:40px 0;
+  }
+
+  /* ─── CHAPTER HEADER CHIPS ─── */
+  .color-chip {
+    display:inline-block; width:10px; height:10px;
+    border-radius:2px; margin-right:4px; vertical-align:middle;
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width:6px; }
+  ::-webkit-scrollbar-track { background:var(--bg); }
+  ::-webkit-scrollbar-thumb { background:rgba(0,212,255,0.3); border-radius:3px; }
+
+  /* ─── MCQ QUIZ ─── */
+  .quiz-card {
+    background:var(--card); border:1px solid var(--border);
+    border-radius:14px; padding:22px; margin-bottom:14px;
+  }
+  .quiz-q { font-weight:600; margin-bottom:12px; color:var(--text); font-size:.93rem; }
+  .quiz-opts { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .quiz-opt {
+    background:rgba(255,255,255,0.03); border:1px solid var(--border);
+    border-radius:8px; padding:8px 12px; cursor:pointer;
+    font-size:.83rem; color:var(--text2); transition:all .2s;
+  }
+  .quiz-opt:hover { border-color:var(--accent1); color:var(--text); }
+  .quiz-opt.correct { border-color:var(--accent4)!important; background:rgba(16,185,129,0.12)!important; color:var(--accent4)!important; }
+  .quiz-opt.wrong   { border-color:var(--accent5)!important; background:rgba(239,68,68,0.12)!important; color:var(--accent5)!important; }
+
+  @media(max-width:500px){ .quiz-opts{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div id="stars"></div>
+
+<div class="wrapper">
+
+  <!-- ══════════ HERO ══════════ -->
+  <div class="hero">
+    <div class="hero-badge">NCTB · Classes IX–X · 2026 Syllabus</div>
+    <h1>Physical States of Matter<br/>& Pressure</h1>
+    <p>A complete animated study guide for SSC Physics — covering every concept from particle theory to Pascal's Law</p>
+    <div class="chapter-tag">
+      <span>📘 Subject: <b>Physics</b></span>
+      <span>📖 Chapter: <b>7 &amp; 8</b></span>
+      <span>🏫 Board: <b>All Boards BD</b></span>
+    </div>
+  </div>
+
+  <!-- ══════════ TOC ══════════ -->
+  <div class="toc">
+    <h3>📋 Table of Contents</h3>
+    <ol>
+      <li><a href="#s1">States of Matter — Overview</a></li>
+      <li><a href="#s2">Properties of Each State</a></li>
+      <li><a href="#s3">Intermolecular Forces &amp; Kinetic Theory</a></li>
+      <li><a href="#s4">Changes of State (Phase Transitions)</a></li>
+      <li><a href="#s5">Pressure — Definition &amp; Formula</a></li>
+      <li><a href="#s6">Pressure in Liquids (Fluid Pressure)</a></li>
+      <li><a href="#s7">Atmospheric Pressure &amp; Barometer</a></li>
+      <li><a href="#s8">Pascal's Law &amp; Hydraulic Machines</a></li>
+      <li><a href="#s9">Archimedes' Principle &amp; Buoyancy</a></li>
+      <li><a href="#s10">Density &amp; Relative Density</a></li>
+      <li><a href="#s11">Important Formulas Summary</a></li>
+      <li><a href="#s12">Practice MCQ</a></li>
+    </ol>
+  </div>
+
+  <!-- ══════════ SECTION 1: States Overview ══════════ -->
+  <div class="section" id="s1">
+    <div class="section-title">
+      <div class="section-num" style="background:rgba(0,212,255,0.15);color:var(--accent1)">01</div>
+      <h2>States of Matter — Overview</h2>
+    </div>
+
+    <div class="card">
+      <p>Matter is anything that has <span class="hl">mass</span> and occupies <span class="hl">space</span>. Based on the arrangement and energy of its constituent particles (atoms/molecules), matter exists in different physical states.</p>
+    </div>
+
+    <!-- Animated particle demo -->
+    <div class="card">
+      <h3>🔬 Interactive Particle Simulation</h3>
+      <p style="font-size:.82rem;color:var(--text2);margin-bottom:16px">Watch how particles behave differently in each state</p>
+      <div class="states-demo" id="statesDemo"></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>🧊 Solid</h3>
+        <ul>
+          <li>Definite <span class="hl">shape &amp; volume</span></li>
+          <li>Particles closely packed</li>
+          <li>Very low kinetic energy</li>
+          <li>Incompressible</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>💧 Liquid</h3>
+        <ul>
+          <li>Definite <span class="hl3">volume</span>, no fixed shape</li>
+          <li>Particles close but mobile</li>
+          <li>Moderate kinetic energy</li>
+          <li>Nearly incompressible</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>💨 Gas</h3>
+        <ul>
+          <li>No definite shape or volume</li>
+          <li>Particles far apart &amp; fast</li>
+          <li>High kinetic energy</li>
+          <li>Highly compressible</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>⚡ Plasma (4th State)</h3>
+        <ul>
+          <li>Ionized gas — free electrons</li>
+          <li>Found in: Sun, lightning, neon lights</li>
+          <li>Extremely high energy</li>
+          <li>Most common state in universe</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══════════ SECTION 2: Properties ══════════ -->
+  <div class="section" id="s2">
+    <div class="section-title">
+      <div class="section-num" style="background:rgba(124,58,237,0.15);color:#c4b5fd">02</div>
+      <h2>Properties of Each State</h2>
+    </div>
+
+    <div class="card">
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Solid 🧊</th>
+            <th>Liquid 💧</th>
+            <th>Gas 💨</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Shape</td><td>Fixed</td><td>Takes container shape</td><td>Takes container shape</td></tr>
+          <tr><td>Volume</td><td>Fixed</td><td>Fixed</td><td>Fills container</td></tr>
+          <tr><td>Particle spacing</td><td>Very close</td><td>Close</td><td>Far apart</td></tr>
+          <tr><td>Intermolecular force</td><td>Very strong</td><td>Moderate</td><td>Very weak</td></tr>
+          <tr><td>Compressibility</td><td>Negligible</td><td>Very low</td><td>High</td></tr>
+          <tr><td>Diffusion</td><td>Very slow</td><td>Slow</td><td>Fast</td></tr>
+          <tr><td>Density</td><td>High</td><td>Medium</td><td>Very low</td></tr>
+          <tr><td>Example</td><td>Ice, Iron, Rock</td><td>Water, Mercury, Oil</td><td>Air, Oxygen, CO₂</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══════════ SECTION 3: Kinetic Theory ══════════ -->
+  <div class="section" id="s3">
+    <div class="section-title">
+      <div class="section-num" style="background:rgba(16,185,129,0.15);color:var(--accent4)">03</div>
+      <h2>Intermolecular Forces &amp; Kinetic Theory</h2>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Intermolecular Forces</h3>
+        <ul>
+          <li><span class="hl">Cohesion</span> — attraction between like molecules (e.g. water–water)</li>
+          <li><span class="hl3">Adhesion</span> — attraction between unlike molecules (e.g. water–glass)</li>
+          <li>These forces determine state of matter</li>
+          <li>Weakest in gases, strongest in solids</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Kinetic Theory of Matter</h3>
+        <ul>
+          <li>All matter is made of <span class="hl">particles in motion</span></li>
+          <li>Higher temperature → greater KE</li>
+          <li>KE of particles determines the state</li>
+          <li>Average KE ∝ Absolute Temperature (K)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Surface Tension</h3>
+      <p>The tendency of a liquid surface to contract to the smallest possible area due to cohesive forces among surface molecules is called <span class="hl">surface tension</span>.</p>
+      <div class="important">💡 Unit of Surface Tension: <b>N/m</b> (Newton per metre). Example: Water droplets form spheres — minimum surface area for maximum volume.</div>
+      <ul style="margin-top:10px">
+        <li>Causes insects to walk on water (water striders)</li>
+        <li>Mercury forms convex meniscus (cohesion &gt; adhesion)</li>
+        <li>Water forms concave meniscus (adhesion &gt; cohesion)</li>
+        <li>Surface tension decreases with increase in temperature</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Viscosity</h3>
+      <p><span class="hl">Viscosity</span> is the resistance of a fluid to flow — the internal friction between layers of a moving fluid.</p>
+      <ul style="margin-top:10px">
+        <li>Honey has high viscosity; water has low viscosity</li>
+        <li>Viscosity of liquids <span class="hl5">decreases</span> with temperature</li>
+        <li>Viscosity of gases <span class="hl3">increases</span> with temperature</li>
+        <li>Unit: Pa·s (Pascal-second)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══════════ SECTION 4: Phase Transitions ══════════ -->
+  <div class="section" id="s4">
+    <div class="section-title">
+      <div class="section-num" style="background:rgba(245,158,11,0.15);color:var(--accent3)">04</div>
+      <h2>Changes of State (Phase Transitions)</h2>
+    </div>
+
+    <!-- Animated transition diagram -->
+    <div class="card">
+      <h3>🔄 Phase Transition Animation</h3>
+      <div style="position:relative;padding:20px 0">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+          <div style="text-align:center;min-width:80px">
+            <div style="font-size:2rem">🧊</div>
+            <div style="font-size:.85rem;font-weight:700;color:var(--accent1)">SOLID</div>
+          </div>
+          <div style="flex:1;text-align:center;font-size:.75rem;min-width:80px">
+            <div style="color:var(--accent5);animation:arrowAnim 1s ease-in-out infinite alternate">→ Melting (heat added) →</div>
+            <div style="color:var(--accent1);animation:arrowAnim 1s .5s ease-in-out infinite alternate">← Freezing (heat removed) ←</div>
+          </div>
+          <div style="text-align:center;min-width:80px">
+            <div style="font-size:2rem">💧</div>
+            <div style="font-size:.85rem;font-weight:700;color:var(--accent4)">LIQUID</div>
+          </div>
+          <div style="flex:1;text-align:center;font-size:.75rem;min-width:80px">
+            <div style="color:var(--accent5);animation:arrowAnim 1s .25s ease-in-out infinite alternate">→ Vaporization →</div>
+            <div style="color:var(--accent1);animation:arrowAnim 1s .75s ease-in-out infinite alternate">← Condensation ←</div>
+          </div>
+          <div style="text-align:center;min-width:80px">
+            <div style="font-size:2rem">💨</div>
+            <div style="font-size:.85rem;font-weight:700;color:var(--accent3)">GAS</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-around;margin-top:20px;flex-wrap:wrap;gap:8px">
+          <div style="text-align:center;font-size:.75rem;color:var(--text2)">Solid → Gas:<br/><span style="color:#c4b5fd;font-weight:600">Sublimation</span></div>
+          <div style="text-align:center;font-size:.75rem;color:var(--text2)">Gas → Solid:<br/><span style="color:#c4b5fd;font-weight:600">Deposition</span></div>
+          <div style="text-align:center;font-size:.75rem;color:var(--text2)">Examples: Dry Ice (CO₂),<br/>Camphor, Iodine, Naphthalene</div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      @keyframes arrowAnim { from{opacity:.5;letter-spacing:0} to{opacity:1;letter-spacing:1px} }
+    </style>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>🌡️ Latent Heat</h3>
+        <p>Heat absorbed or released during a change of state <span class="hl">without change in temperature</span>.</p>
+        <ul style="margin-top:8px">
+          <li><span class="hl">Latent heat of fusion</span> — solid to liquid</li>
+          <li><span class="hl3">Latent heat of vaporization</span> — liquid to gas</li>
+          <li>For water: L<sub>fusion</sub> = 334 kJ/kg</li>
+          <li>For water: L<sub>vap</sub> = 2260 kJ/kg</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>📊 Important Temperature Points</h3>
+        <ul>
+          <li>Melting point of water: <span class="hl">0°C (273 K)</span></li>
+          <li>Boiling point of water: <span class="hl">100°C (373 K)</span></li>
+          <li>Boiling point <span class="hl5">decreases</span> at higher altitudes</li>
+          <li>Pressure affects boiling point (Clausius–Clapeyron)</li>
+          <li>Freezing point depression by dissolving solutes</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Evaporation vs Boiling</h3>
+      <table class="comp-table" style="margin-top:8px">
+        <thead><tr><th>Property</th><th>Evaporation</th><th>Boiling</th></tr></thead>
+        <tbody>
+          <tr><td>Temperature</td><td>Any temperature</td><td>At boiling point only</td></tr>
+          <tr><td>Where occurs</td><td>Surface only</td><td>Throughout liquid</td></tr>
+          <tr><td>Speed</td><td>Slow</td><td>Rapid</td></tr>
+          <tr><td>Effect</td><td>Cooling effect</td><td>No cooling</td></tr>
+          <tr><td>Example</td><td>Wet clothes drying</td><td>Cooking water</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══════════ SECTION 5: Pressure ══════════ -->
+  <div class="section" id="s5">
+    <div class="section-title">
+      <div class="section-num" style="background:rgba(239,68,68,0.15);color:var(--accent5)">05</div>
+      <h2>Pressure — Definition &amp; Formula</h2>
+    </div>
+
+    <div class="card">
+      <p>Pressure is defined as the <span class="hl">force applied perpendicularly per unit area</span> of a surface.</p>
+      <div class="formula">
+        <div class="eq">P = F / A</div>
+        <div class="where">P = Pressure (Pa) &nbsp;|&nbsp; F = Force (N) &nbsp;|&nbsp; A = Area (m²)</div>
+      </div>
+      <p style="margin-top:10px"><strong>SI Unit:</strong> <span class="hl">Pascal (Pa)</span> = 1 N/m² &nbsp; Named after Blaise Pascal</p>
+      <p style="margin-top:6px">Other units: bar, atm, mmHg, psi</p>
+      <p style="margin-top:6px">1 atm = 101,325 Pa ≈ 1.013 × 10⁵ Pa = 760 mmHg = 76 cm Hg</p>
+    </div>
+
+    <!-- Interactive pressure canvas -->
+    <div class="pressure-demo">
+      <h3 style="font-size:.95rem;color:var(--accent1);margin-bottom:12px">⚡ Pressure vs Area — Interactive</h3>
+      <div class="pressure-canvas-wrap">
+        <canvas id="pressureCanvas" width="520" height="200"></canvas>
+      </div>
+      <div style="display:flex;gap:16px;margin-top:14px;flex-wrap:wrap">
+        <label style="font-size:.82rem;color:var(--text2)">Force (N):
+          <input type="range" id="forceSlider" min="10" max="200" value="100" style="margin-left:8px;accent-color:var(--accent1)">
+          <span id="forceVal" style="color:var(--accent1);font-family:monospace;margin-left:4px">100</span>
+        </label>
+        <label style="font-size:.82rem;color:var(--text2)">Area (m²):
+          <input type="range" id="areaSlider" min="1" max="20" value="5" style="margin-left:8px;accent-color:var(--accent3)">
+          <span id="areaVal" style="color:var(--accent3);font-family:monospace;margin-left:4px">5</span>
+        </label>
+      </div>
+      <p id="pressureResult" style="font-family:monospace;font-size:.9rem;margin-top:10px;color:#c4b5fd"></p>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Why sharp objects cut easily?</h3>
+        <p>A knife has a very <span class="hl">small area</span>. For the same force, pressure = F/A is very large → easier cutting.</p>
+        <div class="important" style="margin-top:10px">Same force + smaller area = MORE pressure</div>
+      </div>
+      <div class="card">
+        <h3>Why snowshoes / camel feet?</h3>
+        <p>Large flat feet <span class="hl3">spread the weight</span> over a greater area → smaller pressure → don't sink into snow/sand.</p>
+        <div class="important" style="margin-top:10px">Same force + larger area = LESS pressure</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══════════ SECTION 6: Fluid Pressure ══════════ -->
+  <div class="section" id="s6">
+    <div class="section-title">
+      <div class="section-num" style="background:rgba(16,185,129,0.15);color:var(--accent4)">06</div>
+      <h2>Pressure in Liquids (Fluid Pressure)</h2>
+    </div>
+
+    <div class="card">
+      <p>A liquid exerts pressure in <span class="hl">all directions</span>. The pressure at a point in a static liquid depends on:</p>
+      <div class="formula">
+        <div class="eq">P = ρ g h</div>
+        <div class="where">ρ = density of liquid (kg/m³) &nbsp;|&nbsp; g = 9.8 m/s² &nbsp;|&nbsp; h = depth (m)</div>
+      </div>
+    </div>
+
+    <!-- Fluid pressure animated diagram -->
+    <div class="card">
+      <h3>🌊 Pressure Increases with Depth</h3>
+      <div style="display:flex;justify-content:center;margin:16px 0">
+        <canvas id="fluidCanvas" width="320" height="260"></canvas>
+      </div>
+      <p style="font-size:.82rem;color:var(--text2);text-align:center">Drag the slider to see pressure at different depths</p>
+      <div style="text-align:center;margin-top:10px">
+        Depth: <input type="range" id="depthSlider" min="0" max="100" value="50" style="accent-color:var(--accent4)">
+        <span id="depthVal" style="font-family:monospace;color:var(--accent4)">50</span> cm
+        <span style="font-family:monospace;color:var(--accent1);margin-left:16px" id="depthPressure"></span>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Properties of Liquid Pressure</h3>
+        <ul>
+          <li>Increases with <span class="hl">depth</span></li>
+          <li>Increases with <span class="hl">density</span> of liquid</li>
+          <li>Acts in <span class="hl3">all directions</span></li>
+          <li>Independent of shape of container</li>
+          <li>Independent of area of cross-section</li>
+          <li>Horizontal pressure same at equal depths</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Hydrostatic Paradox</h3>
+        <p>The pressure at the bottom of a liquid depends only on <span class="hl">height (h)</span> and density — not on the shape or volume of the container.</p>
+        <div class="note-box" style="margin-top:10px">Three containers with different shapes but same height of water → same pressure at bottom!</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Pressure Due to a Liquid Column</h3>
+      <p>If a liquid column of height <b>h</b> and density <b>ρ</b> rests on area <b>A</b>:</p>
+      <div class="formula">
+        <div class="eq">P = ρgh &nbsp;&nbsp; and &nbsp;&nbsp; Total Pressure = P_atm + ρgh</div>
+        <div class="where">Total pressure at depth h = Atmospheric pressure + Pressure due to liquid column</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══════════ SECTION 7: Atmospheric Pressure ══════════ -->
+  <div class="section" id="s7">
+    <div class="section-title">
+      <div class="section-num" style="background:rgba(124,58,237,0.15);color:#c4b5fd">07</div>
+      <h2>Atmospheric Pressure &amp; Barometer</h2>
+    </div>
+
+    <div class="card">
+      <p>The Earth is surrounded by a layer of air called the <span class="hl">atmosphere</span>. The weight of this column of air exerts pressure on the Earth's surface called <span class="hl">atmospheric pressure</span>.</p>
+      <div class="formula">
+        <div class="eq">P₀ = 1.013 × 10⁵ Pa = 760 mmHg = 1 atm</div>
+        <div class="where">Standard atmospheric pressure at sea level</div>
+      </div>
+    </div>
+
+    <!-- Atmospheric pressure animation -->
+    <div class="atm-demo" id="atmDemo">
+      <div class="pressure-arrow">
+        <div style="font-size:.7rem;color:var(--accent1);font-weight:600">Atmospheric Pressure</div>
+        <div style="color:var(--accent1);font-size:1.2rem">↓ ↓ ↓</div>
+      </div>
+      <div class="atm-layer" style="bottom:40px;height:40px;color:rgba(100,180,255,0.6)">Troposphere (0–12 km)</div>
+      <div class="atm-layer" style="bottom:80px;height:36px;color:rgba(80,160,255,0.5)">Stratosphere (12–50 km)</div>
+      <div class="atm-layer" style="bottom:116px;height:32px;color:rgba(60,140,255,0.4)">Mesosphere (50–80 km)</div>
+      <div class="atm-layer" style="bottom:148px;height:30px;color:rgba(40,120,255,0.3)">Thermosphere &amp; beyond</div>
+      <div class="earth">🌍 Earth's Surface</div>
+    </div>
+
+    <!-- Barometer -->
+    <div class="card">
+      <h3>🌡️ Torricelli's Barometer</h3>
+      <p>Invented by <span class="hl">Evangelista Torricelli</span> in 1643 to measure atmospheric pressure.</p>
+      <div class="baro-demo">
+        <div class="barometer">
+          <div class="baro-label">Vacuum at top<br/>(Torricellian vacuum)</div>
+          <div class="baro-tube">
+            <div class="baro-vacuum">Vacuum<br/>~0 Pa</div>
+            <div class="baro-mercury" style="height:76%"></div>
+          </div>
+          <div style="font-size:.7rem;color:var(--accent3);text-align:center;margin:2px 0">← 76 cm →<br/>Mercury column</div>
+          <div class="baro-base">
+            <div class="baro-base-mercury"></div>
+          </div>
+          <div class="baro-label" style="margin-top:4px">Mercury trough</div>
+        </div>
+        <div style="max-width:260px;padding:12px 0">
+          <h3 style="font-size:.9rem;color:var(--accent1);margin-bottom:10px">How it works</h3>
+          <ul style="font-size:.82rem;color:var(--text2)">
+            <li>A glass tube ~1m long, sealed at one end</li>
+            <li>Filled with mercury and inverted in a trough</li>
+            <li>Mercury column stays at <span class="hl">76 cm</span> height</li>
+            <li>Atmospheric pressure supports this column</li>
+            <li>P₀ = ρ<sub>Hg</sub> × g × h = 13600 × 9.8 × 0.76</li>
+            <li style="color:var(--accent3)">= 1.013 × 10⁵ Pa ✓</li>
+          </ul>
+          <div class="note-box" style="margin-top:10px">At higher altitudes, mercury column height decreases because atmospheric pressure is lower.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Aneroid Barometer</h3>
+        <p>Uses a sealed flexible metallic box instead of mercury. More portable and convenient. Used in altimeters and weather forecasting instruments.</p>
+      </div>
+      <div class="card">
+        <h3>Manometer</h3>
+        <p>A U-tube device used to measure <span class="hl">gauge pressure</span> (pressure above atmospheric). Used in labs and industry. Can use mercury or water as the manometric fluid.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Effects &amp; Applications of Atmospheric Pressure</h3>
+      <div class="grid2" style="margin-top:12px">
+        <ul>
+          <li>Suction cups work due to atm. pressure</li>
+          <li>Drinking through a straw (creating low pressure)</li>
+          <li>Syringe — drawing liquid upward</li>
+          <li>Water pump — lifting water from wells</li>
+        </ul>
+        <ul>
+          <li>Altimeter in aircraft measures altitude</li>
+          <li>Weather forecasting (high/low pressure)</li>
+          <li>Pressure cooker — increases boiling point</li>
+          <li>Mountain sickness at high altitude</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══════════ SECTION 8: Pascal's Law ══════════ -->
+  <div class="section" id="s8">
+    <div class="section-title">
+      <div class="section-num" style="background:rgba(0,212,255,0.15);color:var(--accent1)">08</div>
+      <h2>Pascal's Law &amp; Hydraulic Machines</h2>
+    </div>
+
+    <div class="card">
+      <h3>Pascal's Law (1648)</h3>
+      <p>"Pressure applied to an enclosed fluid is <span class="hl">transmitted equally in all directions</span> throughout the fluid and acts on every unit area."</p>
+      <div class="formula">
+        <div class="eq">P₁ = P₂ &nbsp; → &nbsp; F₁/A₁ = F₂/A₂</div>
+        <div class="where">F₁ = Input force &nbsp;|&nbsp; A₁ = Input area &nbsp;|&nbsp; F₂ = Output force &nbsp;|&nbsp; A₂ = Output area</div>
+      </div>
+    </div>
+
+    <!-- Pascal Hydraulic Animation -->
+    <div class="card">
+      <h3>⚙️ Hydraulic System Animation</h3>
+      <p style="font-size:.82rem;color:var(--text2);margin-bottom:16px">Small force on small piston → large force on big piston</p>
+      <div style="display:flex;justify-content:center">
+        <div class="pascal-anim">
+          <div class="piston-container">
+            <div class="piston-label">Small Piston<br/>F₁ = 10 N<br/>A₁ = 1 m²</div>
+            <div class="piston"></div>
+            <div class="cylinder cyl-small" style="position:relative">
+              <div class="fluid-fill"></div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column">
+            <div style="flex:1"></div>
+            <div class="connector" style="width:80px">⟺ fluid ⟺</div>
+          </div>
+          <div class="piston-container">
+            <div class="piston-label">Large Piston<br/>F₂ = 30 N<br/>A₂ = 3 m²</div>
+            <div class="piston big"></div>
+            <div class="cylinder cyl-big" style="position:relative">
+              <div class="fluid-fill big"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:14px;font-size:.82rem;color:var(--text2)">
+        <span class="hl">Mechanical advantage</span> = A₂/A₁ — same pressure, more force on larger area
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>🚗 Hydraulic Brake</h3>
+        <p>Small foot pressure → transmitted through brake fluid → large force on brake pads → stops vehicle.</p>
+        <div class="note-box" style="margin-top:8px">Uses incompressibility of liquids and Pascal's Law</div>
+      </div>
+      <div class="card">
+        <h3>🏗️ Hydraulic Jack/Lift</h3>
+        <p>Used in garages to lift cars. Small force on small piston creates large upward force on large piston.</p>
+        <div class="formula" style="padding:10px;margin:8px 0">
+          <div class="eq" style="font-size:1rem">F₂ = F₁ × (A₂/A₁)</div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>💉 Syringe</h3>
+        <p>Pascal's law is also applied in syringes — pressure applied on plunger transmits to push out liquid uniformly.</p>
+      </div>
+      <div class="card">
+        <h3>✈️ Aircraft Controls</h3>
+        <p>Hydraulic systems control ailerons, flaps, and landing gear in aircraft using the principle of transmitted pressure.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══════════ SECTION 9: Archimedes ══════════ -->
+  <div class="section" id="s9">
+    <div class="section-title">
+      <div class="section-num" style="background:rgba(245,158,11,0.15);color:var(--accent3)">09</div>
+      <h2>Archimedes' Principle &amp; Buoyancy</h2>
+    </div>
+
+    <div class="card">
+      <h3>Archimedes' Principle</h3>
+      <p>"When a body is wholly or partially immersed in a fluid, it experiences an <span class="hl">upward buoyant force</span> equal to the <span class="hl3">weight of fluid displaced</span>."</p>
+      <div class="formula">
+        <div class="eq">F_b = ρ_fluid × V_displaced × g</div>
+        <div class="where">F_b = Buoyant force | ρ = density of fluid | V = volume of fluid displaced | g = 9.8 m/s²</div>
+      </div>
+    </div>
+
+    <!-- Buoyancy animation -->
+    <div class="card">
+      <h3>🚢 Buoyancy Animation</h3>
+      <div class="buoy-demo" id="buoyDemo">
+        <div class="water-surface"></div>
+        <div class="floating-object" id="floatObj"></div>
+        <div class="force-label" style="color:var(--accent5);left:38%;bottom:90px" id="weightLabel">↓ W</div>
+        <div class="force-label" style="color:var(--accent4);left:58%;bottom:90px" id="buoyLabel">↑ F_b</div>
+        <div style="position:absolute;top:8px;left:16px;font-size:.7rem;color:var(--text2)">
+          Drag slider: Object density relative to water
+        </div>
+      </div>
+      <div style="margin-top:12px;text-align:center">
+        Density ratio: <input type="range" id="densitySlider" min="20" max="180" value="70" style="accent-color:var(--accent3)">
+        <span id="densityRatio" style="font-family:monospace;color:var(--accent3)">0.70</span>
+        <span id="floatStatus" style="font-family:monospace;color:var(--accent4);margin-left:12px">FLOATING</span>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Conditions of Floating</h3>
+        <ul>
+          <li><span class="hl3">Floats</span>: density of object &lt; density of fluid</li>
+          <li><span class="hl">Sinks</span>: density of object &gt; density of fluid</li>
+          <li><span class="hl4">Neutral buoyancy</span>: densities equal (hovers)</li>
+        </ul>
+        <div class="note-box" style="margin-top:10px">A steel ship floats because its average density (including hollow parts) is less than water!</div>
+      </div>
+      <div class="card">
+        <h3>Applications</h3>
+        <ul>
+          <li><span class="hl">Ships &amp; submarines</span> — buoyancy design</li>
+          <li><span class="hl3">Hydrometer</span> — measures fluid density</li>
+          <li><span class="hl">Hot air balloon</span> — buoyancy in air</li>
+          <li>Fish swim bladder — adjusts buoyancy</li>
+          <li>Life jackets — increase volume → increase buoyant force</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Apparent Weight</h3>
+      <p>When an object is immersed in a liquid, it appears lighter because the buoyant force acts upward:</p>
+      <div class="formula">
+        <div class="eq">Apparent Weight = True Weight − Buoyant Force</div>
+        <div class="eq" style="margin-top:8px">W_apparent = W − F_b = mg − ρ_fluid × V × g</div>
+      </div>
+      <div class="important">This is why objects feel lighter underwater — used in determining density by measuring loss of weight!</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══════════ SECTION 10: Density ══════════ -->
+  <div class="section" id="s10">
+    <div class="section-title">
+      <div class="section-num" style="background:rgba(239,68,68,0.15);color:var(--accent5)">10</div>
+      <h2>Density &amp; Relative Density</h2>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Density</h3>
+        <p>Mass per unit volume of a substance.</p>
+        <div class="formula" style="padding:12px">
+          <div class="eq">ρ = m / V</div>
+          <div class="where">Unit: kg/m³ &nbsp;|&nbsp; Also g/cm³</div>
+        </div>
+        <p style="font-size:.85rem;color:var(--text2)">Density of water = 1000 kg/m³ = 1 g/cm³</p>
+      </div>
+      <div class="card">
+        <h3>Relative Density (Specific Gravity)</h3>
+        <p>Ratio of density of a substance to density of water at 4°C.</p>
+        <div class="formula" style="padding:12px">
+          <div class="eq">R.D. = ρ_substance / ρ_water</div>
+          <div class="where">Dimensionless (no unit)</div>
+        </div>
+        <p style="font-size:.85rem;color:var(--text2)">R.D. of mercury = 13.6 (mercury is 13.6× denser than water)</p>
+      </div>
+    </div>
+
+    <!-- Density bar chart -->
+    <div class="card">
+      <h3>📊 Density of Common Substances</h3>
+      <div style="margin-top:14px" id="densityBars"></div>
+    </div>
+
+    <div class="card">
+      <h3>Measuring Density Using Archimedes' Principle</h3>
+      <ol style="font-size:.9rem;color:var(--text2)">
+        <li>Measure true weight in air: W₁</li>
+        <li>Measure apparent weight in water: W₂</li>
+        <li>Loss of weight = Buoyant force = W₁ − W₂</li>
+        <li>Relative Density = W₁ / (W₁ − W₂)</li>
+      </ol>
+      <div class="formula" style="margin-top:12px">
+        <div class="eq">R.D. = W_air / (W_air − W_water)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══════════ SECTION 11: Formula Summary ══════════ -->
+  <div class="section" id="s11">
+    <div class="section-title">
+      <div class="section-num" style="background:rgba(124,58,237,0.15);color:#c4b5fd">11</div>
+      <h2>📐 Important Formulas Summary</h2>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Pressure</h3>
+        <div class="formula" style="padding:10px;margin:6px 0"><div class="eq" style="font-size:1rem">P = F/A</div></div>
+        <div class="formula" style="padding:10px;margin:6px 0"><div class="eq" style="font-size:1rem">P = ρgh</div></div>
+      </div>
+      <div class="card">
+        <h3>Density</h3>
+        <div class="formula" style="padding:10px;margin:6px 0"><div class="eq" style="font-size:1rem">ρ = m/V</div></div>
+        <div class="formula" style="padding:10px;margin:6px 0"><div class="eq" style="font-size:1rem">R.D. = ρ_s / ρ_w</div></div>
+      </div>
+      <div class="card">
+        <h3>Pascal's Law</h3>
+        <div class="formula" style="padding:10px;margin:6px 0"><div class="eq" style="font-size:1rem">F₁/A₁ = F₂/A₂</div></div>
+      </div>
+      <div class="card">
+        <h3>Buoyancy</h3>
+        <div class="formula" style="padding:10px;margin:6px 0"><div class="eq" style="font-size:1rem">F_b = ρ_f · V · g</div></div>
+        <div class="formula" style="padding:10px;margin:6px 0"><div class="eq" style="font-size:1rem">W_app = W − F_b</div></div>
+      </div>
+      <div class="card">
+        <h3>Barometer Height</h3>
+        <div class="formula" style="padding:10px;margin:6px 0"><div class="eq" style="font-size:1rem">P₀ = ρ_Hg · g · h</div></div>
+        <p style="font-size:.8rem;color:var(--text2);margin-top:6px">h = 76 cm at sea level</p>
+      </div>
+      <div class="card">
+        <h3>Atmospheric Pressure</h3>
+        <div class="formula" style="padding:10px;margin:6px 0"><div class="eq" style="font-size:1rem">1 atm = 1.013×10⁵ Pa</div></div>
+        <p style="font-size:.8rem;color:var(--text2);margin-top:6px">= 760 mmHg = 76 cmHg</p>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:rgba(245,158,11,0.3)">
+      <h3 style="color:var(--accent3)">🔑 Key Constants to Remember</h3>
+      <div class="grid3" style="margin-top:12px">
+        <div style="text-align:center;padding:8px;background:rgba(255,255,255,0.03);border-radius:8px">
+          <div style="font-family:monospace;color:var(--accent1);font-size:.95rem">g = 9.8 m/s²</div>
+          <div style="font-size:.72rem;color:var(--text2)">Gravity</div>
+        </div>
+        <div style="text-align:center;padding:8px;background:rgba(255,255,255,0.03);border-radius:8px">
+          <div style="font-family:monospace;color:var(--accent4);font-size:.95rem">ρ_water = 1000 kg/m³</div>
+          <div style="font-size:.72rem;color:var(--text2)">Water density</div>
+        </div>
+        <div style="text-align:center;padding:8px;background:rgba(255,255,255,0.03);border-radius:8px">
+          <div style="font-family:monospace;color:var(--accent3);font-size:.95rem">ρ_Hg = 13600 kg/m³</div>
+          <div style="font-size:.72rem;color:var(--text2)">Mercury density</div>
+        </div>
+        <div style="text-align:center;padding:8px;background:rgba(255,255,255,0.03);border-radius:8px">
+          <div style="font-family:monospace;color:var(--accent5);font-size:.95rem">ρ_air ≈ 1.29 kg/m³</div>
+          <div style="font-size:.72rem;color:var(--text2)">Air density</div>
+        </div>
+        <div style="text-align:center;padding:8px;background:rgba(255,255,255,0.03);border-radius:8px">
+          <div style="font-family:monospace;color:#c4b5fd;font-size:.95rem">1 Pa = 1 N/m²</div>
+          <div style="font-size:.72rem;color:var(--text2)">Pressure unit</div>
+        </div>
+        <div style="text-align:center;padding:8px;background:rgba(255,255,255,0.03);border-radius:8px">
+          <div style="font-family:monospace;color:var(--accent1);font-size:.95rem">0°C = 273 K</div>
+          <div style="font-size:.72rem;color:var(--text2)">Temperature</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══════════ SECTION 12: MCQ Quiz ══════════ -->
+  <div class="section" id="s12">
+    <div class="section-title">
+      <div class="section-num" style="background:rgba(16,185,129,0.15);color:var(--accent4)">12</div>
+      <h2>🎯 Practice MCQ</h2>
+    </div>
+
+    <div id="quizContainer"></div>
+    <div style="text-align:center;margin-top:20px">
+      <button onclick="resetQuiz()" style="background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);color:var(--accent1);padding:10px 28px;border-radius:8px;cursor:pointer;font-size:.9rem;font-family:inherit">🔄 Reset Quiz</button>
+      <div id="quizScore" style="margin-top:12px;font-size:.9rem;color:var(--text2)"></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div style="text-align:center;padding:20px;font-size:.8rem;color:var(--text2)">
+    📚 Based on NCTB Physics — Classes IX &amp; X &nbsp;|&nbsp; Bangladesh 2026 &nbsp;|&nbsp; All Boards
+    <br/><span style="color:rgba(255,255,255,0.2)">Study hard and aim for the stars ✨</span>
+  </div>
+
+</div><!-- /.wrapper -->
+
+<script>
+/* ═══════════════════════════════════════
+   PARTICLE ANIMATIONS — States of Matter
+═══════════════════════════════════════ */
+const stateConfigs = [
+  {
+    cls:'solid', label:'Solid', color:'var(--accent1)',
+    particles:[
+      {x:30,y:35},{x:60,y:35},{x:90,y:35},{x:120,y:35},
+      {x:30,y:65},{x:60,y:65},{x:90,y:65},{x:120,y:65},
+      {x:30,y:95},{x:60,y:95},{x:90,y:95},{x:120,y:95}
+    ]
+  },
+  {
+    cls:'liquid', label:'Liquid', color:'var(--accent4)',
+    particles:[
+      {x:30,y:80,tx:15,ty:10,tx2:-10,ty2:15,dur:'2.5s'},
+      {x:70,y:90,tx:-20,ty:5,tx2:15,ty2:-5,dur:'3s'},
+      {x:110,y:75,tx:10,ty:20,tx2:-15,ty2:8,dur:'2s'},
+      {x:50,y:110,tx:-15,ty:-10,tx2:20,ty2:5,dur:'3.5s'},
+      {x:90,y:120,tx:25,ty:-5,tx2:-10,ty2:10,dur:'2.8s'},
+      {x:25,y:125,tx:5,ty:15,tx2:-20,ty2:-5,dur:'3.2s'},
+      {x:130,y:105,tx:-25,ty:10,tx2:15,ty2:-8,dur:'2.2s'},
+    ]
+  },
+  {
+    cls:'gas', label:'Gas', color:'var(--accent3)',
+    particles:[
+      {x:20,y:20,x1:80,y1:-10,x2:-15,y2:60,x3:50,y3:80,dur:'1.2s'},
+      {x:100,y:30,x1:-60,y1:50,x2:40,y2:-20,x3:-30,y3:80,dur:'0.9s'},
+      {x:60,y:80,x1:50,y1:-50,x2:-40,y2:30,x3:30,y3:-60,dur:'1.5s'},
+      {x:130,y:100,x1:-80,y1:-30,x2:30,y2:50,x3:-50,y3:-40,dur:'1s'},
+      {x:30,y:130,x1:70,y1:-60,x2:-50,y2:-30,x3:40,y3:40,dur:'1.3s'},
+      {x:80,y:140,x1:-40,y1:-70,x2:60,y2:30,x3:-30,y3:-50,dur:'1.1s'},
+    ]
+  },
+  {
+    cls:'plasma', label:'Plasma (4th)', color:'var(--accent5)',
+    particles:[
+      {x:20,y:20,x1:90,y1:-30,x2:-20,y2:70,x3:60,y3:40,x4:-70,y4:-10,dur:'0.7s'},
+      {x:100,y:40,x1:-70,y1:60,x2:50,y2:-40,x3:-40,y3:80,x4:60,y4:-60,dur:'0.6s'},
+      {x:50,y:90,x1:60,y1:-60,x2:-50,y2:40,x3:40,y3:-70,x4:-60,y4:30,dur:'0.8s'},
+      {x:130,y:110,x1:-90,y1:-40,x2:40,y2:60,x3:-60,y3:-50,x4:70,y4:40,dur:'0.65s'},
+      {x:20,y:130,x1:80,y1:-70,x2:-60,y2:-30,x3:50,y3:50,x4:-40,y4:-70,dur:'0.75s'},
+      {x:80,y:20,x1:-50,y1:80,x2:70,y2:-50,x3:-80,y3:40,x4:40,y4:-80,dur:'0.55s'},
+    ]
+  }
+];
+
+const demo = document.getElementById('statesDemo');
+stateConfigs.forEach(cfg => {
+  const box = document.createElement('div');
+  box.className = `state-box ${cfg.cls}`;
+  cfg.particles.forEach(p => {
+    const el = document.createElement('div');
+    el.className = 'particle';
+    el.style.left = p.x+'px';
+    el.style.top  = p.y+'px';
+    if(cfg.cls==='liquid'){
+      el.style.setProperty('--tx', p.tx+'px');
+      el.style.setProperty('--ty', p.ty+'px');
+      el.style.setProperty('--tx2', p.tx2+'px');
+      el.style.setProperty('--ty2', p.ty2+'px');
+      el.style.setProperty('--dur', p.dur);
+    }
+    if(cfg.cls==='gas'){
+      el.style.setProperty('--x1', p.x1+'px');
+      el.style.setProperty('--y1', p.y1+'px');
+      el.style.setProperty('--x2', p.x2+'px');
+      el.style.setProperty('--y2', p.y2+'px');
+      el.style.setProperty('--x3', p.x3+'px');
+      el.style.setProperty('--y3', p.y3+'px');
+      el.style.setProperty('--dur', p.dur);
+    }
+    if(cfg.cls==='plasma'){
+      el.style.setProperty('--x1', p.x1+'px');
+      el.style.setProperty('--y1', p.y1+'px');
+      el.style.setProperty('--x2', p.x2+'px');
+      el.style.setProperty('--y2', p.y2+'px');
+      el.style.setProperty('--x3', p.x3+'px');
+      el.style.setProperty('--y3', p.y3+'px');
+      el.style.setProperty('--x4', p.x4+'px');
+      el.style.setProperty('--y4', p.y4+'px');
+      el.style.setProperty('--dur', p.dur);
+    }
+    box.appendChild(el);
+  });
+  const lbl = document.createElement('div');
+  lbl.className='state-label';
+  lbl.style.color=cfg.color;
+  lbl.textContent=cfg.label;
+  box.appendChild(lbl);
+  demo.appendChild(box);
+});
+
+/* ═══════════════════════════════════════
+   ATMOSPHERIC PRESSURE AIR PARTICLES
+═══════════════════════════════════════ */
+const atmDemo = document.getElementById('atmDemo');
+for(let i=0;i<30;i++){
+  const p = document.createElement('div');
+  p.className='air-particle';
+  const s = 2+Math.random()*4;
+  p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;top:${40+Math.random()*60}%;
+    --dx:${(Math.random()-0.5)*60}px;--dy:${-20-Math.random()*40}px;
+    animation-duration:${2+Math.random()*4}s;animation-delay:${-Math.random()*4}s;
+    animation-direction:${Math.random()>.5?'alternate':'alternate-reverse'};`;
+  atmDemo.appendChild(p);
+}
+
+/* ═══════════════════════════════════════
+   PRESSURE INTERACTIVE CANVAS
+═══════════════════════════════════════ */
+const pc = document.getElementById('pressureCanvas');
+const ctx = pc.getContext('2d');
+const fSlider = document.getElementById('forceSlider');
+const aSlider = document.getElementById('areaSlider');
+const fVal = document.getElementById('forceVal');
+const aVal = document.getElementById('areaVal');
+const pRes = document.getElementById('pressureResult');
+
+function drawPressure(){
+  const F = +fSlider.value, A = +aSlider.value;
+  const P = (F/A).toFixed(2);
+  fVal.textContent=F; aVal.textContent=A;
+  pRes.textContent = `P = ${F} N ÷ ${A} m² = ${P} Pa`;
+  ctx.clearRect(0,0,520,200);
+  // background
+  ctx.fillStyle='rgba(255,255,255,0.03)';
+  ctx.fillRect(0,0,520,200);
+  // surface
+  const w = Math.min(30+A*16, 460);
+  const x = 260-w/2;
+  ctx.fillStyle=`rgba(0,212,255,0.15)`;
+  ctx.fillRect(x,120,w,40);
+  ctx.strokeStyle='rgba(0,212,255,0.5)';
+  ctx.lineWidth=2;
+  ctx.strokeRect(x,120,w,40);
+  ctx.fillStyle='rgba(0,212,255,0.7)';
+  ctx.font='12px JetBrains Mono, monospace';
+  ctx.textAlign='center';
+  ctx.fillText(`Area = ${A} m²`, 260, 145);
+  // arrow
+  const arrLen = Math.min(20+F*0.4, 110);
+  const arrowX = 260, arrowTop = 120-arrLen;
+  ctx.strokeStyle='rgba(239,68,68,0.9)';
+  ctx.lineWidth=3;
+  ctx.beginPath(); ctx.moveTo(arrowX,arrowTop); ctx.lineTo(arrowX,120); ctx.stroke();
+  ctx.fillStyle='rgba(239,68,68,0.9)';
+  ctx.beginPath(); ctx.moveTo(arrowX-8,120); ctx.lineTo(arrowX,134); ctx.lineTo(arrowX+8,120); ctx.fill();
+  ctx.fillStyle='rgba(239,68,68,0.9)'; ctx.font='13px Space Grotesk,sans-serif'; ctx.textAlign='center';
+  ctx.fillText(`F = ${F} N`, arrowX, arrowTop-8);
+  // pressure indicator
+  const pNorm = Math.min(P/200,1);
+  const grad = ctx.createLinearGradient(0,170,520,170);
+  grad.addColorStop(0,'rgba(16,185,129,0.1)');
+  grad.addColorStop(pNorm,'rgba(239,68,68,0.7)');
+  grad.addColorStop(1,'rgba(239,68,68,0.1)');
+  ctx.fillStyle=grad;
+  ctx.fillRect(30,170,460,18);
+  ctx.fillStyle='rgba(255,255,255,0.6)';
+  ctx.font='11px Space Grotesk,sans-serif'; ctx.textAlign='left';
+  ctx.fillText('Low P',32,183); ctx.textAlign='right'; ctx.fillText('High P',488,183);
+  ctx.fillStyle='rgba(255,255,255,0.9)';
+  ctx.fillRect(30+pNorm*460-2,168,4,22);
+  ctx.textAlign='center';
+  ctx.fillText(`P = ${P} Pa`,30+pNorm*460,165);
+}
+fSlider.oninput = drawPressure;
+aSlider.oninput = drawPressure;
+drawPressure();
+
+/* ═══════════════════════════════════════
+   FLUID PRESSURE DEPTH CANVAS
+═══════════════════════════════════════ */
+const fc = document.getElementById('fluidCanvas');
+const fctx = fc.getContext('2d');
+const dSlider = document.getElementById('depthSlider');
+const dVal = document.getElementById('depthVal');
+const dPres = document.getElementById('depthPressure');
+
+function drawFluid(){
+  const depth = +dSlider.value/100; // 0..1
+  const h = depth * 200; // pixel depth
+  fctx.clearRect(0,0,320,260);
+  // container
+  fctx.strokeStyle='rgba(255,255,255,0.2)';
+  fctx.lineWidth=2;
+  fctx.strokeRect(60,40,200,200);
+  // water gradient
+  const grad=fctx.createLinearGradient(0,40,0,240);
+  grad.addColorStop(0,'rgba(0,150,220,0.15)');
+  grad.addColorStop(1,'rgba(0,150,220,0.55)');
+  fctx.fillStyle=grad;
+  fctx.fillRect(61,41,198,198);
+  // depth line
+  const lineY = 41 + h*0.95;
+  fctx.strokeStyle='rgba(0,212,255,0.8)';
+  fctx.lineWidth=1.5;
+  fctx.setLineDash([4,4]);
+  fctx.beginPath(); fctx.moveTo(61,lineY); fctx.lineTo(259,lineY); fctx.stroke();
+  fctx.setLineDash([]);
+  // pressure arrows at depth
+  const numArrows = Math.floor(3+depth*5);
+  const arrowLen = 8+depth*25;
+  const cy = lineY+15;
+  // left
+  for(let i=0;i<3;i++){
+    const ay = lineY+10+i*18;
+    if(ay>230) break;
+    fctx.strokeStyle=`rgba(239,68,68,${0.4+depth*0.5})`;
+    fctx.lineWidth=1.5+depth;
+    fctx.beginPath(); fctx.moveTo(61+arrowLen,ay); fctx.lineTo(61+4,ay); fctx.stroke();
+    fctx.fillStyle=`rgba(239,68,68,${0.4+depth*0.5})`;
+    fctx.beginPath(); fctx.moveTo(61+4,ay-5); fctx.lineTo(61,ay); fctx.lineTo(61+4,ay+5); fctx.fill();
+    fctx.strokeStyle=`rgba(239,68,68,${0.4+depth*0.5})`;
+    fctx.beginPath(); fctx.moveTo(259-arrowLen,ay); fctx.lineTo(255,ay); fctx.stroke();
+    fctx.fillStyle=`rgba(239,68,68,${0.4+depth*0.5})`;
+    fctx.beginPath(); fctx.moveTo(255,ay-5); fctx.lineTo(259,ay); fctx.lineTo(255,ay+5); fctx.fill();
+  }
+  // down arrow (weight of water)
+  fctx.strokeStyle='rgba(245,158,11,0.7)';
+  fctx.lineWidth=2;
+  fctx.beginPath(); fctx.moveTo(160,41); fctx.lineTo(160,lineY-5); fctx.stroke();
+  fctx.fillStyle='rgba(245,158,11,0.7)';
+  fctx.beginPath(); fctx.moveTo(153,lineY-8); fctx.lineTo(160,lineY); fctx.lineTo(167,lineY-8); fctx.fill();
+  // depth label
+  fctx.fillStyle='rgba(0,212,255,0.9)';
+  fctx.font='12px JetBrains Mono,monospace'; fctx.textAlign='center';
+  fctx.fillText(`h = ${(depth*100).toFixed(0)} cm`, 160, lineY-10);
+  dVal.textContent=(depth*100).toFixed(0);
+  const P=(1000*9.8*depth).toFixed(1);
+  dPres.textContent=`P = ${P} Pa`;
+}
+dSlider.oninput=drawFluid;
+drawFluid();
+
+/* ═══════════════════════════════════════
+   BUOYANCY SLIDER
+═══════════════════════════════════════ */
+const densSlider = document.getElementById('densitySlider');
+const densRatio = document.getElementById('densityRatio');
+const floatStatus = document.getElementById('floatStatus');
+const floatObj = document.getElementById('floatObj');
+
+densSlider.oninput = function(){
+  const r = +this.value/100;
+  densRatio.textContent = r.toFixed(2);
+  if(r<1){
+    const submerge = r*30;
+    floatObj.style.bottom = (68 + 30 - submerge)+'px';
+    floatStatus.textContent='FLOATING 🚢';
+    floatStatus.style.color='var(--accent4)';
+    floatObj.style.background='var(--accent3)';
+  } else if(r===1){
+    floatObj.style.bottom='60px';
+    floatStatus.textContent='NEUTRAL ⚖️';
+    floatStatus.style.color='var(--accent1)';
+    floatObj.style.background='#818cf8';
+  } else {
+    floatObj.style.bottom='4px';
+    floatStatus.textContent='SINKING ⬇️';
+    floatStatus.style.color='var(--accent5)';
+    floatObj.style.background='var(--accent5)';
+  }
+};
+
+/* ═══════════════════════════════════════
+   DENSITY BARS
+═══════════════════════════════════════ */
+const densities = [
+  {name:'Mercury', val:13600, unit:'kg/m³', max:13600},
+  {name:'Iron/Steel', val:7874, unit:'kg/m³', max:13600},
+  {name:'Aluminium', val:2700, unit:'kg/m³', max:13600},
+  {name:'Water', val:1000, unit:'kg/m³', max:13600},
+  {name:'Ice', val:917, unit:'kg/m³', max:13600},
+  {name:'Oil', val:800, unit:'kg/m³', max:13600},
+  {name:'Air', val:1.29, unit:'kg/m³', max:13600},
+];
+const dbContainer = document.getElementById('densityBars');
+densities.forEach((d,i)=>{
+  const pct = (d.val/d.max)*280;
+  const div = document.createElement('div');
+  div.className='density-bar';
+  div.innerHTML=`
+    <div class="density-bar-label">${d.name}</div>
+    <div class="density-bar-fill" style="width:${pct}px;animation-delay:${i*0.12}s"></div>
+    <div class="density-bar-val">${d.val.toLocaleString()}</div>`;
+  dbContainer.appendChild(div);
+});
+
+/* ═══════════════════════════════════════
+   MCQ QUIZ
+═══════════════════════════════════════ */
+const questions=[
+  {q:'What is the SI unit of pressure?',opts:['Newton','Pascal','Joule','Watt'],ans:1},
+  {q:'Pressure in a liquid at depth h is given by:',opts:['P = mgh','P = ρgh','P = F/A','P = ρg/h'],ans:1},
+  {q:'Which state of matter has both definite shape and volume?',opts:['Liquid','Gas','Solid','Plasma'],ans:2},
+  {q:'Standard atmospheric pressure equals:',opts:['1.013 × 10⁴ Pa','760 Pa','1.013 × 10⁵ Pa','9.8 Pa'],ans:2},
+  {q:'Pascal\'s Law states that pressure in an enclosed fluid:',opts:['Acts only downward','Decreases with depth','Is transmitted equally in all directions','Acts only on the container walls'],ans:2},
+  {q:'A body floats when its density is:',opts:['Greater than liquid','Equal to liquid','Less than liquid','Zero'],ans:2},
+  {q:'The buoyant force on a submerged object equals:',opts:['Weight of object','Volume of object × g','Weight of fluid displaced','Mass of object × g'],ans:2},
+  {q:'Torricelli\'s barometer uses which liquid?',opts:['Water','Alcohol','Mercury','Oil'],ans:2},
+  {q:'Viscosity of liquids with increasing temperature:',opts:['Increases','Decreases','Remains same','First increases then decreases'],ans:1},
+  {q:'The phenomenon of a solid changing directly to gas is called:',opts:['Evaporation','Condensation','Sublimation','Melting'],ans:2},
+];
+
+let answered={};
+function buildQuiz(){
+  const c = document.getElementById('quizContainer');
+  c.innerHTML='';
+  questions.forEach((q,qi)=>{
+    const card=document.createElement('div'); card.className='quiz-card';
+    card.innerHTML=`<div class="quiz-q">Q${qi+1}. ${q.q}</div><div class="quiz-opts" id="opts${qi}"></div>`;
+    c.appendChild(card);
+    const opts=card.querySelector('.quiz-opts');
+    q.opts.forEach((o,oi)=>{
+      const btn=document.createElement('div'); btn.className='quiz-opt';
+      btn.textContent=`${['A','B','C','D'][oi]}. ${o}`;
+      btn.onclick=()=>selectOpt(qi,oi,q.ans,btn,opts);
+      opts.appendChild(btn);
+    });
+    if(answered[qi]!==undefined) restoreOpt(qi,q.ans,opts);
+  });
+  updateScore();
+}
+function selectOpt(qi,oi,ans,btn,opts){
+  if(answered[qi]!==undefined) return;
+  answered[qi]=oi;
+  Array.from(opts.children).forEach((b,i)=>{
+    if(i===ans) b.classList.add('correct');
+    else if(i===oi && oi!==ans) b.classList.add('wrong');
+  });
+  updateScore();
+}
+function restoreOpt(qi,ans,opts){
+  const oi=answered[qi];
+  Array.from(opts.children).forEach((b,i)=>{
+    if(i===ans) b.classList.add('correct');
+    else if(i===oi && oi!==ans) b.classList.add('wrong');
+  });
+}
+function updateScore(){
+  const total=Object.keys(answered).length;
+  const correct=Object.keys(answered).filter(k=>answered[k]===questions[k].ans).length;
+  document.getElementById('quizScore').textContent=
+    total>0?`Answered: ${total}/${questions.length} | Correct: ${correct} | Score: ${Math.round(correct/total*100)}%`:'';
+}
+function resetQuiz(){ answered={}; buildQuiz(); }
+buildQuiz();
+
+/* ═══════════════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════════════ */
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.08});
+document.querySelectorAll('.section').forEach(s=>observer.observe(s));
+</script>
+</body>
+</html>

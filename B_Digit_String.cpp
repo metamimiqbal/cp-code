@@ -1,15 +1,3 @@
-/**
- * Assalamualaikum
- * Bismillah
- * "The problem is not the problem. The problem is the attitude about the problem."
- *
- * My people: the whole muslim ummah from uyghoor to rohingya, from the people of Falastin to Sudan; 
- * I belong to them and I dream of UMA (United Muslim Aliance) with them - Be Iznillah
- * 
- * -------------------------------------------------------------
- *  |      Following up the legacy (Sorif Osman Bin Hady)      |
- * -------------------------------------------------------------
- */
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -95,18 +83,41 @@ const int dy[] = {1, -1, 0, 0};
 // const int dx[] = {-1,-1,-1, 0, 0, 1, 1, 1};
 // const int dy[] = {-1, 0, 1,-1, 1,-1, 0, 1};
 
-// [ The Great Adventure ] 
+// [ Why so serious? ] 
 void solve() {
-    // string s = "Tamim Iqbal";
-    // cout<<s.find("m")<<nl; // returns first occurance of "m" in the string s.
-    // cout<<char('a'+25)<<nl;
+    string s; cin>>s;
+    string t = "";
+    ll ans = 0;
+    rep(i, 0, sz(s)) {
+        if(s[i] != '4') t+=s[i];
+        else ++ans;
+    }
+    ll n = sz(t);
+
+    VEC pfx(n+1), sfx(n+1);
+
+    rep(i, 0, n) {
+        pfx[i+1] = pfx[i] + (t[i] != '2');
+    }
+
+    rrep(i, n-1, 0) {
+        sfx[i] = sfx[i+1] + (t[i] == '2');
+    }
+
+    // printv(pfx);
+    // printv(sfx);
+    ll bst = LLONG_MAX;
+    rep(i, 0, sz(pfx)) {
+        bst = min(bst, pfx[i] + sfx[i]);
+    }
+    cout<<ans+bst<<nl;
 }
 
 // [ Black Pearl ] 
 signed main() {
     Think_Like_Jack_Sparrow
 
-    // int t; cin >> t; while(t--)
+    int t; cin >> t; while(t--)
     solve();
 
     return 0;

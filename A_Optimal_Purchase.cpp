@@ -1,15 +1,3 @@
-/**
- * Assalamualaikum
- * Bismillah
- * "The problem is not the problem. The problem is the attitude about the problem."
- *
- * My people: the whole muslim ummah from uyghoor to rohingya, from the people of Falastin to Sudan; 
- * I belong to them and I dream of UMA (United Muslim Aliance) with them - Be Iznillah
- * 
- * -------------------------------------------------------------
- *  |      Following up the legacy (Sorif Osman Bin Hady)      |
- * -------------------------------------------------------------
- */
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -95,18 +83,18 @@ const int dy[] = {1, -1, 0, 0};
 // const int dx[] = {-1,-1,-1, 0, 0, 1, 1, 1};
 // const int dy[] = {-1, 0, 1,-1, 1,-1, 0, 1};
 
-// [ The Great Adventure ] 
+// [ Why so serious? ] 
 void solve() {
-    // string s = "Tamim Iqbal";
-    // cout<<s.find("m")<<nl; // returns first occurance of "m" in the string s.
-    // cout<<char('a'+25)<<nl;
+    ll n, a, b; cin>>n>>a>>b;
+    ll x = n/3;
+    cout<<min(x*b + (n%3)*a, min((x+1)*b, n*a))<<nl;
 }
 
 // [ Black Pearl ] 
 signed main() {
     Think_Like_Jack_Sparrow
 
-    // int t; cin >> t; while(t--)
+    int t; cin >> t; while(t--)
     solve();
 
     return 0;
