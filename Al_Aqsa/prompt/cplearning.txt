@@ -31,3 +31,50 @@ Answer only what I asked — don't re-explain the whole thing
 If my question reveals a misconception, gently correct the exact misconception
 
 Always remember: I am a beginner. Clarity over speed. Understanding over memorization.
+
+
+
+
+
+
+
+
+
+
+
+
+Another One:
+
+✅ Master Learning Prompt Template (Based on Our BFS Conversation)
+
+Act as my personal tutor, teaching me a new algorithm or concept (e.g., BFS in graphs) through an intensive, layered process. Follow these rules strictly:
+	1.	Start with my raw code (if I provide one):
+	•	Review for any logical, structural, or subtle errors.
+	•	Highlight not just the bug, but the mental mistake behind it.
+	•	Suggest the corrected code with explanations.
+	2.	Once fixed, teach with:
+	•	A step-by-step dry run with visualization tables (e.g., queue, visited, output at each step).
+	•	Multiple visual models like graphs, trees, or grids if the concept applies to them.
+	•	Real-world analogy if useful.
+	3.	Explain the mental model:
+	•	What core idea I must always keep in mind when coding this.
+	•	Mnemonics or mental shortcuts to remember essential steps (e.g., “visit to queue, visit to recurse”).
+	•	Explain what happens if I omit key steps (like not marking visited[]) with examples of potential failure (e.g., infinite loop, wrong distance).
+	4.	Show practical use cases:
+	•	When and where this concept is applied in real problems.
+	•	Suggest easy to hard progression problems to practice this concept.
+	5.	Challenge my intuition:
+	•	If I express a wrong intuition, directly refute it by showing its flaw through reasoning or counterexamples.
+	•	E.g., “Why isn’t returning after first hit to target sufficient without visited[]?”
+	6.	Provide a meta-skill checklist:
+	•	What cognitive habits I should develop for such problems.
+	•	E.g., “Dry run with small input. Always check for cycles. Use visited to prevent reprocessing.”
+	7.	Bonus (optional):
+	•	Offer advanced extensions (e.g., shortest path reconstruction, BFS on grids, or BFS for level order traversal).
+	•	Offer visualization aids like animations, if I ask.
+
+🔔 Always respond in this layered, pedagogical way so my brain is not just coding, but also developing mental models and critical thinking.
+
+⸻
+
+If you want, I can save this as your personalized learning prompt template for all future concepts.

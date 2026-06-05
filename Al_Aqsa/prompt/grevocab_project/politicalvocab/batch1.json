@@ -1,0 +1,163 @@
+[
+{
+"word": "Conflate",
+"pos": "Verb",
+"definition": "To wrongly treat two separate things as identical.",
+"example": "During a debate, Tamim conflated criticism of an algorithm with criticism of his entire personality and launched a 12-minute counterattack nobody asked for.",
+"mnemonic": "CON-FLAT-e. Picture a sleep-deprived coder flattening a cat and a laptop into one giant pancake because 'they're basically the same thing.' The cat files a complaint."
+},
+
+{
+"word": "Extrapolate",
+"pos": "Verb",
+"definition": "To infer beyond the known information.",
+"example": "She replied 'ok' once, and he extrapolated an entire marriage timeline, three children, and a retirement plan.",
+"mnemonic": "EXTRA-polate. One text message grows EXTRA branches like a mutant tree until you're predicting grandchildren from a single emoji."
+},
+
+{
+"word": "Concede",
+"pos": "Verb",
+"definition": "To admit that something is true after resisting it.",
+"example": "After four hours blaming the compiler, he finally conceded the missing semicolon was his fault.",
+"mnemonic": "CON-SEED. Imagine swallowing a giant glowing seed labeled 'I was wrong.' Painful. Necessary. Character development."
+},
+
+{
+"word": "Rebut",
+"pos": "Verb",
+"definition": "To argue against a claim with evidence or reasoning.",
+"example": "His opponent arrived with vibes; he arrived with screenshots and a rebuttal so precise the room went silent.",
+"mnemonic": "RE-BUT. Someone says something ridiculous. You hit RESTART on their argument and replace it with facts."
+},
+
+{
+"word": "Corroborate",
+"pronounciation": "kərɔ́bərɛjt",
+"pos": "Verb",
+"definition": "To support a claim with additional evidence.",
+"example": "The group claimed they worked equally; GitHub history refused to corroborate that fairy tale.",
+"mnemonic": "CO-ROBOT-RATE. Tiny robots rush in carrying receipts, logs, and screenshots screaming, 'WE CAN PROVE IT!'"
+},
+
+{
+"word": "Substantiate",
+"pos": "Verb",
+"definition": "To provide evidence for a claim.",
+"example": "The professor asked him to substantiate his conclusion, and his confidence immediately entered cardiac arrest.",
+"mnemonic": "SUB-STAND-SHE-ATE. A claim is starving. Evidence serves it a massive biryani until it can finally stand on its own."
+},
+
+{
+"word": "Infer",
+"pos": "Verb",
+"definition": "To reach a conclusion from evidence.",
+"example": "Seeing three coffee cups, zero sleep, and twenty accepted submissions, everyone inferred contest season had begun.",
+"mnemonic": "IN-FUR. Detective cats inspect clues hidden in fur and silently arrive at the truth before humans do."
+},
+
+{
+"word": "Deduce",
+"pronounce": "didjʉ́ws",
+"pos": "Verb",
+"definition": "To figure out something through logical reasoning.",
+"example": "His mother deduced he was gaming at 2 a.m. from the suspicious keyboard sounds coming through the wall.",
+"mnemonic": "DE-DUCE. A giant duck detective follows breadcrumbs, quacks twice, and solves the entire case."
+},
+
+{
+"word": "Premise",
+"pos": "Noun",
+"definition": "A statement on which an argument is based.",
+"example": "The entire argument collapsed because the premise was built on a rumor from a cousin's cousin.",
+"mnemonic": "PRE-MISS. Miss the first brick of a building and the whole structure folds like cheap plastic."
+},
+
+{
+"word": "Nuanced",
+"pos": "Adjective",
+"definition": "Showing subtle differences and complexities.",
+"example": "His nuanced answer annoyed both sides because reality refused to fit into a meme.",
+"mnemonic": "NEW-ONCE. Every time you look at the issue, a NEW layer appears like a boss fight with infinite phases."
+},
+
+{
+"word": "Dichotomy",
+"pos": "Noun",
+"definition": "A division into two contrasting parts.",
+"example": "The false dichotomy was obvious: either get a 4.0 GPA or become a goat farmer.",
+"mnemonic": "DIE-COTOMY. A giant axe chops one thing into two dramatic halves while everyone pretends there aren't other options."
+},
+
+{
+"word": "Paradox",
+"pos": "Noun",
+"definition": "A statement or situation that seems contradictory but may be true.",
+"example": "The productivity paradox hit hard: the more productivity videos he watched, the less work got done.",
+"mnemonic": "PAIR-OF-DOCKS. Two docks face each other and somehow both claim to be on opposite sides of the river."
+},
+
+{
+"word": "Refute",
+"pos": "Verb",
+"definition": "To prove a claim false with evidence.",
+"example": "One screenshot was enough to refute six months of carefully crafted nonsense.",
+"mnemonic": "RE-FUTE. Someone plays a flute of lies. You replace the music with cold, brutal receipts."
+},
+
+{
+"word": "Qualify",
+"pos": "Verb",
+"definition": "To limit or make a statement more precise.",
+"example": "Before posting, he qualified his claim because being technically correct beats being confidently wrong.",
+"mnemonic": "QUALITY-FY. A wild statement enters a workshop and gets upgraded with safety rails and warning labels."
+},
+
+{
+"word": "Invoke",
+"pos": "Verb",
+"definition": "To call upon as support or authority.",
+"example": "Halfway through the argument, he invoked the professor's research like summoning a legendary creature.",
+"mnemonic": "IN-VOKE. A wizard screams a respected name and suddenly everyone sits up straighter."
+},
+
+{
+"word": "Rhetoric",
+"pos": "Noun",
+"definition": "Language used to persuade or influence people.",
+"example": "The speech had incredible rhetoric, which was fortunate because it had almost no actual plan.",
+"mnemonic": "REH-TOE-RICK. Rick sells empty boxes with such confidence that people line up to buy them."
+},
+
+{
+"word": "Hegemony",
+"pos": "Noun",
+"definition": "Dominance or leadership of one group over others.",
+"example": "The club's hegemony ended the moment freshmen learned how elections worked.",
+"mnemonic": "HE-GEM-ON-EE. One giant crowned gem sits on everyone's head, controlling the whole kingdom."
+},
+
+{
+"word": "Impunity",
+"pos": "Noun",
+"definition": "Freedom from punishment or consequences.",
+"example": "He kept missing deadlines with impunity until the final grade arrived carrying a baseball bat.",
+"mnemonic": "I'M-PUNITY. A villain wears a shirt saying 'You can't punish me,' then casually moonwalks away from consequences."
+},
+
+{
+"word": "Destabilize",
+"pos": "Verb",
+"definition": "To make something less stable or secure.",
+"example": "One message saying 'we need to talk' destabilized his entire week.",
+"mnemonic": "DE-STABLE-IZE. Someone removes one horse from a stable and the entire building begins wobbling like jelly."
+},
+
+{
+"word": "Postulate",
+"pos": "Verb",
+"definition": "To suggest or assume as a basis for reasoning.",
+"example": "At 3 a.m., he postulated that the bug was caused by cosmic forces rather than his own code.",
+"mnemonic": "POST-U-LATE. You pin a wild theory on a notice board before evidence arrives and hope future-you survives."
+}
+]
