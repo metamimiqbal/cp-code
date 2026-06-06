@@ -75,6 +75,3 @@ Act as my personal tutor, teaching me a new algorithm or concept (e.g., BFS in g
 
 🔔 Always respond in this layered, pedagogical way so my brain is not just coding, but also developing mental models and critical thinking.
 
-⸻
-
-If you want, I can save this as your personalized learning prompt template for all future concepts.
