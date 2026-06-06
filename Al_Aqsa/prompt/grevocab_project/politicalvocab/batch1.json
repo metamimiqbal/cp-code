@@ -57,6 +57,22 @@
 },
 
 {
+"word": "Arbitration",
+"pos": "Noun",
+"definition": "A process where a neutral third party settles a dispute and makes a decision.",
+"example": "After two group members spent three days blaming each other for the broken project, the professor dragged both into arbitration and ended the civil war in twelve minutes.",
+"mnemonic": "ARBITRATION → imagine an 'ARBITER' wearing a referee jersey storming into your nightmare CSE group project. Two teammates are screaming, one hasn't written a single line of code, and the deadline is in 20 minutes. The ARBITER slams a giant gavel on the keyboard, declares who is responsible, and both sides are forced to accept it. ARBITER = the person in the middle. ARBITRATION = the dramatic showdown where the arbiter ends the chaos."
+},
+
+{
+"word": "Prejudice",
+"pos": "Noun",
+"definition": "A preconceived opinion or judgment about someone or something formed without sufficient evidence.",
+"example": "The interviewer took one look at his average CGPA and, out of pure prejudice, assumed he couldn't code—then watched him solve the hardest problem in the room while everyone else stared at the screen.",
+"mnemonic": "PRE-JUDGE. A strict auntie at a wedding spots you standing alone for 0.8 seconds and immediately launches a full investigation: 'Definitely unemployed. Probably lazy. Marriage chances critical.' She hasn't spoken a single word to you. She collected zero evidence. The verdict was issued BEFORE the trial. PRE-JUDGE → PREJUDICE."
+},
+
+{
 "word": "Deduce",
 "pronounce": "didjʉ́ws",
 "pos": "Verb",

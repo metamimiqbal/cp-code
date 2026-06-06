@@ -28,7 +28,7 @@ When the user does NOT provide words and instead asks for words on a topic or pr
    - Analysis & Reasoning (deduce, infer, postulate, premise...)
    - Social & Political Commentary (hegemony, impunity, destabilize, rhetoric...)
    - Academic Precision (nuanced, asymmetric, dichotomy, paradox...)
-4. Output 20 words per batch unless user specifies otherwise
+4. Output 10 words per batch unless user specifies otherwise
 5. Never pad with low-frequency words just to fill a list
 
 ## SELF-CHECK (run silently on every entry before outputting)
