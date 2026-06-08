@@ -209,11 +209,12 @@
 },
 
 {
-"word": "Ambitious",
-"pos": "Adjective",
-"definition": "Having strong desire for success or achievement.",
-"example": "His ambitious Ramadan schedule included tahajjud, gym, coding, meal prep, journaling, and somehow only collapsed by Day 2.",
-"mnemonic": "Ambitious = 'ham-bee-shus.' Imagine a hyperactive bee in a suit juggling five startups, memorizing Qur'an, and trading crypto before sunrise."
+"word": "Favoritism",
+"pos": "Noun",
+"definition": "Unfair preference shown to one person or group over others.",
+"example": "You carried the entire group project, wrote the report, fixed the bugs, made the slides — then the teacher smiled and said, 'Excellent leadership by Rafi,' who contributed one thumbs-up reaction in Messenger. The room learned the meaning of favoritism in silence.",
+"mnemonic": "Picture a giant glowing sign: 'FAVOR-IT-ISM.' The professor has one golden chair labeled FAVORITE. Everyone else is solving DP at 3am while this one guy arrives late holding iced coffee and still gets full marks. You stand there clutching your 600-line code like it's evidence in court. The chair slowly turns toward him anyway."
 }
+
 
 ]
