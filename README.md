@@ -68,7 +68,7 @@ int main() {
 
 Common abbreviations: `ll` → `long long`, `vi` → `vector<int>`, `all(x)` → `x.begin(), x.end()`.
 
-These aren't shortcuts for the reader — they're shortcuts for the writer at 2am during a contest. If a name is unclear, look at how it's used in context.
+If any shortcut or name is unclear, look at how it's used in context mentioned with **"typedef"**
 
 ---
 
