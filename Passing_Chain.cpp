@@ -85,34 +85,15 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ Why so serious? ] 
 void solve() {
-    ll n, k; cin>>n>>k;
-    VEC a(k+1);
-    rep(i, 1, k+1) cin>>a[i];
-    vector<pair<ll, ll>> b;
-    rep(i, 1, n+1) {
-        ll x; cin>>x;
-        if(x <= k)
-            b.push_back({x, i});
+    ll a, b; cin>>a>>b;
+    if(b>a) {
+        cout<<1<<nl; return;
     }
 
-    // for(auto [u, v]: b) cout<<u<<spc<<v<<nl;
-    // dbg('After Sorting');
-    sort(rall(b));
-    // for(auto [u, v]: b) cout<<u<<spc<<v<<nl;
+    ll div = (a-1)/b;
 
+    cout<<(div*b)+1<<nl;
 
-    ll bal = k+1;
-    VEC ans;
-    rep(i, 0, sz(b)) {
-        rep(j, 0, bal-b[i].first) {
-            ans.push_back(b[i].second);
-            // dbg(b[i].first);
-            // dbg(b[i].second);
-        }
-    }
-    cout<<ans.size()<<nl;
-    for(auto x: ans) cout<<x<<spc;
-    cout<<nl;
 }
 
 // [ Black Pearl ] 

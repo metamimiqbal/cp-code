@@ -85,34 +85,36 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ Why so serious? ] 
 void solve() {
-    ll n, k; cin>>n>>k;
-    VEC a(k+1);
-    rep(i, 1, k+1) cin>>a[i];
-    vector<pair<ll, ll>> b;
-    rep(i, 1, n+1) {
-        ll x; cin>>x;
-        if(x <= k)
-            b.push_back({x, i});
-    }
-
-    // for(auto [u, v]: b) cout<<u<<spc<<v<<nl;
-    // dbg('After Sorting');
-    sort(rall(b));
-    // for(auto [u, v]: b) cout<<u<<spc<<v<<nl;
-
-
-    ll bal = k+1;
-    VEC ans;
-    rep(i, 0, sz(b)) {
-        rep(j, 0, bal-b[i].first) {
-            ans.push_back(b[i].second);
-            // dbg(b[i].first);
-            // dbg(b[i].second);
+    ll n; string a, b; cin>>n>>a>>b;
+    string s = "", t = "";
+    bool ck = 1;
+    rep(i, 0, n) {
+        if(a[i] == b[i]) s += a[i], t += a[i];
+        else {
+            if(ck) 
+                s += '(', t += ')';
+            else 
+                s += ')', t += '(';
+            
+            ck ^= 1;
         }
     }
-    cout<<ans.size()<<nl;
-    for(auto x: ans) cout<<x<<spc;
-    cout<<nl;
+
+    ll ta = 0, tb = 0;
+    bool ansck = 1;
+    rep(i, 0, n) {
+        if(s[i] == '(') ++ta;
+        else --ta;
+
+        if(t[i] == '(') ++tb;
+        else --tb;
+
+        if(ta < 0 || tb < 0) {
+            no; return;
+        }
+    }
+    if(!ta and !tb) yes;
+    else no;
 }
 
 // [ Black Pearl ] 

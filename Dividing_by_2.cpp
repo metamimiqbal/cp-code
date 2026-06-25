@@ -85,34 +85,46 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ Why so serious? ] 
 void solve() {
-    ll n, k; cin>>n>>k;
-    VEC a(k+1);
-    rep(i, 1, k+1) cin>>a[i];
-    vector<pair<ll, ll>> b;
-    rep(i, 1, n+1) {
-        ll x; cin>>x;
-        if(x <= k)
-            b.push_back({x, i});
+    ll n; cin>>n;
+    VEC v(n);
+    rep(i, 0, n) cin>>v[i];
+
+    ll mn = *min_element(all(v));
+    ll mx = *max_element(all(v));
+
+    string a, b;
+
+    while(mn) {
+        a += char('0' + (mn & 1));
+        mn >>= 1;
     }
 
-    // for(auto [u, v]: b) cout<<u<<spc<<v<<nl;
-    // dbg('After Sorting');
-    sort(rall(b));
-    // for(auto [u, v]: b) cout<<u<<spc<<v<<nl;
-
-
-    ll bal = k+1;
-    VEC ans;
-    rep(i, 0, sz(b)) {
-        rep(j, 0, bal-b[i].first) {
-            ans.push_back(b[i].second);
-            // dbg(b[i].first);
-            // dbg(b[i].second);
-        }
+    while(mx) {
+        b += char('0' + (mx & 1));
+        mx >>= 1;
     }
-    cout<<ans.size()<<nl;
-    for(auto x: ans) cout<<x<<spc;
-    cout<<nl;
+
+    reverse(all(a));
+    reverse(all(b));
+
+    ll cmn = 0;
+
+    while(
+        cmn < min(a.size(), b.size()) && a[cmn] == b[cmn]
+    ) {
+        cmn++;
+    }
+
+    // dbg(cmn);
+
+
+    ll ans = 0;
+    rep(i, 0, n) {
+        ll bits = (n == 0 ? 1 : 32 - __builtin_clz(v[i]));
+        ans += (bits - cmn);
+        // dbg(bits);
+    }
+    cout<<ans<<nl;
 }
 
 // [ Black Pearl ] 
@@ -123,4 +135,4 @@ signed main() {
     solve();
 
     return 0;
-}
+    

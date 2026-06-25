@@ -85,34 +85,52 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ Why so serious? ] 
 void solve() {
-    ll n, k; cin>>n>>k;
-    VEC a(k+1);
-    rep(i, 1, k+1) cin>>a[i];
-    vector<pair<ll, ll>> b;
-    rep(i, 1, n+1) {
-        ll x; cin>>x;
-        if(x <= k)
-            b.push_back({x, i});
-    }
-
-    // for(auto [u, v]: b) cout<<u<<spc<<v<<nl;
-    // dbg('After Sorting');
-    sort(rall(b));
-    // for(auto [u, v]: b) cout<<u<<spc<<v<<nl;
-
-
-    ll bal = k+1;
-    VEC ans;
-    rep(i, 0, sz(b)) {
-        rep(j, 0, bal-b[i].first) {
-            ans.push_back(b[i].second);
-            // dbg(b[i].first);
-            // dbg(b[i].second);
+    string s; cin>>s;
+    string t = "";
+    ll n = s.size();
+    rep(i, 0, n) {
+        if(s[0] == 'a') {
+            if(i%2 == 0) t += 'a';
+            else t += 'b';
+        } else {
+            if(i%2 == 0) t += 'b';
+            else t += 'a';
         }
     }
-    cout<<ans.size()<<nl;
-    for(auto x: ans) cout<<x<<spc;
-    cout<<nl;
+    string sb = "", sbt = "";
+    ll ck = 0;
+    rep(i, 0, n) {
+        if(ck > 1 && s[i] != t[i]) {
+            no; return;
+        }
+
+        if(s[i]!=t[i]) {
+            ck = 1;
+            sb += s[i];
+            sbt += t[i];
+        } else if(ck == 1 and s[i] == t[i]) ck++;
+    }
+
+    string op1 = sb;
+    reverse(all(op1));
+
+    string op2 = "";
+    //conjugate
+    rep(i, 0, sz(sb)) {
+        if(sb[i] == 'a') op2 += 'b';
+        else op2 += 'a';
+    }
+
+    // reverse
+    reverse(all(op2));
+
+
+    if(op1 == sb or op2 == sb) {
+        yes;
+    } else {
+        no;
+    }
+    
 }
 
 // [ Black Pearl ] 

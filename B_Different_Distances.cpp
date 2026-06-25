@@ -85,33 +85,40 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ Why so serious? ] 
 void solve() {
-    ll n, k; cin>>n>>k;
-    VEC a(k+1);
-    rep(i, 1, k+1) cin>>a[i];
-    vector<pair<ll, ll>> b;
-    rep(i, 1, n+1) {
-        ll x; cin>>x;
-        if(x <= k)
-            b.push_back({x, i});
+    ll n; cin>>n;
+
+    if(n == 2) {
+        cout<<2<<spc<<1<<spc<<1<<spc<<2<<spc<<2<<spc<<1<<spc<<2<<spc<<1<<nl;
+        return;
     }
 
-    // for(auto [u, v]: b) cout<<u<<spc<<v<<nl;
-    // dbg('After Sorting');
-    sort(rall(b));
-    // for(auto [u, v]: b) cout<<u<<spc<<v<<nl;
 
-
-    ll bal = k+1;
-    VEC ans;
-    rep(i, 0, sz(b)) {
-        rep(j, 0, bal-b[i].first) {
-            ans.push_back(b[i].second);
-            // dbg(b[i].first);
-            // dbg(b[i].second);
+    rep(i, 1, n+1) 
+        cout<<i<<spc<<i<<spc;
+    
+    if(n % 2 == 0){
+        rep(i, 1, n+1) {
+            if(i&1) {
+                cout<<i<<spc<<i+1<<spc;
+            } else {
+                cout<<i-1<<spc<<i<<spc;
+            }
         }
     }
-    cout<<ans.size()<<nl;
-    for(auto x: ans) cout<<x<<spc;
+    else {
+        rep(i, 1, n+1) {
+            if(i&1) {
+                if(i == n) cout<<i<<spc;
+                else if(i == n/2) cout<<i<<spc<<n<<spc<<i+1<<spc;
+                else cout<<i<<spc<<i+1<<spc;
+            } else {
+                if(i == n/2) {
+                    cout<<i-1<<spc<<n<<spc<<i<<spc;
+                }
+                else cout<<i-1<<spc<<i<<spc;
+            }
+        }
+    }
     cout<<nl;
 }
 
