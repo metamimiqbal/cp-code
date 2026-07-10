@@ -85,19 +85,21 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ Why so serious? ] 
 void solve() {
-    ll n; 
-    cin>>n;
-    VEC x(n+1);
-    rep(i, 1, n+1) cin>>x[i];
-    sort(x.begin(), x.end());
+    ll n, k; cin>>n>>k;
+    VEC a(n+1);
+    rep(i, 1, n+1) cin>>a[i];
+    sort(all(a));
 
-    ll q; cin>>q;
-    while(q--) {
-        ll val; cin>>val;
-        ll id = upper_bound(all(x), val) - x.begin();
-        --id;
-        cout<<id<<nl;
+    if(k == 0) {
+        if(a[1] > 1) cout<<a[1]-1<<nl;
+        else cout<<-1<<nl;
     }
+    else if(k == n) cout<<a[n]<<nl;
+    else {
+        if(a[k] == a[k+1]) cout<<-1<<nl;
+        else cout<<a[k]<<nl;
+    } 
+
 }
 
 // [ Black Pearl ] 

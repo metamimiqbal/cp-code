@@ -15,8 +15,14 @@ using namespace std;
 
 void solve() {
     int n, k; cin>>n>>k;
-    // cout<<(n%k)+1<<nl;
-    
+    if(n<=k) cout<<(n+k-1)/n<<nl;    
+    else { // n>k
+        // the value idea: to make k greater than n to get non-zero element by: "val" here below:
+        ll d = (n+k-1)/k;
+        ll val = d*k;
+
+        cout<<(val+n-1)/n<<nl;
+    }
 }
 
 signed main() {

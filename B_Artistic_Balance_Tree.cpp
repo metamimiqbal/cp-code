@@ -85,26 +85,58 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ Why so serious? ] 
 void solve() {
-    ll n; 
-    cin>>n;
-    VEC x(n+1);
-    rep(i, 1, n+1) cin>>x[i];
-    sort(x.begin(), x.end());
-
-    ll q; cin>>q;
-    while(q--) {
-        ll val; cin>>val;
-        ll id = upper_bound(all(x), val) - x.begin();
-        --id;
-        cout<<id<<nl;
+    ll n, m; cin>>n>>m;
+    VEC od, evn, a(n+1);
+    rep(i, 1, n+1) {
+        ll x; cin>>x;
+        if(i&1) od.pb(x);
+        else evn.pb(x);
     }
+    ll odd = 0, even = 0;
+    rep(i, 1, m+1) {
+        ll x; cin>>x;
+        if(x&1) ++odd;
+        else even++;
+    }
+
+    sort(rall(od));
+    sort(rall(evn));
+    ll mark = 0;
+    
+    if(od[0]<0) {
+        mark += (od[0]*odd);
+    } else {
+        ll mn = inf;
+        rep(i, 0, sz(od)) {
+            if(!odd) break;
+            --odd;
+            if(od[i] > 0 && od[i] < mn) mn = od[i];
+            if(od[i] < 0) mark += mn;
+            else mark += od[i];
+        }
+    }
+
+    if(evn[0]<0) {
+        mark += (evn[0]*even);
+    } else {
+        ll mn = inf;
+        rep(i, 0, sz(evn)) {
+            if(!even) break;
+            --even;
+            if(evn[i] > 0 && evn[i] < mn) mn = evn[i];
+            if(evn[i] < 0) mark += mn;
+            else mark += evn[i];
+        }
+    }
+
+    cout<<accumulate(all(a), 0ll) - mark<<nl;
 }
 
 // [ Black Pearl ] 
 signed main() {
     Think_Like_Jack_Sparrow
 
-    // int t; cin >> t; while(t--)
+    int t; cin >> t; while(t--)
     solve();
 
     return 0;

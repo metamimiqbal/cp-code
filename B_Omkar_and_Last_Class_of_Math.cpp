@@ -85,26 +85,59 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ Why so serious? ] 
 void solve() {
-    ll n; 
-    cin>>n;
-    VEC x(n+1);
-    rep(i, 1, n+1) cin>>x[i];
-    sort(x.begin(), x.end());
-
-    ll q; cin>>q;
-    while(q--) {
-        ll val; cin>>val;
-        ll id = upper_bound(all(x), val) - x.begin();
-        --id;
-        cout<<id<<nl;
+    ll n; cin>>n;
+    ll k = -1;
+    rep(i, 2, sqrt(n)+1) {
+        if(n % i == 0) {
+            k = n/i; break;
+        }
     }
+    if(k==-1) cout<<1<<spc<<n-1<<nl;
+    else {
+        cout<<k<<spc<<n-k<<nl;
+    }
+
+    // if((n&1)==0) {
+    //     cout<<n/2<<spc<<n/2<<nl;
+    // } else {
+    //     ll a = inf, b = inf;
+    //     rep(i, 1, sqrt(n)+1) {
+    //         if(n%i == 0) {
+    //             ll d = n/i;
+    //             ll rm = n - d;
+    //             if(d + rm == n) {
+    //                 if(d < a) {
+    //                     a = d;
+    //                     b = rm;
+    //                 }
+    //             }
+    //             // dbg(a), dbg(rm), dbg(b);
+    //         }
+    //         // dbg(i);
+    //     }
+
+    //     cout<<a<<spc<<b<<nl;
+    // }
+
+
+        // ll mn = inf;
+        // ll a = -1, b = -1;
+        // rep(i, 1, (n/2)+1) {
+        //     ll lc = lcm(i, n-i);
+        //     if(mn > lc) {
+        //         mn = lc;
+        //         a = i, b = n-i;
+        //     }
+        // }
+        // cout<<a<<spc<<b<<nl;
+    
 }
 
 // [ Black Pearl ] 
 signed main() {
     Think_Like_Jack_Sparrow
 
-    // int t; cin >> t; while(t--)
+    int t; cin >> t; while(t--)
     solve();
 
     return 0;

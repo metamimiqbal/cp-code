@@ -85,18 +85,21 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ Why so serious? ] 
 void solve() {
-    ll n; 
-    cin>>n;
-    VEC x(n+1);
-    rep(i, 1, n+1) cin>>x[i];
-    sort(x.begin(), x.end());
+    ll n; cin>>n;
+    VEC v(n+1);
+    rep(i, 1, n+1) {
+        cin>>v[i];
+        if(i > 1) {
+            v[i] += v[i-1];
+        }
+    }
 
     ll q; cin>>q;
     while(q--) {
-        ll val; cin>>val;
-        ll id = upper_bound(all(x), val) - x.begin();
-        --id;
-        cout<<id<<nl;
+        ll x; cin>>x;
+        ll id = upper_bound(all(v), x) - v.begin();
+        if(v[id-1] == x) cout<<id-1<<nl;
+        else cout<<id<<nl;
     }
 }
 

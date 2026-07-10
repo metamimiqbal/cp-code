@@ -85,26 +85,50 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ Why so serious? ] 
 void solve() {
-    ll n; 
-    cin>>n;
-    VEC x(n+1);
-    rep(i, 1, n+1) cin>>x[i];
-    sort(x.begin(), x.end());
+    ll n; cin>>n;
+    VEC a(n+1), b(n+1);
+    rep(i, 1, n+1) cin>>a[i];
+    rep(i, 1, n+1) cin>>b[i];
 
-    ll q; cin>>q;
-    while(q--) {
-        ll val; cin>>val;
-        ll id = upper_bound(all(x), val) - x.begin();
-        --id;
-        cout<<id<<nl;
+    rrep(i, n, 1) {
+        if(a[i]<b[i]) continue;
+        if(a[i]>b[i] && i > 1) {
+            a[i-1] += (a[i]-b[i]);
+        } 
+        if(i == 1 && a[i] > b[i]) {
+            no; return;
+        }
     }
+    yes;
+
+    // ll l = -1;
+    // rep(i, 1, n+1) {
+    //     if(a[i]!=b[i]) {
+    //         l = i; break;
+    //     }
+    // }
+
+    // rep(i, l, n+1) {
+    //     if(a[i]!=b[i]) {
+    //         if((i-l)&1) {
+    //             if(a[i]<b[i]) {
+    //                 no; return;
+    //             }
+    //         } else {
+    //             if(a[i]>b[i]) {
+    //                 no; return;
+    //             }
+    //         }
+    //     }
+    // }
+    // yes;
 }
 
 // [ Black Pearl ] 
 signed main() {
     Think_Like_Jack_Sparrow
 
-    // int t; cin >> t; while(t--)
+    int t; cin >> t; while(t--)
     solve();
 
     return 0;

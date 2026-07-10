@@ -85,26 +85,74 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ Why so serious? ] 
 void solve() {
-    ll n; 
-    cin>>n;
-    VEC x(n+1);
-    rep(i, 1, n+1) cin>>x[i];
-    sort(x.begin(), x.end());
-
-    ll q; cin>>q;
-    while(q--) {
-        ll val; cin>>val;
-        ll id = upper_bound(all(x), val) - x.begin();
-        --id;
-        cout<<id<<nl;
+    ll t, h, u; cin>>t>>h>>u;
+    ll ans = 3*(t+h+u);
+    ll tu = min(t, u);
+    ans -= 2*tu;
+    t -= tu, u -= tu;
+    if(t > 0 and h > 0){
+        ll th = min(t, 2*h);
+        ans -= th;
+        t -= th, h -= th;
     }
+    if(t > 0) {
+        ans -= t/2;
+    }
+
+    cout<<ans<<nl;
+
+    // if(t > 0 and h > 0 and u > 0) {
+    //     ll mn = min(t, min(h, u));
+    //     ans += mn * 7;
+    //     t -= mn;
+    //     h -= mn;
+    //     u -= mn;
+    // }
+    
+    // if(t == 0 and h>0 and u>0) {
+    //     //h, u
+    //     ans += (h+u)*3;
+    //     ll mn = min(h, u);
+    //     h -= mn;
+    //     u -= mn;
+    // } else if(h == 0 and t>0 and u>0) {
+    //     // t, u
+    //     ans += min(t, u) * 4;
+    //     ans += (max(t, u)-min(t, u)) * 3;
+    //     ll mn = min(t, u);
+    //     t -= mn;
+    //     u -= mn;
+    // } else if(u == 0 and h>0 and t>0) {
+    //     // t, h
+    //     ans += min(t, h) * 5;
+    //     ans += (max(t, h)-min(t, h)) * 3;
+    //     ll mn = min(t, h);
+    //     t -= mn;
+    //     h -= mn;
+    //     // dbg(ans);
+    //     // dbg(t), dbg(h);
+    // }
+
+    // if(t == 0 and h == 0 and u>0) {
+    //     ans += (u*3);
+        
+    // } else if(t == 0 and u == 0 and h>0) {
+    //     ans += (h*3);
+    //     // dbg(ans);
+    // } else if(h == 0 and u == 0 and t>0) {
+    //     ans += (t/2 * 5);
+    //     if(t&1) {
+    //         ans += 3;
+    //     }
+    // } 
+    // cout<<ans<<nl;
 }
 
 // [ Black Pearl ] 
 signed main() {
     Think_Like_Jack_Sparrow
 
-    // int t; cin >> t; while(t--)
+    int t; cin >> t; while(t--)
     solve();
 
     return 0;

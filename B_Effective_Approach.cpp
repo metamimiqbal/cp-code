@@ -85,19 +85,24 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ Why so serious? ] 
 void solve() {
-    ll n; 
-    cin>>n;
-    VEC x(n+1);
-    rep(i, 1, n+1) cin>>x[i];
-    sort(x.begin(), x.end());
-
-    ll q; cin>>q;
-    while(q--) {
-        ll val; cin>>val;
-        ll id = upper_bound(all(x), val) - x.begin();
-        --id;
-        cout<<id<<nl;
+    ll n; cin>>n;
+    MAP mp;
+    VEC a(n+1);
+    rep(i, 1, n+1) {
+        cin>>a[i];
+        mp[a[i]] = i;
     }
+
+    ll m; cin>>m;
+    ll ans1 = 0, ans2 = 0;
+    rep(i, 0, m) {
+        ll x; cin>>x;
+        ll v1 = mp[x];
+        ll v2 = n - v1 + 1;
+        ans1 += v1, ans2 += v2;
+    }
+
+    cout<<ans1<<spc<<ans2<<nl;
 }
 
 // [ Black Pearl ] 

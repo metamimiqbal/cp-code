@@ -71,7 +71,7 @@ using namespace std;
 #define printv(v)       for(auto x : v) cerr << x << ' '; cerr << nl
 
 // [ numbering ]
-const ll inf  =  1e18;
+const ll inf  =  1e9;
 const ll M    =  1e7;
 // vector<int> dp(M, -1);
 // bitset<M> vc;
@@ -84,27 +84,48 @@ const int dy[] = {1, -1, 0, 0};
 // const int dy[] = {-1, 0, 1,-1, 1,-1, 0, 1};
 
 // [ Why so serious? ] 
-void solve() {
-    ll n; 
-    cin>>n;
-    VEC x(n+1);
-    rep(i, 1, n+1) cin>>x[i];
-    sort(x.begin(), x.end());
-
-    ll q; cin>>q;
-    while(q--) {
-        ll val; cin>>val;
-        ll id = upper_bound(all(x), val) - x.begin();
-        --id;
-        cout<<id<<nl;
+bool validity(VEC &a, VEC &b) {
+    rep(i, 0, sz(a)) {
+        if(a[i] < b[i]) return false;
     }
+    return true;
+}
+
+void solve() {
+    ll n, c; cin>>n>>c;
+    VEC a(n), b(n);
+    rep(i, 0, n) cin>>a[i];
+    rep(i, 0, n) cin>>b[i];
+
+    VEC aa = a, bb = b;
+    sort(all(bb));
+    sort(all(aa));
+    
+
+    if(!validity(a, b) and !validity(aa, bb)) {
+        cout<<-1<<nl; return;
+    }
+    // hello world
+    ll op1 = 0, op2 = 0;
+    rep(i, 0, n) {
+        if(a[i] > b[i]) op1 += (a[i] - b[i]);
+        else if(a[i]<b[i]) {op1 = inf; break;}
+    }
+    
+    rep(i, 0, n) {
+        if(aa[i] > bb[i]) op2 += (aa[i] - bb[i]);
+        else if(aa[i]<bb[i]) {op2 = inf; break;}
+    }
+   
+    ll val = op2 + c;
+    cout<<min(op1, val)<<nl;
 }
 
 // [ Black Pearl ] 
 signed main() {
     Think_Like_Jack_Sparrow
 
-    // int t; cin >> t; while(t--)
+    int t; cin >> t; while(t--)
     solve();
 
     return 0;

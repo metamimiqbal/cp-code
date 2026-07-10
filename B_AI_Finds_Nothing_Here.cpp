@@ -72,7 +72,7 @@ using namespace std;
 
 // [ numbering ]
 const ll inf  =  1e18;
-const ll M    =  1e7;
+const ll M    =  998244353;
 // vector<int> dp(M, -1);
 // bitset<M> vc;
 
@@ -84,27 +84,29 @@ const int dy[] = {1, -1, 0, 0};
 // const int dy[] = {-1, 0, 1,-1, 1,-1, 0, 1};
 
 // [ Why so serious? ] 
-void solve() {
-    ll n; 
-    cin>>n;
-    VEC x(n+1);
-    rep(i, 1, n+1) cin>>x[i];
-    sort(x.begin(), x.end());
-
-    ll q; cin>>q;
-    while(q--) {
-        ll val; cin>>val;
-        ll id = upper_bound(all(x), val) - x.begin();
-        --id;
-        cout<<id<<nl;
+ll bigmod(ll a, ll b) {
+    ll res = 1;
+    while (b) {
+        if (b & 1)
+            res = res * a % M;
+        a = a * a % M;
+        b >>= 1;
     }
+    return res;
+}
+
+
+void solve() {
+    ll n, m, r, c; cin>>n>>m>>r>>c;
+    ll fv = m*(r-1) + (c-1)*(n-r+1);
+    cout<<bigmod(2, fv)<<nl;
 }
 
 // [ Black Pearl ] 
 signed main() {
     Think_Like_Jack_Sparrow
 
-    // int t; cin >> t; while(t--)
+    int t; cin >> t; while(t--)
     solve();
 
     return 0;

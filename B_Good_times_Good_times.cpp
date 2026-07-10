@@ -84,27 +84,46 @@ const int dy[] = {1, -1, 0, 0};
 // const int dy[] = {-1, 0, 1,-1, 1,-1, 0, 1};
 
 // [ Why so serious? ] 
-void solve() {
-    ll n; 
-    cin>>n;
-    VEC x(n+1);
-    rep(i, 1, n+1) cin>>x[i];
-    sort(x.begin(), x.end());
+ll len(string s) {
+    set<char>sc;
+    for(auto u: s) sc.insert(u);
+    return sc.size();
+}
 
-    ll q; cin>>q;
-    while(q--) {
-        ll val; cin>>val;
-        ll id = upper_bound(all(x), val) - x.begin();
-        --id;
-        cout<<id<<nl;
-    }
+void solve() {
+    ll x; cin>>x;
+    // rep(i, 2, 101) {
+    //     if(len(to_string(x*i)) <= 2) {
+    //         cout<<x*i<<nl; return;
+    //     }
+    // } 
+    // cout<<"Paini\n";
+    // ll ln = ceil(log10(x)) - 1;
+    // ll i = 1;
+    // rep(k, 0, ln) i*=10;
+    // if(i == 1) ++i;
+
+    // // dbg(i);dbg(ln);
+    // rep(k, i, x+1) {
+    //     if(len(to_string(x*k))<=2) {
+    //         cout<<x*k<<nl; return;
+    //     }
+    //     dbg("hoccena");
+    // }
+    // // dbg("paini");
+    ll ln = ceil(log10(x));
+    ll ans = 1;
+    rep(k, 0, ln) ans *= 10;
+    ++ans;
+    // ans = ans * x;
+    cout<<ans<<nl;
 }
 
 // [ Black Pearl ] 
 signed main() {
     Think_Like_Jack_Sparrow
 
-    // int t; cin >> t; while(t--)
+    int t; cin >> t; while(t--)
     solve();
 
     return 0;

@@ -1,60 +1,68 @@
-/**
- * Bismillah
- * "The problem is not the problem. The problem is your attitude about the problem."
- *
- * THE BLACK PEARL CODEBASE
- * -------------------------------------------------------------
- * |  "Take what you can, give nothing back!"                  |
- * -------------------------------------------------------------
- */
-
 #include <bits/stdc++.h>
 using namespace std;
 
-// [Navigating the Seas] 
+// [printing follow up] 
 #define FAST_IO ios::sync_with_stdio(false); cin.tie(nullptr);
 #define Think_Like_Jack_Sparrow FAST_IO
 
-// [ The Pirate's Gold ] 
+// [ datatype ] 
 #define ll      long long
 #define ull     unsigned long long
 #define flt     long double
+#define pll     pair<ll, ll>
+#define pii     pair<int, int>
 
-// [ Provisions & Cargo ]
+// [ stl ]
 #define VEC     vector<ll>
-#define VPR     vector<pair<ll,ll>>
+#define VPR     vector<pair<ll, ll>>
 #define VVEC    vector<vector<ll>>
-#define MP      map<ll, ll>
+#define MAP      map<ll, ll>
 #define SET     set<ll>
-#define que     queue<ll>
-#define dque    deque<ll>
 #define prque   priority_queue<ll>
-#define aprque  priority_queue<ll, vector<ll>, greater<ll>>
+#define gprque  priority_queue<ll, vector<ll>, greater<ll>>
 
-#define all(x)  (x).begin(), (x).end()
-#define rall(x) (x).rbegin(), (x).rend()
-#define sz(x)   (ll)(x).size()
+// [ container ops ]
+#define pb(x)       push_back(x)
+#define eb(x)       emplace_back(x)
+#define pf(x)       push_front(x)
+#define popb(x)     (x).pop_back()
+#define popf(x)     (x).pop_front()
+#define mkpr(a,b)    make_pair(a, b)
+#define mktpl(a,b,c)   make_tuple(a, b, c)
 
-// [ Combat Maneuvers ] --------------------------------------
+//  [ iterating ]
+#define all(x)      (x).begin(), (x).end()
+#define rall(x)     (x).rbegin(), (x).rend()
+#define sz(x)       (ll)(x).size()
+#define rep(i,a,b)  for(ll i=(a);i<(b);++i)
+#define rrep(i,a,b) for(ll i=(a);i>=(b);--i)
+#define each(x,a)   for(auto &x : a)
+
+// [ sorting ]
+#define srt(x)      sort(all(x))
+#define rsrt(x)     sort(rall(x))
+#define rev(x)      reverse(all(x))
+#define uniq(x)     (x).erase(unique(all(x)), (x).end())
+
+// [ Function ] 
 #define SUM(x)          accumulate(all(x), 0LL)
 #define MAX(x)          *max_element(all(x))
 #define MIN(x)          *min_element(all(x))
 #define STR_TOUPPER(s)  transform(all(s), s.begin(), ::toupper)
 #define STR_TOLOWER(s)  transform(all(s), s.begin(), ::tolower)
+#define sq(x)           ((x)*(x))
 #define gcd             __gcd
 #define lcm(a,b)        ((a)/gcd(a,b)*(b))
 #define mod             1000000007
 #define modn(x)         (((x)%mod+mod)%mod)
 #define ll_len(n)       ((n) > 0 ? (int)floor(log10((long double)(n)) + 1) : 1)
 
-// [ Constant Voyages ] 
-#define rep(i,a,b)      for(ll i=(a);i<(b);++i)
-#define rrep(i,a,b)     for(ll i=(a);i>=(b);--i)
-#define each(x,a)       for(auto &x : a)
-
-// [ Parlay ]
-#define yes             cout<<"YES\n"
-#define no              cout<<"NO\n"
+// [ Printing ]
+#define yes             cout << "YES\n"
+#define no              cout << "NO\n"
+#define pyes            cout << "Yes\n"
+#define pno             cout << "No\n"
+#define print(x)        cout << (x) << nl
 #define nl              '\n'
 #define spc             " "
 
@@ -62,44 +70,45 @@ using namespace std;
 #define dbg(x)          cerr << "[DBG] " << #x << " = " << x << nl
 #define printv(v)       for(auto x : v) cerr << x << ' '; cerr << nl
 
-// [ Secret Map ] 
-const ll octroi = 1e7;
-// vector<int> dp(octroi, -1);
-// bitset<octroi> vc;
+// [ numbering ]
+const ll inf  =  1e18;
+const ll M    =  1e7;
+// vector<int> dp(M, -1);
+// bitset<M> vc;
 
-// [ The Great Adventure ] ----------------------------------
+// [ Graph/Grid ]
+const int dx[] = {0, 0, 1, -1};
+const int dy[] = {1, -1, 0, 0};
+// 8-directional:
+// const int dx[] = {-1,-1,-1, 0, 0, 1, 1, 1};
+// const int dy[] = {-1, 0, 1,-1, 1,-1, 0, 1};
+
+// [ Why so serious? ] 
 void solve() {
-    // Code your way out of the locker...
     ll n; cin>>n;
-    VEC vec(n);
-    SET st; MP mp;
-    rep(i, 0, n){
-        cin>>vec[i];
-        st.insert(vec[i]);
-        mp[vec[i]]++;
+    VEC a(n); SET st;
+    MAP mp;
+    ll mx = -inf;
+    rep(i, 0, n) {
+        cin>>a[i];
+        st.insert(a[i]);
+        ++mp[a[i]];
+        mx = max(mx, a[i]);
     }
-    if(st.size() == 1){
-        cout<<-1<<nl; return;
+
+    if(st.size()==1) cout<<-1<<nl;
+    else {
+        cout<<n-mp[mx]<<spc<<mp[mx]<<nl;
+        rep(i, 0, n) {
+            if(a[i] != mx) cout<<a[i]<<spc;
+        }
+        cout<<nl;
+        rep(i, 0, mp[mx]) cout<<mx<<spc;
+        cout<<nl;
     }
-    sort(all(vec));
-
-    ll value = mp[vec[0]];
-
-    cout<<value<<spc<<vec.size()-value<<nl;
-
-    rep(i, 0, value){
-        cout<<vec[0]<<spc;
-    }cout<<nl;
-
-    vec.erase(remove(all(vec), vec[0]), vec.end());
-
-
-    rep(i, 0, sz(vec)){
-        cout<<vec[i]<<spc;
-    }cout<<nl;
 }
 
-// [ Black Pearl ] -------------------------------------------
+// [ Black Pearl ] 
 signed main() {
     Think_Like_Jack_Sparrow
 
@@ -108,7 +117,3 @@ signed main() {
 
     return 0;
 }
-
-// -------------------------------------------------------------
-// You'll always be remembered, mate (Sorif Osman Bin Hady)
-// -------------------------------------------------------------

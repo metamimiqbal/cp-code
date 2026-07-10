@@ -85,26 +85,50 @@ const int dy[] = {1, -1, 0, 0};
 
 // [ Why so serious? ] 
 void solve() {
-    ll n; 
-    cin>>n;
-    VEC x(n+1);
-    rep(i, 1, n+1) cin>>x[i];
-    sort(x.begin(), x.end());
-
-    ll q; cin>>q;
-    while(q--) {
-        ll val; cin>>val;
-        ll id = upper_bound(all(x), val) - x.begin();
-        --id;
-        cout<<id<<nl;
+    ll n; cin>>n;
+    VEC a(n);
+    for(auto &u: a) cin>>u;
+    ll sml = 0, grt = 0;
+    ll ck = 0;
+    rep(i, 0, n) {
+        if(ck == 0) {
+            dbg("1st part: ");
+            if(a[i] == 1) sml++;
+            else {
+                grt++;
+                // dbg(i), dbg(a[i]);
+                // dbg(grt), dbg(sml);
+            }
+            if(((sml+grt)/2) >= grt) {
+                dbg(i), dbg(a[i]);
+                dbg(grt), dbg(sml);
+                ck++; sml = 0, grt = 0;
+            }
+        } else if(ck == 1) {
+            dbg("2nd part: ");
+            if(a[i] <= 2) sml++;
+            else {
+                grt++; 
+                dbg(i), dbg(a[i]);
+                dbg(grt), dbg(sml);
+            }
+            // dbg(grt), dbg(sml);
+            if((sml+grt)/2 >= grt) {
+                ck++; 
+            }
+        } else {
+            yes; return;
+        }
     }
+    dbg(ck);
+    no; 
 }
 
 // [ Black Pearl ] 
 signed main() {
     Think_Like_Jack_Sparrow
 
-    // int t; cin >> t; while(t--)
+    int t; cin >> t; while(t--)
     solve();
 
     return 0;
