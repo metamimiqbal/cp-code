@@ -60,21 +60,76 @@ constexpr ll MOD = 1000000007LL;
 template<class T>
 inline T sq(T x) { return x * x; }
 
+int dr[] = {-1, 1, 0, 0};
+int dc[] = {0, 0, -1, 1};
+
+
+// void dfs(vector<vector<char>>graph, char start, set<char>&visited) {
+//     visited.insert(start);
+//     for(auto neighbor: graph[start]) {
+//         if(!visited.count(neighbor)) dfs(graph, start, visited);
+//     }
+// }
+
+ll nn, mm;
+void dfs(ll r, ll c, vector<vector<bool>>&visited, vector<vector<char>> &graph) {
+    visited[r][c] = true;
+    rep(i, 0, 4) {
+        ll nr = r + dr[i];
+        ll nc = c + dc[i];
+        if(nr < 0 || nr >= nn || nc < 0 || nc >= mm || visited[nr][nc] || graph[nr][nc] == '#') continue;
+        dfs(nr, nc, visited, graph);
+    }
+}
+
 
 // [ Why So Serious ]
 void solve() {
+    ll r, c;
+    cin>>r>>c;
+    nn = r, mm = c;
+    vector<vector<char>> graph(r, vector<char>(c));
+
+    rep(i, 0, r) {
+        rep(j, 0, c) {
+            cin>>graph[i][j];
+        }
+    }
+
+    vector<vector<bool>>visited(r, vector<bool>(c, false));
+    ll room = 0;
+    rep(i, 0, r) {
+        rep(j, 0, c) {
+            if(graph[i][j] == '.' && !visited[i][j]) {
+                ++room;
+                dfs(i, j, visited, graph);
+            }
+        }
+    }
+    cout<<room<<nl;
+    
+    // set<char>visited;
+    // rep(i, 0, r) {
+    //     rep(j, 0, c) {
+    //         rep(k, 0, 4) {
+    //             rep(l, 0, 4){
+    //                 char nr = graph[i][j] + dr[k];
+    //                 char nc = graph[i][j] + dc[k];
+    //                 if(nr <= 0 || nc <= 0 || nr == '#' || nc == '#' || visited.count(graph[n]))
+    //             }
+    //     }
+    
+    // }
+    //         } 
+    
     
 }
 
 signed main() {
     THINK_LIKE_JACK_SPARROW
 
-    //int t; cin>>t; while(t--)
+    // int t; cin>>t; while(t--)
     solve();
 
     return 0;
 }
-
-
-
-

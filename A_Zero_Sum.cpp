@@ -86,32 +86,22 @@ const int dy[] = {1, -1, 0, 0};
 // [ Why so serious? ] 
 void solve() {
     ll n; cin>>n;
-    VEC v(n);
-    for(auto &x: v) cin>>x;
-    VEC pfx1(n+1), pfx2(n+1);
-    rep(i, 1, n+1) {
-        pfx1[i] = pfx1[i-1] + (v[i-1]==1 ? 1 : -1);
-        pfx2[i] = pfx2[i-1] + (v[i-1] == 3 ? -1 : 1);
+    VEC a(n);
+    ll sm = 0;
+    rep(i, 0, n) {
+        cin>>a[i]; sm += a[i];
     }
 
-    ll mn = inf;
-    rep(i, 1, n) {
-        if(pfx2[i] >= mn) {
-            yes; return;
-        }
-        if(pfx1[i] >= 0) {
-            mn = min(mn, pfx2[i]);
-        }
-    }
-    no;
+    if(sm % 4 == 0) yes;
+    else no;
 }
 
 // [ Black Pearl ] 
 signed main() {
     Think_Like_Jack_Sparrow
 
-    int t; cin >> t; while(t--) 
+    int t; cin >> t; while(t--)
     solve();
 
-    return 0;
+    return 0;k
 }

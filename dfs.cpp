@@ -60,6 +60,21 @@ constexpr ll MOD = 1000000007LL;
 template<class T>
 inline T sq(T x) { return x * x; }
 
+graph = {
+    'A': ['B', 'C'],
+    'B': ['G', 'A'],
+    'C': ['A', "G", 'F'],
+    'D': ['E'],
+    'E': ['D', 'F'],
+    'F': ['C', "G", 'E'],
+    "G": ["B", "F", "C"]
+}
+
+
+dfs_recursive(start) {
+    
+}
+
 
 // [ Why So Serious ]
 void solve() {
@@ -74,7 +89,3 @@ signed main() {
 
     return 0;
 }
-
-
-
-

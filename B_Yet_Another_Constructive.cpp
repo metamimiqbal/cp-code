@@ -63,18 +63,30 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    
+    ll n, k, m; cin>>n>>k>>m;
+    if(k > m) no;
+    else {
+        yes;
+        VEC a(k);
+        rep(i, 0, k) {
+            if(i == k-1) a[i] = m-k+1;
+            else a[i] = 1;
+        }
+        ll dv = n / k;
+        ll rm = n % k;
+        rep(i, 0, dv) {
+            rep(i, 0, k) cout<<a[i]<<spc;
+        }
+        rep(i, 0, rm) cout<<1<<spc;
+        cout<<nl;
+    }
 }
 
 signed main() {
     THINK_LIKE_JACK_SPARROW
 
-    //int t; cin>>t; while(t--)
+    int t; cin>>t; while(t--)
     solve();
 
     return 0;
 }
-
-
-
-
