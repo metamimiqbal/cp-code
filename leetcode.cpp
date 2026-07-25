@@ -1,47 +1,47 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+
 class Solution {
 public:
-    int m, n;
     int dr[4] = {-1, 1, 0, 0};
     int dc[4] = {0, 0, -1, 1};
-    void dfs(vector<vector<int>>& image, int sr, int sc, int color, int orginal) {
-        image[sr][sc] = color;
+    int m, n;
+    void dfs(int r, int c, vector<vector<bool>>&visited, int &temp, vector<vector<int>>& grid) {
+        ++temp;
+        visited[r][c] = true;
         for(int i = 0; i<4; i++) {
-            int r = sr + dr[i];
-            int c = sc + dc[i];
-            if(r < 0 || r >= m || c < 0 || c >= n) continue;
-            if(image[r][c] == color || image[r][c] != orginal) continue; 
-            //saving originality
-            dfs(image, r, c, color, orginal);
+            int nr = r + dr[i];
+            int nc = c + dc[i];
+            if(nr < 0 || nr >= m || nc < 0 || nc >= n) continue;
+            if(visited[nr][nc]) continue;
+            if(grid[nr][nc] == 0) continue;
+            dfs(nr, nc, visited, temp, grid);
         }
     }
-    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
-        m = image.size();
-        n = image[0].size();
-        // vector<vector<bool>>visited(m, vector<bool>(n, false));
-        int orginal = image[sr][sc];
-        dfs(image, sr, sc, color, orginal);
-        return image;
+
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        m = grid.size();
+        n = grid[0].size();
+        vector<vector<bool>>visited(m, vector<bool>(n, false));
+
+        int ans = 0;
+        for(int i = 0; i<m; ++i) {
+            for(int j = 0; j<n; ++j) {
+                int temp = 0;
+                if(grid[i][j] == 1 && !visited[i][j]) {
+                    dfs(i, j, visited, temp, grid);
+                }
+                ans = max(ans, temp);
+            }
+        }
+        return ans;
     }
-}; 
+};
 
 
-int main(){
+int main() {
     Solution solution;
-    int sr = 1;
-    int sc = 1;
-    vector<vector<int>>image {{1,1,1},{1,1,0},{1,0,1}};
-    int color = 3;
-
-    vector<vector<int>>ans = solution.floodFill(image, sr, sc, color);
-
-    for(int i = 0; i<3; i++) {
-        for(int j = 0; j<3; j++) {
-            cout<<ans[i][j]<<" ";
-        }
-        cout<<"\n";
-    }
-
+    vector<vector<int>> grid = {{0,0,1,0,0,0,0,1,0,0,0,0,0},{0,0,0,0,0,0,0,1,1,1,0,0,0},{0,1,1,0,1,0,0,0,0,0,0,0,0},{0,1,0,0,1,1,0,0,1,0,1,0,0},{0,1,0,0,1,1,0,0,1,1,1,0,0},{0,0,0,0,0,0,0,0,0,0,1,0,0},{0,0,0,0,0,0,0,1,1,1,0,0,0},{0,0,0,0,0,0,0,1,1,0,0,0,0}};
+    cout<<solution.maxAreaOfIsland(grid)<<endl;
 }
