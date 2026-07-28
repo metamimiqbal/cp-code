@@ -2,8 +2,6 @@ import math
 import sys
 import numpy as np
 
-# [ Why So Serious ]
-
 print("="*70)
 print("Exercise 1")
 print("="*70)

@@ -1,7 +1,5 @@
 import math
 
-# [ Why So Serious ]
-
 def ex1():
     print("Exercise 1")
     print("e^0.5 using Maclaurin Series (3 Significant Figures)\n")

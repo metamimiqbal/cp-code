@@ -1,43 +1,176 @@
-def bisection(f, a, b, n):
-    x = 0
-    ans = []
-    ans.append((a, b))
-    for _ in range(n):
+import math
+
+def bisection(f,a,b,eps = 1e-4,mx = 100):
+    print(f"{'n':<5}{'a':<12}{'b':<12}{'xn':<12}{'f(xn)':<15}new interval")
+
+    for i in range (1,mx+1,1):
         x = (a+b)/2
-        if f(x) == 0 or (b-a)/2 < 1e-9:
-            return x
+        fx = f(x)
+
+        if(f(a)*fx<0):
+            na,nb = a,x
+            s = f"[{a:.6f}, {x:.6f}]"
+            b = x
         else:
-            if (f(a)*f(x) < 0):
-                b = x
-                ans.append((a, b))
-            else:
-                a = x
-                ans.append((a, b))
-        
-    return ans
-    
-# ex-1:
-f1 = lambda x: x**3 - x - 1
+            na,nb = x,b
+            s = f"[{x:.6f}, {b:.6f}]"
+            a = x
 
-result1 = bisection(f1, 1, 2, 10)
+        print(f"{i:<5}{na:<12.6f}{nb:<12.6f}{x:<12.6f}{fx:<15.6f}{s}")
 
-print(f"{'n':<3} {'a':<10} {'b':<10} {'x_n':<12} {'f(x_n)':<12} {'new interval'}")
-
-a, b = result1[0]
-
-for i, (na, nb) in enumerate(result1[1:], start=1):
-    x = (a + b) / 2
-
-    print(
-        f"{i:<3} "
-        f"{a:<10.4f}"
-        f"{b:<10.4f}"
-        f"{x:<12.6f}"
-        f"{f1(x):<12.6f}"
-        f"[{na:.6f}, {nb:.6f}]"
-    )
-
-    a, b = na, nb
+        if(abs(fx)==0 or (nb-na)/2<eps):
+            print("\nAnswer =",round(x,4))
+            print("")
+            return
 
 
-f2 = lambda x: x**3 - 2*x - 1
+def ex1():
+    print("Exercise 1")
+    print("x^3 - x - 1 = 0\n")
+
+    def f(x):
+        return x**3-x-1
+
+    bisection(f,1,2)
+
+
+def ex2():
+    print("Exercise 2")
+    print("x^3 - 2x - 5 = 0\n")
+
+    def f(x):
+        return x**3-2*x-5
+
+    bisection(f,2,3)
+
+    print("Answer (3 d.p.) = 2.094")
+    print("")
+
+
+def ex3():
+    print("Exercise 3")
+    print("x^3 + x^2 + x + 7 = 0\n")
+
+    def f(x):
+        return x**3+x**2+x+7
+
+    bisection(f,-3,-2)
+
+    print("Answer (3 d.p.) = -2.000")
+    print("")
+
+
+def ex4():
+    print("Exercise 4")
+    print("x^3 - 4x - 9 = 0\n")
+
+    def f(x):
+        return x**3-4*x-9
+
+    bisection(f,2,3)
+
+
+def ex5():
+    print("Exercise 5")
+    print("x^4 - x - 10 = 0\n")
+
+    def f(x):
+        return x**4-x-10
+
+    bisection(f,1,2)
+
+
+def ex6():
+    print("Exercise 6")
+    print("x - cos(x) = 0\n")
+
+    def f(x):
+        return x-math.cos(x)
+
+    bisection(f,0,1)
+
+
+def ex7():
+    print("Exercise 7")
+    print("x*e^x - 1 = 0\n")
+
+    def f(x):
+        return x*math.exp(x)-1
+
+    bisection(f,0,1)
+
+
+def ex8():
+    print("Exercise 8")
+    print("3x - cos(x) - 1 = 0\n")
+
+    def f(x):
+        return 3*x-math.cos(x)-1
+
+    bisection(f,0,1)
+
+
+def ex9():
+    print("Exercise 9")
+    print("e^x - 3x = 0 (First Root)\n")
+
+    def f(x):
+        return math.exp(x)-3*x
+
+    bisection(f,0,1)
+
+    print("Second Root\n")
+    bisection(f,1,2)
+
+
+def ex10():
+    print("Exercise 10")
+    print("x*sin(x) - 1 = 0\n")
+
+    def f(x):
+        return x*math.sin(x)-1
+
+    bisection(f,1,2)
+
+
+def ex11():
+    print("Exercise 11")
+    print("ln(x) - x + 2 = 0\n")
+
+    def f(x):
+        return math.log(x)-x+2
+
+    bisection(f,3,4)
+
+
+def ex12():
+    print("Exercise 12")
+    print("h^3 - 3h^2 + 2.4 = 0\n")
+
+    def f(h):
+        return h**3-3*h**2+2.4
+
+    bisection(f,1,2)
+
+    print("Answer (3 d.p.) =",round(1.070,3))
+    print("")
+
+
+def main():
+    ex1()
+    ex2()
+    ex3()
+    ex4()
+    ex5()
+    ex6()
+    ex7()
+    ex8()
+    ex8()
+    ex9()
+    ex10()
+    ex11()
+    ex12()
+
+
+main()
+
