@@ -4,7 +4,7 @@ using namespace std;
 vector<int> merge(vector<int>&left, vector<int>&right) {
     vector<int>merged;
 
-    size_t l = 0, r = 0; // equivalent to: int l = 0, r = 0;
+    size_t l = 0, r = 0; 
     while(l < left.size() && r < right.size()) {
         if(left[l] <= right[r]) {
             merged.push_back(left[l]); ++l; 

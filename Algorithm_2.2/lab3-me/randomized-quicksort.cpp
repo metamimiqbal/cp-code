@@ -21,7 +21,7 @@ ll partition(ll l, ll r) {
 
 void qs(ll l, ll r) {
     if(l >= r) return;
-    if(l != r)
+
     ll p = partition(l, r);
 
     qs(l, p-1);
@@ -29,11 +29,14 @@ void qs(ll l, ll r) {
 }
 
 int main() {
-    cout<<"choose an index: ["<<0<<","<<vec.size()<<"]";
-    int n; cin>>n;
-    if(n < 0 || n>vec.size()) {
-        cout<<"wrong index\n"; return;
+    cout<<"choose an index: ["<<0<<","<<vec.size()-1<<"]";
+    ll n; cin>>n;
+
+    if(n < 0 || n>=vec.size()) {
+        cout<<"wrong index\n";
+        return 0;
     }
+
     ll suru = 0;
     swap(suru, n);
     qs(suru, vec.size()-1);
