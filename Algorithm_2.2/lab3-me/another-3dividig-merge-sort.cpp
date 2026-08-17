@@ -94,8 +94,10 @@ int main() {
     cout<<"main array: ";
     print(vec);
 
+    cout<<"The Pathaway in recursion:\n";
     vec = merge_sort(vec);
 
+    cout<<"Sorted Array: ";
     for(auto u: vec) cout<<u<<" ";
     cout<<endl;
 

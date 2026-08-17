@@ -10,25 +10,22 @@ using namespace std;
 #define rrep(i, a, b) for(ll i = (a); i>=(b); --i)
 #define each(x, a) for(auto &x: (a))
 
-ll numberOfRotation(VEC &vec) {
-    ll l = 0, r = vec.size()-1;
-    ll ans = LLONG_MAX;
-    ll idx = -1;
+
+ll peak(VEC &vec) {
+    ll n = vec.size();
+    if(n == 1) return vec[0];
+    else if(vec[n-1] > vec[n-2]) return vec[n-1];
+    else if(vec[0] > vec[1]) return vec[0];
+
+    ll l = 1, r = n-2;
     while(l<=r) {
         ll md = l + (r-l)/2;
-        if(vec[l] <= vec[md]) { // sorted left half
-            if(vec[l] < ans) {
-                ans = vec[l], idx = l;
-            }
-            l = md + 1; // to go for the other half even though unsorted.
-        } else { // if left half isn't sorted, then obviously the other right half is sorted.
-            if(vec[md] < ans) {
-                ans = vec[md], idx = md;
-            }
-            r = md - 1;
-        }
+
+        if(vec[md] > vec[md-1] && vec[md] > vec[md+1])  return vec[md];
+        else if(vec[md] > vec[md-1]) l = md + 1;
+        else r = md - 1; 
     }
-    return idx;
+    return -1;
 }
 
 
@@ -37,6 +34,6 @@ int main() {
     ll n; cin>>n;
     VEC arr(n);
     rep(i, 0, n) cin>>arr[i];
-    cout<<numberOfRotation(arr)<<endl;
+    cout<<peak(arr)<<endl;
 }
 

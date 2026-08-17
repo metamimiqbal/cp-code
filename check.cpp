@@ -1,36 +1,31 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+int singleNumber(vector<int>& nums) {
+    int ans = 0;
 
-int main() {
-    vector<int>v{1, 21, 31, 31};
+    for (int bit = 0; bit < 32; bit++) {
+        int cnt = 0;
 
-    int l = 0, r = v.size() - 1;
-    int target = 21;
-    while(l<=r) {
-        int md = l + (r-l)/2;
-        if(v[md] == target) {
-            cout<<"at index: "<<md<<endl; return 0;
+        for (int x : nums) {
+            if (x & (1 << bit)) {
+                cnt++;
+            }
         }
 
-        if(v[l] <= v[md]) {  // check: Is LEFT half sorted?
-            if(v[l] <= target && target < v[md]) {
-                r = md - 1;
-            } else {
-                l = md + 1;
-            }
-            
-        } else { // check: if left not sorted, then right is obviously sorted!
-            if(v[md] < target && target <= v[r]) {
-                l = md + 1;
-            } else {
-                r = md - 1;
-            }
+        if (cnt % 3 != 0) {
+            ans |= (1 << bit);
+            cout<<bit<<endl;
         }
     }
 
-    cout<<"Naire Bara\n";
-    
+    return ans;
+}
+
+int main() {
+    vector<int> nums = {2, 2, 2, 5, 5, 5, 9};
+
+    cout << singleNumber(nums) << '\n';
 
     return 0;
 }

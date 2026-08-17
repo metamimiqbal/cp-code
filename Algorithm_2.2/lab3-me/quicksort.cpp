@@ -2,7 +2,7 @@
 using namespace std;
 #define ll long long
 
-vector<ll>vec {5, 9, 1, 7, 3, 8, 2, 6, 4};
+vector<ll>vec {10, 7, 8, 9, 1, 5};
 
 ll partition(ll l, ll r) {
     ll pivot = vec[r];
@@ -31,17 +31,9 @@ void qs(ll l, ll r) {
 int main() {
     ll sz = vec.size();
 
-    cout<<"choose an index: ["<<0<<","<<sz-1<<"]: ";
-    ll n; cin>>n;
+    qs(0, sz-1);
 
-    if(n < 0 || n >= sz) {
-        cout<<"wrong index\n";
-        return 0;
-    }
-
-    swap(vec[n], vec[sz-1]);   
-    qs(0, sz-1);               
-
+    cout<<"Sorted array: ";
     for(ll x : vec) cout<<x<<" ";
     cout<<endl;
 
