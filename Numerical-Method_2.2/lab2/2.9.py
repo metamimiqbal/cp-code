@@ -1,5 +1,3 @@
-# ─── Experiment 2.9 : Iteration for Systems ────────────────────────────────
-
 import math
 
 

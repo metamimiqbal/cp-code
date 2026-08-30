@@ -1,7 +1,5 @@
 import math
 
-# [ Why So Serious ]
-
 
 def ex1():
     print("Exercise 1")
