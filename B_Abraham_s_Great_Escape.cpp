@@ -63,34 +63,38 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    ll n, x; cin>>n>>x;
-    VEC v(n+1);
-    rep(i, 1, n+1) cin>>v[i];
-    sort(all(v));
-    ll sm = 0, pts = 0;
-    ll f = 0;
-//    rep(i, 1, n+1) {
-//         sm += v[i];
-//         if(sm/x > f) {
-//             pts += v[i];
-//         }
-//         f = sm/x;
-//    }
-//    cout<<pts<<nl;
-    VEC ans;
-    for(ll l = 1, r = n; l <= r; ) {
-        if((sm+v[r])/x > f) {
-            sm+=v[r], f = sm/x, pts += v[r];
-            ans.push_back(v[r--]);
-        }
-        else {
-            sm += v[l];
-            ans.push_back(v[l++]);
+    ll n, k; cin>>n>>k;
+    ll nn = n*n;
+    if(nn-k == 1) {
+        no; return;
+    }
+
+    yes;
+    vector<vector<char>>ans(n, vector<char>(n));
+    rep(i, 0, n) // column traverse
+    {
+        bool meredieciboss = false;
+        rep(j, 0, n) { // row traverse
+            if(k > 0) {
+                // dbg(k);
+                ans[j][i] = 'U'; --k;
+                // dbg(ans[j][i]);
+            }
+            else if(k==0) {
+                if(j == n-1 && !meredieciboss) ans[j][i] = 'R';
+                else {
+                    if(!meredieciboss) ans[j][i] = 'D', meredieciboss=true;
+                    else {
+                        ans[j][i] = 'U';
+                    }
+                }
+            }
         }
     }
-    cout<<pts<<endl;
-    for(auto u: ans) cout<<u<<spc;
-    cout<<endl;
+    for(auto u: ans) {
+        for(auto x: u) cout<<x;
+        cout<<nl;
+    }
 }
 
 signed main() {

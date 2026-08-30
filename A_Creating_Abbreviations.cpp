@@ -63,34 +63,29 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    ll n, x; cin>>n>>x;
-    VEC v(n+1);
-    rep(i, 1, n+1) cin>>v[i];
-    sort(all(v));
-    ll sm = 0, pts = 0;
-    ll f = 0;
-//    rep(i, 1, n+1) {
-//         sm += v[i];
-//         if(sm/x > f) {
-//             pts += v[i];
-//         }
-//         f = sm/x;
-//    }
-//    cout<<pts<<nl;
-    VEC ans;
-    for(ll l = 1, r = n; l <= r; ) {
-        if((sm+v[r])/x > f) {
-            sm+=v[r], f = sm/x, pts += v[r];
-            ans.push_back(v[r--]);
-        }
-        else {
-            sm += v[l];
-            ans.push_back(v[l++]);
-        }
+    ll n, m; cin>>n>>m;
+    map<char, ll>mp;
+    while(n--) {
+        string s; cin>>s;
+        mp[s[0]]++;
     }
-    cout<<pts<<endl;
-    for(auto u: ans) cout<<u<<spc;
-    cout<<endl;
+
+    // for(auto [u, v]: mp) cout<<u<<spc; 
+    // cout<<nl;
+
+    bool hbe = true;
+    while(m--) {
+        string x; cin>>x;
+        bool sb = true;
+        for(auto c: x) {
+            char cc = c + 32;
+            // dbg(cc);
+            if(!mp.count(cc)) sb = false;
+        }
+        if(!sb) hbe = false;
+    }
+    if(hbe) yes;
+    else no;
 }
 
 signed main() {

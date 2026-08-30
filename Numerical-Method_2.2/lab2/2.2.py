@@ -1,5 +1,4 @@
 import math
-
 def regula(f,a,b,eps=1e-4,n=100):
     print(f"{'n':<5}{'a':<12}{'b':<12}{'xn':<12}{'f(xn)':<15}")
 

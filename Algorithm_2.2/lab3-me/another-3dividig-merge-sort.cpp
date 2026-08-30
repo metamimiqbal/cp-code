@@ -51,7 +51,7 @@ vector<int> merge(vector<int>&left, vector<int>&majhari, vector<int>&right) {
         merged.push_back(right[r]); ++r;
     }
     while(m < majhari.size()) {
-        merged.push_back(right[m]); ++m;
+        merged.push_back(majhari[m]); ++m;
     }
 
 

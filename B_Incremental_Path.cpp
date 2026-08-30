@@ -63,39 +63,49 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    ll n, x; cin>>n>>x;
-    VEC v(n+1);
-    rep(i, 1, n+1) cin>>v[i];
-    sort(all(v));
-    ll sm = 0, pts = 0;
-    ll f = 0;
-//    rep(i, 1, n+1) {
-//         sm += v[i];
-//         if(sm/x > f) {
-//             pts += v[i];
-//         }
-//         f = sm/x;
-//    }
-//    cout<<pts<<nl;
-    VEC ans;
-    for(ll l = 1, r = n; l <= r; ) {
-        if((sm+v[r])/x > f) {
-            sm+=v[r], f = sm/x, pts += v[r];
-            ans.push_back(v[r--]);
-        }
-        else {
-            sm += v[l];
-            ans.push_back(v[l++]);
-        }
+    ll n, m; cin>>n>>m;
+    string s; cin>>s;
+    map<ll, ll>mp; 
+    rep(i, 0, m) {
+        ll x; cin>>x;
+        mp[x]++;
     }
-    cout<<pts<<endl;
-    for(auto u: ans) cout<<u<<spc;
+
+    vector<ll>p(n+1);
+    p[0] = 1;
+
+    rep(i, 1, n+1) {
+        ll pos;
+        if(i == 1) {
+            pos = p[0];
+            ++pos;
+            if(s[i-1] == 'B') {
+                while(mp.count(pos)) ++pos;
+            }
+            mp[pos]++; 
+        } else {
+            pos = p[i-2];
+            if(s[i-2] == 'A') ++pos;
+            else if(s[i-2] == 'B') {
+                ++pos;
+                while(mp.count(pos)) ++pos;
+            }
+            if(s[i-1] == 'A') ++pos;
+            else if(s[i-1] == 'B') {
+                ++pos;
+                while(mp.count(pos)) ++pos;
+            }
+            mp[pos]++;
+        }
+        p[i] = pos;
+    }
+    cout<<mp.size()<<endl;
+    for(auto [u, v]: mp) cout<<u<<spc;
     cout<<endl;
 }
 
 signed main() {
     THINK_LIKE_JACK_SPARROW
-
     int tt; cin>>tt; while(tt--)
     solve();
 

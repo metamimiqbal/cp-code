@@ -1,94 +1,84 @@
-/* This is the same dawn -- the one in which truth shall rise as falsehood falls. 
-By the promise of my Almighty, oppression shall perish, and justice shall prevail.  
-Free Palestine. Free the Uyghurs. Free the Rohingyas.  
-Free Sudan, Yemen, Iraq, and every land where the blood of the innocent cries out.  
-
-"They wish to extinguish the light of Allah with their mouths, 
-but Allah will perfect His light -- even if the disbelievers hate it." -- Surah As-Saff (61:8)  
-
-And say: "Truth has come and falsehood has vanished. Indeed, falsehood is bound to vanish." -- Surah Al-Isra (17:81)
-
-May the curse of my Lord be upon the oppressors, the tyrants, and the usurpers of truth. 
-May their plans be shattered as were those of Firaun, and their legacy buried like Aad and Thamud.  
-We stand with our oppressed brothers and sisters -- not with slogans, but with conviction. 
-Victory will surely come to those who stand firm upon the Haqq.  
-
-"So bear beautiful patience. They see it far off, but We see it near." -- Surah Al-Ma'arij (70:5-7)  
-
-May mankind rise with justice, and may falsehood vanish -- as it is always bound to. */
-
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
 #define FAST_IO ios::sync_with_stdio(false); cin.tie(nullptr);
-#define A_Fighting_Horse_Never_Dances_With_The_Wedding_Horse FAST_IO
+#define THINK_LIKE_JACK_SPARROW FAST_IO
 
-// ------------------ [Type Aliases] ------------------
+// datatype:
 #define ll long long
-#define ull unsigned long long
 #define flt long double
-#define VEC vector<ll>
-#define VVEC vector<vector<ll>>
-#define MP map<ll, ll>//Reminder: MAP potentially conflict on c++20+
-#define SET set<ll>
-#define que queue<ll>
-#define dque deque<ll>
-#define prque priority_queue<ll>
-#define aprque priority_queue<ll, vector<ll>, greater<ll>>
+#define ull unsigned long long
 
-// ------------------ [STL Macros] ------------------
-#define all(x) (x).begin(), (x).end()
+
+// stl:
+#define pll pair<ll, ll>
+#define VEC vector<ll>
+#define MAP map<ll, ll>
+#define SET set<ll>
+#define prque priority_queue<ll>
+#define rprque priority_queue<ll, vector<ll>, greater<ll>> // reverse priority queue
+
+// iteration:
+#define all(x)  (x).begin(), (x).end()
 #define rall(x) (x).rbegin(), (x).rend()
-#define size(x) (ll)(x).size()
+#define sz(x) (ll)(x).size()
+#define rep(i, a, b) for(ll i = (a); i<(b); ++i)
+#define rrep(i, a, b) for(ll i = (a); i>=(b); --i)
+#define each(x, a) for(auto &x: (a))
+
+// functions:
 #define SUM(x) accumulate(all(x), 0LL)
 #define MAX(x) *max_element(all(x))
 #define MIN(x) *min_element(all(x))
-#define STR_TOUPPER(s) transform(s.begin(), s.end(), s.begin(), ::toupper)
-#define STR_TOLOWER(s) transform(s.begin(), s.end(), s.begin(), ::tolower)
+#define string_toupper(s) transform(all(s), s.begin(), ::toupper)
+#define string_tolower(s) transform(all(s), s.begin(), ::tolower)
 
-// ------------------ [Looping Macros] ------------------
-#define rep(i,a,b) for(ll i=(a);i<(b);++i)
-#define rrep(i,a,b) for(ll i=(a);i>=(b);--i)
-#define each(x,a) for(auto &x : a)
 
-// ------------------ [Math] ------------------
-#define gcd __gcd
-#define lcm(a,b) ((a)/gcd(a,b)*(b))
-#define mod 1000000007 // 1e9+7
-#define modn(x) (((x)%mod+mod)%mod)
-#define ll_len(n) ((n) > 0 ? (int)floor(log10((long double)(n)) + 1) : 1)
-
-// ------------------ [Output Helpers] ------------------
-#define yes cout<<"YES\n"
-#define no cout<<"NO\n"
+// printing:
 #define nl '\n'
 #define spc " "
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define print(x) cout<<(x)<<'\n'
 
-// ------------------ [Debugging] ------------------
-#define dbg(x) cerr << #x << " = " << x << nl
-#define printv(v) for(auto x : v) cerr << x << ' '; cerr << nl
+// debugging: 
+#define dbg(x) cerr<<"[DEBUG] "<<#x<<" = "<<x<<nl
+#define printv(v)                 \
+    do {                          \
+        for (auto &x : (v))       \
+            cerr << x << ' ';     \
+        cerr << '\n';             \
+    } while (0)
 
-// ------------------ [Constants & Globals] ------------------
-const ll octroi = 1e7;
-// vector<int> dp(octroi, -1); 
-// bitset<octroi> vc;
+// mathematical:
+#define gcd __gcd
+#define lcm(a, b) ((a)/gcd((a), (b))*(b))
+#define modn(x) ((((x)%mod + mod))%mod)
+#define ll_len(n) ((n) > 0 ? (int)floor(log10((long double)(n)) + 1) : 1) 
+constexpr ll INF = 1e18;
+constexpr ll MOD = 1000000007LL;
+template<class T>
+inline T sq(T x) { return x * x; }
 
-void solve(){
-    ll ex, n; cin>>ex>>n;
-    rep(i, 1, n+1){
-        if(ex&1){
-            ex += i;
-        }else{
-            ex -= i;
-        }
-    }
-    cout<<ex<<nl;
+
+// [ Why So Serious ]
+void solve() {
+    ll x0, j; cin>>x0>>j;
+
+    ll toAdd = 0;
+    if(j%4 == 1) toAdd = -j;
+    else if(j%4 == 2) toAdd = 1;
+    else if(j%4 == 3) toAdd = j+1;
+
+    if(x0&1) cout<<x0-toAdd<<nl;
+    else cout<<x0+toAdd<<nl;
 }
 
-signed main(){
-    A_Fighting_Horse_Never_Dances_With_The_Wedding_Horse
-    int t; cin>>t; while(t--)
-        solve();
+signed main() {
+    THINK_LIKE_JACK_SPARROW
+
+    int tt; cin>>tt; while(tt--)
+    solve();
 
     return 0;
 }

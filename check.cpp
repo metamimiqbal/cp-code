@@ -1,31 +1,29 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int singleNumber(vector<int>& nums) {
-    int ans = 0;
+int averageWaitingTime(vector<int>& executionTime) {
+    int n = executionTime.size();
 
-    for (int bit = 0; bit < 32; bit++) {
-        int cnt = 0;
+    sort(executionTime.begin(), executionTime.end());
 
-        for (int x : nums) {
-            if (x & (1 << bit)) {
-                cnt++;
-            }
-        }
+    int timer = 0;
+    int waitingTime = 0;
 
-        if (cnt % 3 != 0) {
-            ans |= (1 << bit);
-            cout<<bit<<endl;
-        }
+    for (int i = 0; i < n; i++) {
+        cout<<"previous timer: "<<timer<<endl;
+        waitingTime += timer;
+        cout<<"wating timer: watingtime+=timer: "<<waitingTime<<endl;
+        
+        timer += executionTime[i];
+        cout<<"latest timer: "<<timer<<endl<<endl;
     }
 
-    return ans;
+    return waitingTime / n;
 }
 
 int main() {
-    vector<int> nums = {2, 2, 2, 5, 5, 5, 9};
-
-    cout << singleNumber(nums) << '\n';
-
-    return 0;
+    int n; cin>>n;
+    vector<int> vec(n);
+    for(auto &u: vec) cin>>u;
+    cout<<averageWaitingTime(vec)<<endl;
 }

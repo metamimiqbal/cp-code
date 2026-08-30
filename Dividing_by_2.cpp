@@ -1,138 +1,98 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-// [printing follow up] 
 #define FAST_IO ios::sync_with_stdio(false); cin.tie(nullptr);
-#define Think_Like_Jack_Sparrow FAST_IO
+#define THINK_LIKE_JACK_SPARROW FAST_IO
 
-// [ datatype ] 
-#define ll      long long
-#define ull     unsigned long long
-#define flt     long double
-#define pll     pair<ll, ll>
-#define pii     pair<int, int>
+// datatype:
+#define ll long long
+#define flt long double
+#define ull unsigned long long
 
-// [ stl ]
-#define VEC     vector<ll>
-#define VPR     vector<pair<ll, ll>>
-#define VVEC    vector<vector<ll>>
-#define MAP      map<ll, ll>
-#define SET     set<ll>
-#define prque   priority_queue<ll>
-#define gprque  priority_queue<ll, vector<ll>, greater<ll>>
 
-// [ container ops ]
-#define pb(x)       push_back(x)
-#define eb(x)       emplace_back(x)
-#define pf(x)       push_front(x)
-#define popb(x)     (x).pop_back()
-#define popf(x)     (x).pop_front()
-#define mkpr(a,b)    make_pair(a, b)
-#define mktpl(a,b,c)   make_tuple(a, b, c)
+// stl:
+#define pll pair<ll, ll>
+#define VEC vector<ll>
+#define MAP map<ll, ll>
+#define SET set<ll>
+#define prque priority_queue<ll>
+#define rprque priority_queue<ll, vector<ll>, greater<ll>> // reverse priority queue
 
-//  [ iterating ]
-#define all(x)      (x).begin(), (x).end()
-#define rall(x)     (x).rbegin(), (x).rend()
-#define sz(x)       (ll)(x).size()
-#define rep(i,a,b)  for(ll i=(a);i<(b);++i)
-#define rrep(i,a,b) for(ll i=(a);i>=(b);--i)
-#define each(x,a)   for(auto &x : a)
+// iteration:
+#define all(x)  (x).begin(), (x).end()
+#define rall(x) (x).rbegin(), (x).rend()
+#define sz(x) (ll)(x).size()
+#define rep(i, a, b) for(ll i = (a); i<(b); ++i)
+#define rrep(i, a, b) for(ll i = (a); i>=(b); --i)
+#define each(x, a) for(auto &x: (a))
 
-// [ sorting ]
-#define srt(x)      sort(all(x))
-#define rsrt(x)     sort(rall(x))
-#define rev(x)      reverse(all(x))
-#define uniq(x)     (x).erase(unique(all(x)), (x).end())
+// functions:
+#define SUM(x) accumulate(all(x), 0LL)
+#define MAX(x) *max_element(all(x))
+#define MIN(x) *min_element(all(x))
+#define string_toupper(s) transform(all(s), s.begin(), ::toupper)
+#define string_tolower(s) transform(all(s), s.begin(), ::tolower)
 
-// [ Function ] 
-#define SUM(x)          accumulate(all(x), 0LL)
-#define MAX(x)          *max_element(all(x))
-#define MIN(x)          *min_element(all(x))
-#define STR_TOUPPER(s)  transform(all(s), s.begin(), ::toupper)
-#define STR_TOLOWER(s)  transform(all(s), s.begin(), ::tolower)
-#define sq(x)           ((x)*(x))
-#define gcd             __gcd
-#define lcm(a,b)        ((a)/gcd(a,b)*(b))
-#define mod             1000000007
-#define modn(x)         (((x)%mod+mod)%mod)
-#define ll_len(n)       ((n) > 0 ? (int)floor(log10((long double)(n)) + 1) : 1)
 
-// [ Printing ]
-#define yes             cout << "YES\n"
-#define no              cout << "NO\n"
-#define pyes            cout << "Yes\n"
-#define pno             cout << "No\n"
-#define print(x)        cout << (x) << nl
-#define nl              '\n'
-#define spc             " "
+// printing:
+#define nl '\n'
+#define spc " "
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define print(x) cout<<(x)<<'\n'
 
-// [ Dropping Anchor ] 
-#define dbg(x)          cerr << "[DBG] " << #x << " = " << x << nl
-#define printv(v)       for(auto x : v) cerr << x << ' '; cerr << nl
+// debugging: 
+#define dbg(x) cerr<<"[DEBUG] "<<#x<<" = "<<x<<nl
+#define printv(v)                 \
+    do {                          \
+        for (auto &x : (v))       \
+            cerr << x << ' ';     \
+        cerr << '\n';             \
+    } while (0)
 
-// [ numbering ]
-const ll inf  =  1e18;
-const ll M    =  1e7;
-// vector<int> dp(M, -1);
-// bitset<M> vc;
+// mathematical:
+#define gcd __gcd
+#define lcm(a, b) ((a)/gcd((a), (b))*(b))
+#define modn(x) ((((x)%mod + mod))%mod)
+#define ll_len(n) ((n) > 0 ? (int)floor(log10((long double)(n)) + 1) : 1) 
+constexpr ll INF = 1e18;
+constexpr ll MOD = 1000000007LL;
+template<class T>
+inline T sq(T x) { return x * x; }
 
-// [ Graph/Grid ]
-const int dx[] = {0, 0, 1, -1};
-const int dy[] = {1, -1, 0, 0};
-// 8-directional:
-// const int dx[] = {-1,-1,-1, 0, 0, 1, 1, 1};
-// const int dy[] = {-1, 0, 1,-1, 1,-1, 0, 1};
 
-// [ Why so serious? ] 
+// [ Why So Serious ]
 void solve() {
     ll n; cin>>n;
     VEC v(n);
     rep(i, 0, n) cin>>v[i];
 
-    ll mn = *min_element(all(v));
-    ll mx = *max_element(all(v));
+    sort(all(v));
+    ll target = v[0];
+    ll op = 0; 
+    while(true) {
+        bool ok = true;
+        for(auto x: v) {
+            while(x > target) x/=2;
+            if(x != target) {
+                ok = false; break;
+            }
+        }
+        if(ok) break;
 
-    string a, b;
-
-    while(mn) {
-        a += char('0' + (mn & 1));
-        mn >>= 1;
+        target /= 2;
     }
-
-    while(mx) {
-        b += char('0' + (mx & 1));
-        mx >>= 1;
+    for(auto x: v) {
+        while(x > target) x/=2, ++op;
     }
-
-    reverse(all(a));
-    reverse(all(b));
-
-    ll cmn = 0;
-
-    while(
-        cmn < min(a.size(), b.size()) && a[cmn] == b[cmn]
-    ) {
-        cmn++;
-    }
-
-    // dbg(cmn);
-
-
-    ll ans = 0;
-    rep(i, 0, n) {
-        ll bits = (n == 0 ? 1 : 32 - __builtin_clz(v[i]));
-        ans += (bits - cmn);
-        // dbg(bits);
-    }
-    cout<<ans<<nl;
+    cout<<op<<endl;
 }
 
-// [ Black Pearl ] 
 signed main() {
-    Think_Like_Jack_Sparrow
+    THINK_LIKE_JACK_SPARROW
 
-    int t; cin >> t; while(t--)
+    int tt; cin>>tt; while(tt--)
     solve();
 
     return 0;
-    
+}

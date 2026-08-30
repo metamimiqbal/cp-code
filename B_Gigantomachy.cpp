@@ -63,34 +63,31 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    ll n, x; cin>>n>>x;
-    VEC v(n+1);
-    rep(i, 1, n+1) cin>>v[i];
-    sort(all(v));
-    ll sm = 0, pts = 0;
-    ll f = 0;
-//    rep(i, 1, n+1) {
-//         sm += v[i];
-//         if(sm/x > f) {
-//             pts += v[i];
-//         }
-//         f = sm/x;
-//    }
-//    cout<<pts<<nl;
-    VEC ans;
-    for(ll l = 1, r = n; l <= r; ) {
-        if((sm+v[r])/x > f) {
-            sm+=v[r], f = sm/x, pts += v[r];
-            ans.push_back(v[r--]);
+    ll n, m; cin>>n>>m;
+    VEC a(n), b(m);
+    for(auto &x: a) cin>>x;
+    for(auto &x: b) cin>>x;
+    ll cn1 = 0, cn2 = 0;
+    rep(i, 0, n) {
+        if(i == n-1) {
+            cn1 += a[i]; 
+            break;
         }
-        else {
-            sm += v[l];
-            ans.push_back(v[l++]);
-        }
+        cn1 += (a[i]-a[i+1]+1);
+        // if(a[i+1] - 1 == 0) break; 
     }
-    cout<<pts<<endl;
-    for(auto u: ans) cout<<u<<spc;
-    cout<<endl;
+    rep(i, 0, m) {
+        // dbg("wtf");
+        if(i == m-1) {
+            cn2 += b[i]; 
+            break;
+        }
+        cn2 += (b[i]-b[i+1]+1);
+        // if(b[i+1] - 1 == 0) break; 
+    }
+    // dbg(cn1); dbg(cn2);
+    if(cn1 >= cn2) cout<<1<<nl;
+    else cout<<2<<nl;
 }
 
 signed main() {

@@ -45,21 +45,8 @@ void quickHull(vector<iPair>&points,ll n,iPair p1,iPair p2,ll side)
     }
 
 
-    quickHull(
-        points,
-        n,
-        points[idx],
-        p1,
-        -findSide(points[idx],p1,p2)
-    );
-
-    quickHull(
-        points,
-        n,
-        points[idx],
-        p2,
-        -findSide(points[idx],p2,p1)
-    );
+    quickHull(points,n,points[idx],p1,-findSide(points[idx],p1,p2));
+    quickHull(points,n,points[idx],p2,-findSide(points[idx],p2,p1));
 }
 
 int main()

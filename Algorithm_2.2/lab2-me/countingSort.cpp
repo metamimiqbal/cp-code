@@ -20,8 +20,9 @@ vector<int> counting_sort(vector<int>&vec) {
         }
     }
 
-    for(int i = sz-1; i>=0; i--) {
-        ans[prefreq[vec[i]]-1] = vec[i];
+    for (int i = sz - 1; i >= 0; i--) {
+        ans[prefreq[vec[i]] - 1] = vec[i];
+        prefreq[vec[i]]--;
     }
 
     return ans;
@@ -29,7 +30,7 @@ vector<int> counting_sort(vector<int>&vec) {
 
 
 int main() {
-    vector<int>vec{5, 4, 3, 2, 1};
+    vector<int>vec{9, 10, 7, 7, 8};
 
     vector<int>output = counting_sort(vec);
     for(auto x: output) cout<<x<<" ";

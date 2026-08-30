@@ -63,34 +63,26 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    ll n, x; cin>>n>>x;
-    VEC v(n+1);
-    rep(i, 1, n+1) cin>>v[i];
-    sort(all(v));
-    ll sm = 0, pts = 0;
-    ll f = 0;
-//    rep(i, 1, n+1) {
-//         sm += v[i];
-//         if(sm/x > f) {
-//             pts += v[i];
-//         }
-//         f = sm/x;
-//    }
-//    cout<<pts<<nl;
-    VEC ans;
-    for(ll l = 1, r = n; l <= r; ) {
-        if((sm+v[r])/x > f) {
-            sm+=v[r], f = sm/x, pts += v[r];
-            ans.push_back(v[r--]);
-        }
-        else {
-            sm += v[l];
-            ans.push_back(v[l++]);
-        }
+    ll a, b, p, q, r; cin>>a>>b>>p>>q>>r;
+    // // k = 0
+    // ll calc1_1 = ((a/2)*p) + (a%2)*p;
+    // ll calc1_2 = ((b/2) * q) + (b%2)*q;
+    // ll mn = min(a, b);
+    // ll mx = max(a, b);
+    // //k = min(a, b)
+    // ll calc2 = (mn*r);
+    // if(mx > a) calc2 += (mx-a)*q;
+    // else calc2 += (mx-b)*p;
+
+    // // dbg(calc1_1), dbg(calc1_2), dbg(calc2);
+    // cout<<min(calc1_1 + calc1_2, calc2)<<endl;
+    ll mn = min(a, b);
+    ll calc = INF;
+    rep(i, 0, mn+1) {
+        ll calcu = ceil((a-i)/2.0)*p+ceil((b-i)/2.0)*q+i*r;
+        calc = min(calc, calcu);
     }
-    cout<<pts<<endl;
-    for(auto u: ans) cout<<u<<spc;
-    cout<<endl;
+    cout<<calc<<nl;
 }
 
 signed main() {

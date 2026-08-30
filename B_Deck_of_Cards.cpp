@@ -63,33 +63,42 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    ll n, x; cin>>n>>x;
-    VEC v(n+1);
-    rep(i, 1, n+1) cin>>v[i];
-    sort(all(v));
-    ll sm = 0, pts = 0;
-    ll f = 0;
-//    rep(i, 1, n+1) {
-//         sm += v[i];
-//         if(sm/x > f) {
-//             pts += v[i];
-//         }
-//         f = sm/x;
-//    }
-//    cout<<pts<<nl;
-    VEC ans;
-    for(ll l = 1, r = n; l <= r; ) {
-        if((sm+v[r])/x > f) {
-            sm+=v[r], f = sm/x, pts += v[r];
-            ans.push_back(v[r--]);
-        }
-        else {
-            sm += v[l];
-            ans.push_back(v[l++]);
-        }
+    ll n, k; cin>>n>>k;
+    ll sunno = 0, one = 0, dui = 0;
+    string s; cin>>s;
+    
+    rep(i, 0, k) {
+        if(s[i] == '0') sunno++;
+        else if(s[i] == '1') one++;
+        else dui++;
     }
-    cout<<pts<<endl;
-    for(auto u: ans) cout<<u<<spc;
+    
+    if(n == 1 and dui) {
+        cout<<'-'<<nl; return;
+    }
+    
+    ll l = -1, r = n-1;
+    vector<char>vs(n, '0');
+    rep(i, 0, sunno) vs[i] = '-', l = i;
+    while(one) {
+        --one;
+        vs[r--] = '-';
+    }
+    ++l;
+    ll rem = r - l + 1;
+    if(rem == dui) {
+        dui = 0;
+        rep(i, l, r+1) vs[i] = '-';
+    }
+    while(dui) {
+        vs[l++] = '?', vs[r--] = '?';
+        --dui;
+    }
+
+    rep(i, 0, n) {
+        if(vs[i] == '0') vs[i] = '+';
+    }
+    for(auto u: vs) cout<<u;
     cout<<endl;
 }
 

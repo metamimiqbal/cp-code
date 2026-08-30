@@ -22,7 +22,6 @@ int main() {
         }
     }
 
-
     for(auto u: rslt) {
         for(auto x: u) {
             cout<<x<<" ";
