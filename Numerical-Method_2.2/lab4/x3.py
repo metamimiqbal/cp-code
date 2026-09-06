@@ -15,7 +15,6 @@ for i in range(m):
 
 d = m*sxx - (sx*sx)
 a1 = ((m*sxy) - (sx*sy))/d
-
 x_bar = sx/m
 y_bar = sy/m
 

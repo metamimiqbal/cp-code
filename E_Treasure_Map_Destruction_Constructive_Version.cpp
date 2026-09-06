@@ -63,23 +63,39 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    ll n, m; cin>>n>>m;
-    VEC v(n), hash(m+1), sfxhash(m+1);
-    rep(i, 0, n) {
+    ll n; cin>>n;
+    VEC v(n+1);
+    rep(i, 1, n+1) {
         cin>>v[i];
-        hash[v[i]]++;
     }
-    sfxhash[m] = hash[m];
-    rrep(i, m-1, 1) {
-        sfxhash[i] = sfxhash[i+1] + hash[i];
+    bool bitch = false;
+    rep(i, 1, n+1) {
+        ll neigh = v[i];
+        if(i-neigh >= 1) {
+            if(v[i-neigh] == 1) {
+                v[i-neigh] = 1;
+                bitch = true;
+            }
+            else {
+                v[i-neigh] = 0;
+            }
+        } 
+        if(i+neigh <= n) {
+            if(v[i+neigh] == -1) {
+                v[i+neigh] = 0;
+                bitch = true;
+            }
+            else {
+                v[i+neigh] = 0;
+            }
+        }
     }
-    ll cnMax = 0;
-    rep(x, 1, m+1) {
-        ll cn = sfxhash[x];
-        if(2*x <= m) cn += hash[x*2];
-        cnMax = max(cnMax, cn);
+    if(!bitch) {
+        cout<<-1; return;
     }
-    cout<<cnMax<<endl;
+
+    for(auto u: v) cout<<u;
+    cout<<nl;
 }
 
 signed main() {

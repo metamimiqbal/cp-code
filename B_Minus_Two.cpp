@@ -22,8 +22,8 @@ using namespace std;
 #define all(x)  (x).begin(), (x).end()
 #define rall(x) (x).rbegin(), (x).rend()
 #define sz(x) (ll)(x).size()
-#define rep(i, a, b) for(ll i = (a); i<(b); ++i)
-#define rrep(i, a, b) for(ll i = (a); i>=(b); --i)
+#define rep(i, a, b) for(ll i = (a); i<(ll)(b); ++i)
+#define rrep(i, a, b) for(ll i = (a); i>=(ll)(b); --i)
 #define each(x, a) for(auto &x: (a))
 
 // functions:
@@ -63,23 +63,17 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    ll n, m; cin>>n>>m;
-    VEC v(n), hash(m+1), sfxhash(m+1);
+    ll n; cin>>n;
+    
+    ll od = 0, evn1 = 0, evn2 = 0;
+    
     rep(i, 0, n) {
-        cin>>v[i];
-        hash[v[i]]++;
+        ll x; cin>>x;
+        od += (x&1);
+        evn1 += (x%4 == 0);
+        if(x%2 == 0 && x%4 != 0) evn2++;
     }
-    sfxhash[m] = hash[m];
-    rrep(i, m-1, 1) {
-        sfxhash[i] = sfxhash[i+1] + hash[i];
-    }
-    ll cnMax = 0;
-    rep(x, 1, m+1) {
-        ll cn = sfxhash[x];
-        if(2*x <= m) cn += hash[x*2];
-        cnMax = max(cnMax, cn);
-    }
-    cout<<cnMax<<endl;
+    cout<<max(od, max(evn1, evn2))<<nl;
 }
 
 signed main() {

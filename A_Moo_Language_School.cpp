@@ -63,23 +63,17 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    ll n, m; cin>>n>>m;
-    VEC v(n), hash(m+1), sfxhash(m+1);
-    rep(i, 0, n) {
-        cin>>v[i];
-        hash[v[i]]++;
+    ll n, k; cin>>n>>k;
+    string s; cin>>s;
+    ll cn = 0;
+    for(int i = 0; i<n; i+=k) {
+        bool sunno = false;
+        rep(j, i, i+k) {
+            if(s[j] == '0') sunno = true;
+        }
+        if(!sunno) cn++;
     }
-    sfxhash[m] = hash[m];
-    rrep(i, m-1, 1) {
-        sfxhash[i] = sfxhash[i+1] + hash[i];
-    }
-    ll cnMax = 0;
-    rep(x, 1, m+1) {
-        ll cn = sfxhash[x];
-        if(2*x <= m) cn += hash[x*2];
-        cnMax = max(cnMax, cn);
-    }
-    cout<<cnMax<<endl;
+    cout<<cn<<nl;
 }
 
 signed main() {

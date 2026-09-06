@@ -63,23 +63,28 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    ll n, m; cin>>n>>m;
-    VEC v(n), hash(m+1), sfxhash(m+1);
+    ll n; cin>>n;
+    VEC a(n), b(n);
+    // VEC df(n);
+    for(auto &x: a) cin>>x;
+    for(auto &x: b) cin>>x;
+    unordered_map<ll, ll>mp;
+    ll mxDif = -1, anmx = INF, dif = -1;
+    bool sobBoro = true;
     rep(i, 0, n) {
-        cin>>v[i];
-        hash[v[i]]++;
+        if(a[i] < b[i]) {
+            dif = b[i]-a[i];
+            mxDif = max(mxDif, dif);
+            mp[dif]++;
+            sobBoro = false;
+        } else { // b[i] < a[i]
+            anmx = min(anmx, a[i]-b[i]);
+        }
+        // df[i] = a[i]-b[i];
     }
-    sfxhash[m] = hash[m];
-    rrep(i, m-1, 1) {
-        sfxhash[i] = sfxhash[i+1] + hash[i];
-    }
-    ll cnMax = 0;
-    rep(x, 1, m+1) {
-        ll cn = sfxhash[x];
-        if(2*x <= m) cn += hash[x*2];
-        cnMax = max(cnMax, cn);
-    }
-    cout<<cnMax<<endl;
+    // dbg(mp.size());
+    if(sobBoro || (mp.size() == 1 && mp[dif] == 1 && mxDif <= anmx)) yes;
+    else no;
 }
 
 signed main() {
@@ -90,3 +95,9 @@ signed main() {
 
     return 0;
 }
+
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+typedef tree<int, null_type, std::less<int>, rb_tree_tag, tree_order_statistics_node_update> ordered_set;
+

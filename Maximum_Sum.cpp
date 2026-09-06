@@ -63,23 +63,45 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    ll n, m; cin>>n>>m;
-    VEC v(n), hash(m+1), sfxhash(m+1);
+    ll n, k; cin>>n>>k;
+    VEC v(n);
+    for(auto &x: v) cin>>x;
+    ll mxsum = 0;
+    ll len = n-k;
     rep(i, 0, n) {
-        cin>>v[i];
-        hash[v[i]]++;
+        ll sm = 0;
+        rep(j, i, n) {
+            sm += v[j];
+            if(j-i+1 == len) {
+                mxsum = max(mxsum, sm);
+                // dbg(mxsum);
+                // cout<<"i: "<<i<<spc<<"j: "<<j<<nl;
+            }
+        }
     }
-    sfxhash[m] = hash[m];
-    rrep(i, m-1, 1) {
-        sfxhash[i] = sfxhash[i+1] + hash[i];
-    }
-    ll cnMax = 0;
-    rep(x, 1, m+1) {
-        ll cn = sfxhash[x];
-        if(2*x <= m) cn += hash[x*2];
-        cnMax = max(cnMax, cn);
-    }
-    cout<<cnMax<<endl;
+    cout<<mxsum<<nl;
+    // ll kk = k;
+    // ll l = 0, r = n-1;
+    // while(l<r && k>0) {
+    //     if(v[l]<v[r]) ++l;
+    //     else --r;
+    //     --k;
+    // }
+    // ll a1 = 0, a2 = 0, a3 = 0;
+    // rep(i, l, r+1) a1 += v[i];
+    
+    // k = kk;
+    // rep(i, k, n) {
+    //     a2 += v[i];
+    //     // dbg(i);
+    // }
+
+    // rep(i, 0, n-k) {
+    //     a3 += v[i];
+    //     // dbg(i);
+    // } 
+    // dbg(a1), dbg(a2), dbg(a3);
+    // // cout<<max(a1, max(a2, a3))<<nl;
 }
 
 signed main() {

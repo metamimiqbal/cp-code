@@ -1,3 +1,4 @@
+//Job Sequencing with Deadlines
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -60,32 +61,45 @@ constexpr ll MOD = 1000000007LL;
 template<class T>
 inline T sq(T x) { return x * x; }
 
+// bool cmp(tuple<ll, ll, ll>tpl1, tuple<ll, ll, ll>tpl2) {
+//     if((get<0>(tpl1)) == (get<0>(tpl2))) return (get<1>(tpl1)) > (get<1>(tpl2));
+//     return (get<1>(tpl1)) > (get<1>(tpl2));
+// }
 
 // [ Why So Serious ]
 void solve() {
-    ll n, m; cin>>n>>m;
-    VEC v(n), hash(m+1), sfxhash(m+1);
+    ll n; cin>>n;
+    vector<tuple<ll, ll, ll>>vtpl;
+    ll mxDeadline = -1;
     rep(i, 0, n) {
-        cin>>v[i];
-        hash[v[i]]++;
+        ll id, ddln, mrk;
+        cin >> id >> ddln >> mrk;
+        mxDeadline = max(mxDeadline, ddln);
+        vtpl.push_back({mrk, ddln, id});
     }
-    sfxhash[m] = hash[m];
-    rrep(i, m-1, 1) {
-        sfxhash[i] = sfxhash[i+1] + hash[i];
+    sort(rall(vtpl));
+
+    VEC slot(mxDeadline+1);
+    ll mark = 0;
+    for(int i = 0; i<n; i++) {
+        ll dedline = get<1>(vtpl[i]);
+        while(slot[dedline] != 0 and dedline > 0) dedline--;
+        if(dedline > 0) {
+            mark += get<0>(vtpl[i]);
+            slot[dedline] = get<2>(vtpl[i]);
+        }
     }
-    ll cnMax = 0;
-    rep(x, 1, m+1) {
-        ll cn = sfxhash[x];
-        if(2*x <= m) cn += hash[x*2];
-        cnMax = max(cnMax, cn);
+    for(int i = 1; i<=mxDeadline; i++) {
+        if(slot[i] != 0) cout<<slot[i]<<spc;
     }
-    cout<<cnMax<<endl;
+
+    cout<<nl<<mark<<nl;
 }
 
 signed main() {
     THINK_LIKE_JACK_SPARROW
 
-    int tt; cin>>tt; while(tt--)
+    // int tt; cin>>tt; while(tt--)
     solve();
 
     return 0;

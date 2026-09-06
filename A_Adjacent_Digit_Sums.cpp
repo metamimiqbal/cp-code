@@ -37,8 +37,8 @@ using namespace std;
 // printing:
 #define nl '\n'
 #define spc " "
-#define yes cout<<"YES\n"
-#define no cout<<"NO\n"
+#define yes cout<<"Yes\n"
+#define no cout<<"No\n"
 #define print(x) cout<<(x)<<'\n'
 
 // debugging: 
@@ -60,26 +60,23 @@ constexpr ll MOD = 1000000007LL;
 template<class T>
 inline T sq(T x) { return x * x; }
 
+bool allNine(ll a) {
+    while(a) {
+        if(a%9 != 0) return false;
+        a/=10;
+    }
+    return true;
+}
 
 // [ Why So Serious ]
 void solve() {
-    ll n, m; cin>>n>>m;
-    VEC v(n), hash(m+1), sfxhash(m+1);
-    rep(i, 0, n) {
-        cin>>v[i];
-        hash[v[i]]++;
-    }
-    sfxhash[m] = hash[m];
-    rrep(i, m-1, 1) {
-        sfxhash[i] = sfxhash[i+1] + hash[i];
-    }
-    ll cnMax = 0;
-    rep(x, 1, m+1) {
-        ll cn = sfxhash[x];
-        if(2*x <= m) cn += hash[x*2];
-        cnMax = max(cnMax, cn);
-    }
-    cout<<cnMax<<endl;
+    ll a, b; cin>>a>>b;
+    ll df = b-a;
+    // ll sma = dgSum(a), smb = dgSum(b);
+    // dbg(df);
+    // cout<<allNine(a)<<spc<<allNine(b)<<nl;
+    if(((a%9!=0 and b%9!=0) and df == 1) || ((a == 1 and allNine(b)) || (b == 1 and allNine(a)))) yes;
+    else no;
 }
 
 signed main() {

@@ -70,7 +70,6 @@ Matrix mul(Matrix A, Matrix B) {
     Matrix M5 = mul(add(a11, a22), add(b11, b22));
     Matrix M6 = mul(sub(a12, a22), add(b21, b22));
     Matrix M7 = mul(sub(a11, a21), add(b11, b12));
-
     Matrix c11 = add(sub(add(M5, M4), M2), M6);
     Matrix c12 = add(M1, M2);
     Matrix c21 = add(M3, M4);

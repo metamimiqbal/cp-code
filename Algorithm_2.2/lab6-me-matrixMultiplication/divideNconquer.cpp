@@ -23,7 +23,6 @@ Matrix add(const Matrix &A, const Matrix &B) {
 
 Matrix mul(Matrix A, Matrix B) {
     ll n = A.size();
-
     if(n == 1) {
         return {{A[0][0] * B[0][0]}};
     }

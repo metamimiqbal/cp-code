@@ -72,6 +72,7 @@ const ll octroi = 1e7;
 
 void solve() {
     ll n, k; cin>>n>>k;
+    dbg("yew");
     rep(i, 0, 2){
         if((n-(k*i) & 1) == 0){
             yes; return;

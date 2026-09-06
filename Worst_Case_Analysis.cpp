@@ -1,3 +1,4 @@
+// optimal merge
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -63,23 +64,23 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    ll n, m; cin>>n>>m;
-    VEC v(n), hash(m+1), sfxhash(m+1);
+    ll n; cin>>n;
+    priority_queue<ll, vector<ll>, greater<ll>>min_pq;
     rep(i, 0, n) {
-        cin>>v[i];
-        hash[v[i]]++;
+        ll val; cin>>val;
+        min_pq.push(val);
     }
-    sfxhash[m] = hash[m];
-    rrep(i, m-1, 1) {
-        sfxhash[i] = sfxhash[i+1] + hash[i];
+    ll ans = 0;
+    while(min_pq.size()>1) {
+        ll a = min_pq.top();
+        min_pq.pop();
+        ll b = min_pq.top();
+        min_pq.pop();
+        min_pq.push(a+b);
+        // dbg(a), dbg(b);
+        ans += (a+b-1);
     }
-    ll cnMax = 0;
-    rep(x, 1, m+1) {
-        ll cn = sfxhash[x];
-        if(2*x <= m) cn += hash[x*2];
-        cnMax = max(cnMax, cn);
-    }
-    cout<<cnMax<<endl;
+    cout<<ans<<nl;
 }
 
 signed main() {

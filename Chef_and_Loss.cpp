@@ -1,3 +1,4 @@
+// fractional knapsack
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -63,28 +64,40 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    ll n, m; cin>>n>>m;
-    VEC v(n), hash(m+1), sfxhash(m+1);
+    int n; double c; cin>>n>>c;
+    vector<double> w(n), p(n); 
+    for(auto &u: w) cin>>u;
+    vector<double>fraction;
+    ll i = 0;
+    for(auto &u: p) {
+        cin>>u;
+        fraction.push_back(u/w[i++]);
+    }
+    vector<pair<double, double>>vpr;
     rep(i, 0, n) {
-        cin>>v[i];
-        hash[v[i]]++;
+        vpr.push_back({fraction[i], w[i]});
     }
-    sfxhash[m] = hash[m];
-    rrep(i, m-1, 1) {
-        sfxhash[i] = sfxhash[i+1] + hash[i];
+
+    sort(rall(vpr));
+    double cost = 0;
+    rep(i, 0, n) {
+        double wt = vpr[i].second;
+        double cst = vpr[i].first;
+        if(c > 0) {
+            if(c>wt) {
+                cost += (wt*cst);
+                c -= wt;
+            } else { // wt > c
+                cost += (c*cst);
+                c = 0;
+            }
+        } else break;
     }
-    ll cnMax = 0;
-    rep(x, 1, m+1) {
-        ll cn = sfxhash[x];
-        if(2*x <= m) cn += hash[x*2];
-        cnMax = max(cnMax, cn);
-    }
-    cout<<cnMax<<endl;
+    cout<<(ll) round(cost)<<nl;
 }
 
 signed main() {
     THINK_LIKE_JACK_SPARROW
-
     int tt; cin>>tt; while(tt--)
     solve();
 
