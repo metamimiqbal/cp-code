@@ -37,8 +37,8 @@ using namespace std;
 // printing:
 #define nl '\n'
 #define spc " "
-#define yes cout<<"Yes\n"
-#define no cout<<"No\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
 #define print(x) cout<<(x)<<'\n'
 
 // debugging: 
@@ -60,20 +60,33 @@ constexpr ll MOD = 1000000007LL;
 template<class T>
 inline T sq(T x) { return x * x; }
 
-// bool allNine(ll a) {
-//     while(a) {
-//         if(a%9 != 0) return false;
-//         a/=10;
-//     }
-//     return true;
-// }
 
 // [ Why So Serious ]
 void solve() {
-    ll x, y; cin>>x>>y;
-    ll v = (x-y+1);
-    if(v >= 0 and v % 9 == 0) yes;
-    else no;
+    ll x, y, k;
+    cin>>x>>y>>k; // y%x
+    if(x > y) {
+        ll lst = y+k-1;
+        ll l = lst * (lst+1)/2;
+        --y;
+        ll f = y*(y+1)/2;
+        cout<<l-f<<nl;
+    } else { // y > x
+        ll df = y - x;
+        ll calc = 0;
+
+        ll occurance = 0;
+        ll xx, yy;
+        for(xx = x, yy = y; xx < x+df+1 && occurance<k; xx++, yy++, occurance++) {
+            calc += (yy % xx);
+        }
+        ll val = 0;
+        if(occurance < k) {
+            ll rm = k - occurance;
+            val += rm*(yy%xx);
+        }
+        cout<<val+calc<<nl;
+    }
 }
 
 signed main() {
@@ -83,4 +96,4 @@ signed main() {
     solve();
 
     return 0;
-}
+}   

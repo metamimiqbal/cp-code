@@ -37,7 +37,7 @@ using namespace std;
 // printing:
 #define nl '\n'
 #define spc " "
-#define yes cout<<"Yes\n"
+#define yes cout<<"Yes"
 #define no cout<<"No\n"
 #define print(x) cout<<(x)<<'\n'
 
@@ -60,20 +60,44 @@ constexpr ll MOD = 1000000007LL;
 template<class T>
 inline T sq(T x) { return x * x; }
 
-// bool allNine(ll a) {
-//     while(a) {
-//         if(a%9 != 0) return false;
-//         a/=10;
-//     }
-//     return true;
-// }
 
 // [ Why So Serious ]
 void solve() {
-    ll x, y; cin>>x>>y;
-    ll v = (x-y+1);
-    if(v >= 0 and v % 9 == 0) yes;
-    else no;
+    ll n; cin>>n;
+    // vector<pair<ll, ll>>vpr;
+    VEC v(n+1);
+    rep(i, 0, n) {
+        ll x; cin>>x;
+        v[x]++;
+    }
+    MAP b;
+    for(auto x: v) {
+        if(x>1) b[x]++;
+    }
+    for(int i = 0; i<=n; i++) {
+        if(v[i]&1) {
+            rrep(j, i-1, 0) {
+                ll jj = j;
+                while(v[jj] > 0 && b.count(jj) && jj != i) {
+                    v[jj]--;
+                    ++jj;
+                }
+                dbg(jj);
+                if(jj == i) {
+                    v[i]--;
+                    b[i]++; break;
+                }
+            }
+        } else if(v[i] > 0) {
+            b[i]++;
+        }   
+    }
+    rep(i, 0, n+1) {
+        if(v[i] & 1) {
+            no; return;
+        }
+    }
+    yes;
 }
 
 signed main() {

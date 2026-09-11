@@ -37,8 +37,8 @@ using namespace std;
 // printing:
 #define nl '\n'
 #define spc " "
-#define yes cout<<"Yes\n"
-#define no cout<<"No\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
 #define print(x) cout<<(x)<<'\n'
 
 // debugging: 
@@ -60,19 +60,15 @@ constexpr ll MOD = 1000000007LL;
 template<class T>
 inline T sq(T x) { return x * x; }
 
-// bool allNine(ll a) {
-//     while(a) {
-//         if(a%9 != 0) return false;
-//         a/=10;
-//     }
-//     return true;
-// }
 
 // [ Why So Serious ]
 void solve() {
-    ll x, y; cin>>x>>y;
-    ll v = (x-y+1);
-    if(v >= 0 and v % 9 == 0) yes;
+    ll n; cin>>n;
+    string a, b; cin>>a>>b;
+    ll aa = 0, bb = 0;
+    rep(i, 0, n) aa += (a[i] == 'a');
+    rep(i, 0, n) bb += (b[i] == 'b');
+    if(aa == bb) yes;
     else no;
 }
 

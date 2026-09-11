@@ -63,12 +63,7 @@ int main() {
     cout << "Number of Vertices: ";
     int n; cin >> n;
 
-    vector<vector<int>> graph(n);
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            graph[i].push_back(0);
-        }
-    }
+    vector<vector<int>> graph(n, vector<int>(n));
 
     cout << "How many Edges: "; cin >> n;
     cout << "Enter the Edges and Weights (Like: 1 2 11): " << endl;
