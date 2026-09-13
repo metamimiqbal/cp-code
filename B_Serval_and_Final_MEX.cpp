@@ -63,33 +63,45 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    ll n, k; cin>>n>>k;
-    if(!(k >= n && k<=2*n)) {
-        cout<<-1<<nl;
-    }
-    vector<vector<ll>>v(n+1, vector<ll>(n+1));
-    ll rm = n-(k%n);
-    ll idx = 1;
-    while(idx <= rm) {
-        v[idx][idx] = idx;
-        ++idx;
-    }
-    
-
-    rep(i, 1, n+1) {
-        rep(j, 1, n+1) {
-            if(!v[i][j]) v[i][j] = idx++;
+    ll n; cin>>n;
+    bool zero = false;
+    ll l = n+1, r = 0;
+    VEC v(n);
+    rep(i, 0, n) {
+        ll x; cin>>x;
+        v[i] = x;
+        if(x == 0) {
+            zero = true;
+            l = min(l, i);
+            r = max(r, i);
         }
     }
-    cout<<"Testing:\n";
-    SET st;
-
-    rep(i, 1, n+1) {
-        rep(j, 1, n+1) {
-            
+    if(!zero) {
+        cout<<1<<nl<<1<<spc<<n<<nl;
+    } else {
+        if(l==r) {
+            if(l==0) {
+                cout<<2<<nl;
+                cout<<l+1<<spc<<l+2<<nl;
+                cout<<1<<spc<<n-1<<nl;
+            } else {
+                cout<<2<<nl;
+                cout<<r<<spc<<r+1<<nl;
+                cout<<1<<spc<<n-1<<nl;
+            }
+        } else if(v[0] == 0 && v[n-1] == 0) {
+            cout<<3<<nl;
+            cout<<1<<spc<<2<<nl;
+            cout<<2<<spc<<n-1<<nl;
+            cout<<1<<spc<<2<<nl;
+        } else {
+            cout<<2<<nl;
+            cout<<l+1<<spc<<r+1<<nl;
+            cout<<1<<spc<<(n-r+l)<<nl;
         }
-        cout<<endl;
+        
     }
+
 }
 
 signed main() {

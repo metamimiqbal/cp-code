@@ -64,32 +64,21 @@ inline T sq(T x) { return x * x; }
 // [ Why So Serious ]
 void solve() {
     ll n, k; cin>>n>>k;
-    if(!(k >= n && k<=2*n)) {
-        cout<<-1<<nl;
-    }
-    vector<vector<ll>>v(n+1, vector<ll>(n+1));
-    ll rm = n-(k%n);
-    ll idx = 1;
-    while(idx <= rm) {
-        v[idx][idx] = idx;
-        ++idx;
+    string s; cin>>s;
+    string ss = s;
+    reverse(all(ss));
+    set<char> st;
+    rep(i, 0, n) st.insert(s[i]);
+    if(st.size() == 1) {
+        no;
+    } else {
+        if(k==0) {
+            if(s < ss) yes;
+            else no;
+        }
+        else yes;   
     }
     
-
-    rep(i, 1, n+1) {
-        rep(j, 1, n+1) {
-            if(!v[i][j]) v[i][j] = idx++;
-        }
-    }
-    cout<<"Testing:\n";
-    SET st;
-
-    rep(i, 1, n+1) {
-        rep(j, 1, n+1) {
-            
-        }
-        cout<<endl;
-    }
 }
 
 signed main() {

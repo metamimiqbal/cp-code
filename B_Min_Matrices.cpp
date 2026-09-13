@@ -64,29 +64,26 @@ inline T sq(T x) { return x * x; }
 // [ Why So Serious ]
 void solve() {
     ll n, k; cin>>n>>k;
-    if(!(k >= n && k<=2*n)) {
-        cout<<-1<<nl;
+    if(!(k >= n && k<2*n)) {
+        cout<<-1<<nl; return;
     }
     vector<vector<ll>>v(n+1, vector<ll>(n+1));
     ll rm = n-(k%n);
     ll idx = 1;
     while(idx <= rm) {
         v[idx][idx] = idx;
-        ++idx;
+        idx++;
     }
     
-
     rep(i, 1, n+1) {
         rep(j, 1, n+1) {
             if(!v[i][j]) v[i][j] = idx++;
         }
     }
-    cout<<"Testing:\n";
-    SET st;
 
     rep(i, 1, n+1) {
         rep(j, 1, n+1) {
-            
+            cout<<v[i][j]<<spc;
         }
         cout<<endl;
     }
