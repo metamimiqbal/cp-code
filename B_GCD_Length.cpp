@@ -63,8 +63,15 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    // ll x, y, z; cin>>x>>y>>z;
-    cout<<gcd(100, 110)<<nl;
+    ll a, b, c; cin>>a>>b>>c;
+    string x = "1", y = "";
+
+    rep(i, 0, a-1) x += "0";
+
+    rep(i, 0, b-c+1) y += "1";
+    rep(i, 0, c-1) y += "0";
+
+    cout<<x<<spc<<y<<nl;
 }
 
 signed main() {

@@ -63,8 +63,18 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    // ll x, y, z; cin>>x>>y>>z;
-    cout<<gcd(100, 110)<<nl;
+    ll n; cin>>n;
+    VEC v(n+1);
+    VEC rev;
+    rep(i, 1, n+1) {
+        cin>>v[i];
+        if(v[i]!=i) rev.push_back(v[i]);
+    }
+
+    reverse(all(rev));
+    if(is_sorted(all(rev))) yes;
+    else no;
+    
 }
 
 signed main() {

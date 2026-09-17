@@ -60,11 +60,20 @@ constexpr ll MOD = 1000000007LL;
 template<class T>
 inline T sq(T x) { return x * x; }
 
+bool prime(ll n) {
+    for(int i = 2; i*i <= n; i++) {
+        if(n%i == 0) return false;
+    }
+    return true;
+}
+
 
 // [ Why So Serious ]
 void solve() {
-    // ll x, y, z; cin>>x>>y>>z;
-    cout<<gcd(100, 110)<<nl;
+    ll n; cin>>n;
+    ++n;
+    if(prime(n)) yes;
+    else no;
 }
 
 signed main() {

@@ -60,11 +60,28 @@ constexpr ll MOD = 1000000007LL;
 template<class T>
 inline T sq(T x) { return x * x; }
 
+bool rootable(ll n) {
+    ll l = 1, r = n+1;
+    while(l<=r) {
+        ll m = l+(r-l)/2;
+        if(m*m == n) {
+            return true;
+        } else if(m*m>n) {
+            r = m - 1;
+        } else {
+            l = m + 1;
+        }
+    }
+    return false;
+}
+
 
 // [ Why So Serious ]
 void solve() {
-    // ll x, y, z; cin>>x>>y>>z;
-    cout<<gcd(100, 110)<<nl;
+    ll n; cin>>n;
+    if((n%2 == 0 && rootable(n/2)) || (n%4 == 0 && rootable(n/4))) yes;
+    else no;
+    // cout<<rootable(n);
 }
 
 signed main() {
