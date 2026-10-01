@@ -63,8 +63,20 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    // ll x, y, z; cin>>x>>y>>z;
-    cout<<gcd(100, 110)<<nl;
+    ll n, k; cin>>n>>k;
+    string s; cin>>s;
+    map<char, ll>mp;
+    rep(i, 0, n) {
+        mp[s[i]]++;
+    }
+
+    ll od = 0;
+    for(auto [u, v]: mp) {
+        od += (v&1);
+        cout<<u<<spc<<v<<nl;
+    }
+
+    cout<<od<<nl;
 }
 
 signed main() {

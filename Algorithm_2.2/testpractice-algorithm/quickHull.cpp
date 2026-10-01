@@ -18,7 +18,7 @@ ll cross(Point A, Point B, Point C) {
 }
 
 
-void findHull(vector<Point>pts, Point A, Point B) {
+void findHull(vector<Point>pts, Point A, Point B) { // c point ta ber kori
     ll maxDist = 0, id = -1;;
     rep(i, 0, (ll)pts.size()) {
         ll d = cross(A, B, pts[i]);

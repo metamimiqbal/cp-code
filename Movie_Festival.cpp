@@ -65,21 +65,22 @@ inline T sq(T x) { return x * x; }
 // [ Why So Serious ]
 void solve() {
     ll n; cin>>n;
-    ll nn = n;
-    vector<pair<ll, ll>>vpr;
-    while(n--) {
-        ll s, e; cin>>s>>e;
-        vpr.push_back({e, s});
+    vector<pair<ll, ll>>v;
+    rep(i, 0, n) {
+        ll start, end;
+        cin>>start>>end;
+        v.push_back({end, start});
     }
-    sort(all(vpr));
-    ll cn = 1, sorbosesMovie = vpr[0].first;
-    rep(i, 1, nn) {
-        if(vpr[i].second >= sorbosesMovie) {
-            ++cn;
-            sorbosesMovie = vpr[i].first;
+    sort(all(v));
+    ll ans = 1;
+    ll prevstart = v[0].first;
+    rep(i, 1, n) {
+        if(v[i].second >= prevstart) {
+            ++ans;
+            prevstart = v[i].first;
         }
     }
-    cout<<cn<<nl;
+    cout<<ans<<nl;
 }
 
 signed main() {

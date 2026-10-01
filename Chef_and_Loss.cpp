@@ -64,42 +64,43 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    int n; double c; cin>>n>>c;
-    vector<double> w(n), p(n); 
+    ll n, c; cin>>n>>c;
+    vector<flt> w(n), p(n);
     for(auto &u: w) cin>>u;
-    vector<double>fraction;
-    ll i = 0;
-    for(auto &u: p) {
-        cin>>u;
-        fraction.push_back(u/w[i++]);
-    }
-    vector<pair<double, double>>vpr;
+    for(auto &u: p) cin>>u;
+
+    vector<pair<flt, flt>>wp;
     rep(i, 0, n) {
-        vpr.push_back({fraction[i], w[i]});
+        wp.push_back({p[i]/w[i], w[i]});
     }
 
-    sort(rall(vpr));
-    double cost = 0;
+    sort(rall(wp));
+
+    flt ans = 0;
     rep(i, 0, n) {
-        double wt = vpr[i].second;
-        double cst = vpr[i].first;
-        if(c > 0) {
-            if(c>wt) {
-                cost += (wt*cst);
-                c -= wt;
-            } else { // wt > c
-                cost += (c*cst);
-                c = 0;
-            }
-        } else break;
+        if(c <= 0) {
+            break;
+        }
+        flt prft = wp[i].first;
+        flt wt = wp[i].second;
+        if(c >= wt) {
+            c-=wt;
+            ans += (prft*wt);
+        } else {
+            // c < wt;
+            ans += (c*prft);
+            c = 0;
+        }
     }
-    cout<<(ll) round(cost)<<nl;
+    cout<<(ll)round(ans)<<nl;
 }
 
 signed main() {
     THINK_LIKE_JACK_SPARROW
+
     int tt; cin>>tt; while(tt--)
     solve();
 
     return 0;
 }
+

@@ -1,0 +1,124 @@
+\documentclass[twocolumn]{article}
+\usepackage[english]{babel}
+
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=red]{hyperref}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{mwe}             
+\usepackage{algorithm}       
+\usepackage{algorithmic}     
+\usepackage{natbib}          
+
+\title{\textbf{Compact Image Classification Pipeline}}
+\author{A. Student\\
+Department of Computer Science and Engineering\\
+Rajshahi University of Engineering \& Technology\\
+student@cse.ruet.ac.bd
+}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This one-page document summarizes a compact image classification pipeline, illustrating its preprocessing outputs, performance table, processing flow, and training procedure. The layout follows a two-column journal format with Harvard-style author-year referencing, a $2\times2$ figure panel confined to a single column, and a full-width schematic of the inference flow.\\\\
+\textbf{Keywords:} image classification, convolutional neural networks, preprocessing, model pruning.
+\end{abstract}
+
+\section{Preprocessing Examples}
+Each input image passes through four deterministic stages before it reaches the backbone network. Figure~\ref{fig:panel} shows the intermediate output of every stage for one representative sample, arranged as a $2\times2$ panel inside a single column.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.23\textwidth}
+        \includegraphics[width=\linewidth]{example-image-a}
+    \end{minipage}
+    \begin{minipage}{0.23\textwidth}
+        \includegraphics[width=\linewidth]{example-image-b}
+    \end{minipage}\\[2pt]
+    \begin{minipage}{0.23\textwidth}
+        \includegraphics[width=\linewidth]{example-image-c}
+    \end{minipage}
+    \begin{minipage}{0.23\textwidth}
+        \includegraphics[width=\linewidth]{example-image-a}
+    \end{minipage}
+    \caption{Preprocessing stages arranged as a $2\times2$ panel.}
+    \label{fig:panel}
+\end{figure}
+
+\section{Results}
+Table~\ref{tab:basic} reports top-1 accuracy for three backbone variants, evaluated under an identical training budget. Pruning the residual backbone costs 1.5 accuracy points while removing roughly a third of its parameters.
+
+\begin{table}[H]
+    \centering
+    \caption{Basic table}
+    \label{tab:basic}
+    \begin{tabular}{lcc}
+        \toprule
+        Backbone & Variant & Accuracy (\%) \\
+        \midrule
+        Resnet & Base & 91.2 \\
+        Resnet & Pruned & 89.7 \\
+        Mobilenet & Base & 88.4 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Preprocessing Examples}
+Each input image passess through four deterministic stages before it reaches the backbone network. Figure 2 
+% to wrok with figure 2 thing label
+shows the intermediate output of every stage for one representative sample, arranged as a $2\times2$ panel inside a single column.
+
+
+\section{Training Procedure}
+Algorithm 1 lists the optimisation loop. Weights are updated with plain stochastic gradient descent, following the general approach of Lecun \textit{et at.} (1998) and Vaswani {et at.} (2017).\\
+
+
+
+
+\begin{algorithm}[H]
+    \caption{Model Training}
+    \label{alg:sgd}
+    \begin{algorithmic}
+        \STATE Input: Training Set D, epochs E, learning rate n
+        \STATE Output: Trained weights $\theta$
+        \FOR{each epoch}
+            \FOR{each mini-batch $(x, y)$}
+                \STATE Compute loss $L(w; x, y)$
+                \STATE $w \gets w - \eta \nabla L(w)$
+            \ENDFOR
+        \ENDFOR
+    \end{algorithmic}
+\end{algorithm}
+
+\bibliographystyle{plainnat}
+\begin{thebibliography}{9}
+    \bibitem[LeCun et al., 1998]{lecun1998} LeCun, Y., Bottou, L., Bengio, Y. and Haffner, P. (1998) 'Gradient-based learning applied to document recognition', \textit{Proceedings of the IEEE}, 86(11), pp. 2278--2324.
+    \bibitem[Vaswani et al., 2017]{vaswani2017} Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A.N., Kaiser, L. and Polosukhin, I. (2017) 'Attention is all you need', \textit{Advances in Neural Information Processing Systems}, 30, pp. 5998--6008.
+\end{thebibliography}
+
+\end{document}
+
+
+@article{lecun1998,
+    author  = {LeCun, Y. and Bottou, L. and Bengio, Y. and Haffner, P.},
+    title   = {Gradient-based learning applied to document recognition},
+    journal = {Proceedings of the IEEE},
+    year    = {1998},
+    volume  = {86},
+    number  = {11},
+    pages   = {2278--2324}
+}
+@article{vaswani2017,
+    author  = {Vaswani, A. and Shazeer, N. and Parmar, N. and Uszkoreit, J. and Jones, L. and Gomez, A. N. and Kaiser, L. and Polosukhin, I.},
+    title   = {Attention is all you need},
+    journal = {Advances in Neural Information Processing Systems},
+    year    = {2017},
+    volume  = {30},
+    pages   = {5998--6008}
+}

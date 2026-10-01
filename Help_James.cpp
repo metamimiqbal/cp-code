@@ -1,4 +1,4 @@
-//Job Sequencing with Deadlines
+// job sequence - greedy
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -61,38 +61,33 @@ constexpr ll MOD = 1000000007LL;
 template<class T>
 inline T sq(T x) { return x * x; }
 
-// bool cmp(tuple<ll, ll, ll>tpl1, tuple<ll, ll, ll>tpl2) {
-//     if((get<0>(tpl1)) == (get<0>(tpl2))) return (get<1>(tpl1)) > (get<1>(tpl2));
-//     return (get<1>(tpl1)) > (get<1>(tpl2));
-// }
 
 // [ Why So Serious ]
 void solve() {
     ll n; cin>>n;
-    vector<tuple<ll, ll, ll>>vtpl;
-    ll mxDeadline = -1;
+    vector<tuple<ll, ll, ll>>tpl;
+    ll mx = -1;
     rep(i, 0, n) {
-        ll id, ddln, mrk;
-        cin >> id >> ddln >> mrk;
-        mxDeadline = max(mxDeadline, ddln);
-        vtpl.push_back({mrk, ddln, id});
+        ll id, ddln, mrk; cin>>id>>ddln>>mrk;
+        tpl.push_back({mrk, ddln, id});
+        mx = max(mx, ddln);
     }
-    sort(rall(vtpl));
-
-    VEC slot(mxDeadline+1);
+    VEC vec(mx+1, -1);
+    sort(rall(tpl));
     ll mark = 0;
-    for(int i = 0; i<n; i++) {
-        ll dedline = get<1>(vtpl[i]);
-        while(slot[dedline] != 0 and dedline > 0) dedline--;
-        if(dedline > 0) {
-            mark += get<0>(vtpl[i]);
-            slot[dedline] = get<2>(vtpl[i]);
+    VEC ids;
+    for(auto [u, v, w]: tpl) {
+        ll vv = v;
+        while(vv > 0 && vec[vv] != -1) --vv;
+        if(vv > 0) {
+            mark += u;
+            vec[vv] = w;
         }
     }
-    for(int i = 1; i<=mxDeadline; i++) {
-        if(slot[i] != 0) cout<<slot[i]<<spc;
+    // sort(all(ids));
+    for(int i = 1; i<mx+1; i++) {
+        if(vec[i] != -1) cout<<vec[i]<<spc;
     }
-
     cout<<nl<<mark<<nl;
 }
 

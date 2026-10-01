@@ -1,0 +1,75 @@
+<style>
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.chip{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 8px;border-radius:var(--radius);border:0.5px solid var(--border-strong);font-size:14px;font-weight:500;background:var(--surface-1);color:var(--text-primary)}
+.chip.top{border:2px solid #1D9E75}
+.lg{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--text-secondary);margin-right:14px}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+</style>
+<h2 class="sr-only">Step-by-step animation of ALGORITHM NAME</h2>
+<div style="padding:0.5rem 0">
+<svg id="s" viewBox="0 0 680 320" width="100%" role="img" aria-label="Animation canvas" style="display:block;background:var(--surface-1);border-radius:12px"></svg>
+<div style="margin:10px 0 4px;display:flex;flex-wrap:wrap">
+<span class="lg"><span class="dot" style="background:#1D9E75"></span>role one</span>
+<span class="lg"><span class="dot" style="background:#D85A30"></span>role two</span>
+<span class="lg"><span class="dot" style="background:#BA7517"></span>role three</span>
+</div>
+<div style="display:flex;align-items:center;gap:8px;margin:6px 0 10px;flex-wrap:wrap">
+<span style="font-size:13px;color:var(--text-secondary)">STATE LABEL</span>
+<div id="stk" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+</div>
+<div id="cap" style="min-height:4.8em;font-size:15px;line-height:1.6;color:var(--text-primary);padding:10px 12px;border:0.5px solid var(--border);border-radius:var(--radius)"></div>
+<div style="display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap">
+<button id="bk" aria-label="Previous step"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>
+<button id="nx" aria-label="Next step">Next <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+<button id="pl" aria-label="Play or pause"><i class="ti ti-player-play" aria-hidden="true"></i> Play</button>
+<button id="rs" aria-label="Reset"><i class="ti ti-refresh" aria-hidden="true"></i> Reset</button>
+<span id="cnt" style="font-size:13px;color:var(--text-secondary);margin-left:auto"></span>
+</div>
+</div>
+<script>
+const DATA=[5,2,9,1,7,3,8];
+function buildFrames(){
+  const F=[];
+  F.push({arr:[...DATA],best:-1,cur:-1,panel:[],text:'Intro: what we start with and what we want.'});
+  let best=0;const panel=[0];
+  for(let k=1;k<DATA.length;k++){
+    const win=DATA[k]>DATA[best];
+    F.push({arr:[...DATA],best,cur:k,panel:[...panel],verdict:win?'win':'lose',text:'Check '+DATA[k]+' against '+DATA[best]+': '+(win?'bigger, so it takes over.':'not bigger, so it is skipped.')});
+    if(win){best=k;panel.push(k);F.push({arr:[...DATA],best,cur:k,panel:[...panel],text:'New best is '+DATA[best]+'.'});}
+  }
+  F.push({arr:[...DATA],best,cur:-1,panel:[...panel],done:true,text:'Done. The result and its cost.'});
+  return F;
+}
+const F=buildFrames();
+let i=0,timer=null;
+const svg=document.getElementById('s');
+function draw(){
+  const f=F[i];let h='';
+  const w=680/f.arr.length;
+  f.arr.forEach((v,k)=>{
+    const bh=v*28,x=k*w+10,y=300-bh;
+    let fill='#888780';
+    if(k===f.best)fill='#1D9E75';
+    if(k===f.cur)fill=f.verdict==='lose'?'#D85A30':'#BA7517';
+    h+='<rect x="'+x+'" y="'+y+'" width="'+(w-20)+'" height="'+bh+'" rx="4" fill="'+fill+'"/>';
+    h+='<text x="'+(x+(w-20)/2)+'" y="'+(y-6)+'" font-size="13" text-anchor="middle" style="fill:var(--text-secondary)">'+v+'</text>';
+  });
+  svg.innerHTML=h;
+  document.getElementById('stk').innerHTML=f.panel.map((k,j)=>'<span class="chip'+(j===f.panel.length-1?' top':'')+'">'+f.arr[k]+'</span>').join('')||'<span style="font-size:13px;color:var(--text-muted)">empty</span>';
+  document.getElementById('cap').textContent=f.text;
+  document.getElementById('cnt').textContent='Step '+(i+1)+' / '+F.length;
+}
+function stop(){if(timer){clearInterval(timer);timer=null;}document.getElementById('pl').innerHTML='<i class="ti ti-player-play" aria-hidden="true"></i> Play';}
+function go(d){i=Math.max(0,Math.min(F.length-1,i+d));draw();}
+document.getElementById('nx').onclick=()=>{stop();go(1);};
+document.getElementById('bk').onclick=()=>{stop();go(-1);};
+document.getElementById('rs').onclick=()=>{stop();i=0;draw();};
+document.getElementById('pl').onclick=()=>{
+  if(timer){stop();return;}
+  if(i>=F.length-1)i=0;
+  draw();
+  document.getElementById('pl').innerHTML='<i class="ti ti-player-pause" aria-hidden="true"></i> Pause';
+  timer=setInterval(()=>{if(i>=F.length-1){stop();return;}go(1);},1800);
+};
+draw();
+</script>

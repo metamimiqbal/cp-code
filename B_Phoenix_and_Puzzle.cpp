@@ -61,16 +61,12 @@ template<class T>
 inline T sq(T x) { return x * x; }
 
 bool rootable(ll n) {
-    ll l = 1, r = n+1;
+    ll l = 1, r = n;
     while(l<=r) {
         ll m = l+(r-l)/2;
-        if(m*m == n) {
-            return true;
-        } else if(m*m>n) {
-            r = m - 1;
-        } else {
-            l = m + 1;
-        }
+        if(m*m == n) return true;
+        else if(m*m < n) l = m + 1;
+        else r = m - 1;
     }
     return false;
 }
@@ -81,7 +77,6 @@ void solve() {
     ll n; cin>>n;
     if((n%2 == 0 && rootable(n/2)) || (n%4 == 0 && rootable(n/4))) yes;
     else no;
-    // cout<<rootable(n);
 }
 
 signed main() {

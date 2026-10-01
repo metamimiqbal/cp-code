@@ -1,185 +1,86 @@
-#include <bits/stdc++.h>
-
+#include<bits/stdc++.h>
 using namespace std;
 
-class CP {
-public:
-    // ==================== DATATYPE ====================
-    using ll = long long;
-    using flt = long double;
-    using ull = unsigned long long;
+#define FAST_IO ios::sync_with_stdio(false); cin.tie(nullptr);
+#define THINK_LIKE_JACK_SPARROW FAST_IO
 
-    // ==================== STL ====================
-    using pll = pair<ll, ll>;
-    using VEC = vector<ll>;
-    using MAP = map<ll, ll>;
-    using SET = set<ll>;
-    using maxque = priority_queue<ll>;
-    using minque = priority_queue<ll, vector<ll>, greater<ll>>;
-
-    // ==================== CONSTANTS ====================
-    static constexpr ll INF = 1e18;
-    static constexpr ll MOD = 1000000007LL;
+// datatype:
+#define ll long long
+#define flt long double
+#define ull unsigned long long
 
 
-    // ==================== ITERATION ====================
-    template <class T>
-    static auto all(T& x) {
-        return pair(x.begin(), x.end());
-    }
+// stl:
+#define pll pair<ll, ll>
+#define VEC vector<ll>
+#define MAP map<ll, ll>
+#define SET set<ll>
+#define prque priority_queue<ll>
+#define rprque priority_queue<ll, vector<ll>, greater<ll>> // reverse priority queue
 
-    template <class T>
-    static auto rall(T& x) {
-        return pair(x.rbegin(), x.rend());
-    }
-    template <class T>
-    static ll sz(const T& x) {
-        return (ll)x.size();
-    }
+// iteration:
+#define all(x)  (x).begin(), (x).end()
+#define rall(x) (x).rbegin(), (x).rend()
+#define sz(x) (ll)(x).size()
+#define rep(i, a, b) for(ll i = (a); i<(b); ++i)
+#define rrep(i, a, b) for(ll i = (a); i>=(b); --i)
+#define each(x, a) for(auto &x: (a))
 
-
-    // ==================== FUNCTIONS ====================
-    template <class T>
-    static T sq(T x) {
-        return x * x;
-    }
-
-    template <class T>
-    static T SUM(const T& x) {
-        return accumulate(x.begin(), x.end(), T{});
-    }
-    template <class T>
-    static auto MAX(const T& x) {
-        return *max_element(x.begin(), x.end());
-    }
-
-    template <class T>
-    static auto MIN(const T& x) {
-        return *min_element(x.begin(), x.end());
-    }
+// functions:
+#define SUM(x) accumulate(all(x), 0LL)
+#define MAX(x) *max_element(all(x))
+#define MIN(x) *min_element(all(x))
+#define string_toupper(s) transform(all(s), s.begin(), ::toupper)
+#define string_tolower(s) transform(all(s), s.begin(), ::tolower)
 
 
-    // ==================== MATHEMATICAL ====================
-    static ll gcd(ll a, ll b) {
-        return __gcd(a, b);
-    }
-    static ll lcm(ll a, ll b) {
-        return (a / gcd(a, b)) * b;
-    }
-    static ll modn(ll x) {
-        return ((x % MOD) + MOD) % MOD;
-    }
-    static int ll_len(ll n) {
-        if (n == 0)
-            return 1;
+// printing:
+#define nl '\n'
+#define spc " "
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define print(x) cout<<(x)<<'\n'
 
-        n = abs(n);
+// debugging: 
+#define dbg(x) cerr<<"[DEBUG] "<<#x<<" = "<<x<<nl
+#define printv(v)                 \
+    do {                          \
+        for (auto &x : (v))       \
+            cerr << x << ' ';     \
+        cerr << '\n';             \
+    } while (0)
 
-        int len = 0;
-
-        while (n) {
-            ++len;
-            n /= 10;
-        }
-
-        return len;
-    }
-
-
-    // ==================== PRINTING ====================
-
-    static constexpr char nl = '\n';
-    static constexpr const char* spc = " ";
-
-    static void yes() {
-        cout << "YES\n";
-    }
-
-    static void no() {
-        cout << "NO\n";
-    }
-
-    template <class T>
-    static void print(const T& x) {
-        cout << x << '\n';
-    }
+// mathematical:
+#define gcd __gcd
+#define lcm(a, b) ((a)/gcd((a), (b))*(b))
+#define modn(x) ((((x)%mod + mod))%mod)
+#define ll_len(n) ((n) > 0 ? (int)floor(log10((long double)(n)) + 1) : 1) 
+constexpr ll INF = 1e18;
+constexpr ll MOD = 1000000007LL;
+template<class T>
+inline T sq(T x) { return x * x; }
 
 
-    // ==================== DEBUGGING ====================
-
-    template <class T>
-    static void dbg(const char* name, const T& x) {
-        cerr << "[DEBUG] " << name << " = " << x << nl;
-    }
-
-    template <class T>
-    static void printv(const T& v) {
-        for (const auto& x : v)
-            cerr << x << ' ';
-
-        cerr << nl;
-    }
-
-
-    // ==================== STRING ====================
-
-    static void string_toupper(string& s) {
-        transform(
-            s.begin(),
-            s.end(),
-            s.begin(),
-            [](unsigned char c) {
-                return toupper(c);
-            }
-        );
-    }
-
-    static void string_tolower(string& s) {
-        transform(
-            s.begin(),
-            s.end(),
-            s.begin(),
-            [](unsigned char c) {
-                return tolower(c);
-            }
-        );
-    }
-
-
-    // ==================== IO ====================
-
-    static void fast_io() {
-        ios::sync_with_stdio(false);
-        cin.tie(nullptr);
-    }
-};
-
-
-// ========================================================
-// SOLUTION
-// ========================================================
-
+// [ Why So Serious ]
 void solve() {
-    ll n; cin>>n;
-    VEC v(n);
-    for(auto &u: v) cin>>u;
+    ll n; cin>>n; 
+    VEC v(2*n);
+    unordered_map<ll, ll>mp;
+    rep(i, 0, 2*n) {
+        cin>>v[i];
+        mp[v[i]]++;
+    }
 
+    ll ans = 0;
+    for(auto [u, v]: mp) {
+        cout<<u<<spc<<v<<nl;   
+    }
 }
 
-
-// ========================================================
-// MAIN
-// ========================================================
-
 signed main() {
+    THINK_LIKE_JACK_SPARROW
 
-    CP::fast_io();
-
-    // int tt;
-    // cin >> tt;
-    // while (tt--)
-    //     solve();
-
+    int tt; cin>>tt; while(tt--)
     solve();
 
     return 0;

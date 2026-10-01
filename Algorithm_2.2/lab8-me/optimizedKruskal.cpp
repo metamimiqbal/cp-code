@@ -32,7 +32,7 @@ void unionSet(ll a, ll b) {
     if(x == y) return;
     if(rank_value[x] < rank_value[y]) parent[x] = y;
     else if(rank_value[x] > rank_value[y]) parent[y] = x;
-    else { // rank_value[x] = rank_value[y]
+    else { // rank_value[x] = rank_value[y]k
         parent[y] = x;
         rank_value[x]++;
     }

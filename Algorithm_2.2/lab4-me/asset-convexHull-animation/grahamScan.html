@@ -1,0 +1,114 @@
+<style>
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.chip{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 8px;border-radius:var(--radius);border:0.5px solid var(--border-strong);font-size:14px;font-weight:500;background:var(--surface-1);color:var(--text-primary)}
+.chip.top{border:2px solid #1D9E75}
+.lg{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--text-secondary);margin-right:14px}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+</style>
+<h2 class="sr-only">Step-by-step animation of Graham scan building a convex hull with a stack</h2>
+<div style="padding:0.5rem 0">
+<svg id="s" viewBox="0 0 680 380" width="100%" role="img" aria-label="Graham scan animation canvas" style="display:block;background:var(--surface-1);border-radius:12px"></svg>
+<div style="margin:10px 0 4px;display:flex;flex-wrap:wrap">
+<span class="lg"><span class="dot" style="background:#7F77DD"></span>anchor O</span>
+<span class="lg"><span class="dot" style="background:#1D9E75"></span>on stack</span>
+<span class="lg"><span class="dot" style="background:#D85A30"></span>b, being tested</span>
+<span class="lg"><span class="dot" style="border:2px solid #BA7517;width:8px;height:8px"></span>new point p</span>
+<span class="lg"><span class="dot" style="border:1.5px solid #888780;width:8px;height:8px"></span>popped</span>
+</div>
+<div style="display:flex;align-items:center;gap:8px;margin:6px 0 10px;flex-wrap:wrap">
+<span style="font-size:13px;color:var(--text-secondary)">stack, bottom to top</span>
+<div id="stk" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+</div>
+<div id="cap" style="min-height:4.8em;font-size:15px;line-height:1.6;color:var(--text-primary);padding:10px 12px;border:0.5px solid var(--border);border-radius:var(--radius)"></div>
+<div style="display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap">
+<button id="bk" aria-label="Previous step"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>
+<button id="nx" aria-label="Next step">Next <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+<button id="pl" aria-label="Play or pause"><i class="ti ti-player-play" aria-hidden="true"></i> Play</button>
+<button id="rs" aria-label="Reset"><i class="ti ti-refresh" aria-hidden="true"></i> Reset</button>
+<span id="cnt" style="font-size:13px;color:var(--text-secondary);margin-left:auto"></span>
+</div>
+</div>
+<script>
+const raw=[[50,5],[90,15],[80,30],[95,45],[70,55],[55,30],[40,58],[15,48],[25,30],[8,18],[40,12]];
+const P=raw.map((r,i)=>({x:r[0],y:r[1],id:i}));
+const O=P[0];
+const ang=p=>Math.atan2(p.y-O.y,p.x-O.x);
+const S=P.slice(1).sort((a,b)=>ang(a)-ang(b));
+const rank=new Map();S.forEach((p,i)=>rank.set(p,i+1));
+const lab=p=>p===O?'O':String(rank.get(p));
+const cross=(a,b,p)=>(b.x-a.x)*(p.y-b.y)-(b.y-a.y)*(p.x-b.x);
+const F=[];
+F.push({stage:0,stack:[],removed:[],text:'11 points on a plane. Goal: find the convex hull. Hit Next, or Play to let it run.'});
+F.push({stage:1,stack:[],removed:[],text:'Step 1. The lowest point O is always on the hull. Every other point sits above it, so all of them have an angle between 0 and 180 degrees as seen from O.'});
+F.push({stage:2,stack:[],removed:[],text:'Step 2. Sort the rest by angle around O (numbers show the order). Connecting them in this order gives a bumpy polygon. The hull is that polygon with the dents removed.'});
+let st=[O,S[0]],removed=[];
+F.push({stage:3,stack:[...st],removed:[],text:'Step 3. Start the stack with O and point 1. Now sweep through 2, 3, 4 and so on. Each new point p gets tested against the top two stack points a and b.'});
+for(let i=1;i<S.length;i++){
+  const p=S[i];
+  while(st.length>=2){
+    const a=st[st.length-2],b=st[st.length-1];
+    const c=cross(a,b,p);
+    if(c<=0){
+      F.push({stage:3,stack:[...st],removed:[...removed],cur:p,a,b,verdict:'right',c,text:'a='+lab(a)+', b='+lab(b)+', new p='+lab(p)+'. Cross = '+c+', so a→b→p is a right turn. Look at the shaded triangle O, a, p: b lies inside it (angle between a and p, on the O side of the line a→p). A point buried in there can never be a hull corner.'});
+      st.pop();removed.push(b);
+      F.push({stage:3,stack:[...st],removed:[...removed],cur:p,pop:b,text:'Pop '+lab(b)+'. It is gone for good. The stack shrank, so a is now the top and might be buried too. Re-check the new top two against p.'});
+    } else {
+      F.push({stage:3,stack:[...st],removed:[...removed],cur:p,a,b,verdict:'left',c,text:'a='+lab(a)+', b='+lab(b)+', new p='+lab(p)+'. Cross = '+c+', so a→b→p is a left turn. b sticks out past the line a→p, so it can still be a hull corner. Stop popping.'});
+      break;
+    }
+  }
+  st.push(p);
+  F.push({stage:3,stack:[...st],removed:[...removed],cur:p,text:'Push '+lab(p)+'. The stack is now the hull of every point processed so far, and every turn on it is a left turn.'});
+}
+F.push({stage:4,stack:[...st],removed:[...removed],closed:true,text:'Done. Sweeping ended and the stack is the hull, closed back to O. Each point was pushed once and popped at most once, so the sweep is O(n). The sort costs O(n log n), which dominates.'});
+let i=0,timer=null;
+const svg=document.getElementById('s');
+const X=x=>30+x*6.2,Y=y=>360-y*5.5;
+const pt=p=>X(p.x)+','+Y(p.y);
+function draw(){
+  const f=F[i];let h='';
+  if(f.stage>=2){S.forEach(p=>{h+='<line x1="'+X(O.x)+'" y1="'+Y(O.y)+'" x2="'+X(p.x)+'" y2="'+Y(p.y)+'" stroke="#888780" stroke-opacity="0.35" stroke-dasharray="2 4"/>';});}
+  if(f.verdict==='right'){h+='<polygon points="'+[O,f.a,f.cur].map(pt).join(' ')+'" fill="#D85A30" fill-opacity="0.2" stroke="#D85A30" stroke-dasharray="5 4"/>';}
+  if(f.closed){h+='<polygon points="'+f.stack.map(pt).join(' ')+'" fill="#1D9E75" fill-opacity="0.14" stroke="#1D9E75" stroke-width="2.5" stroke-linejoin="round"/>';}
+  else if(f.stack.length>1){h+='<polyline points="'+f.stack.map(pt).join(' ')+'" fill="none" stroke="#1D9E75" stroke-width="2.5" stroke-linejoin="round"/>';}
+  if(f.verdict){const col=f.verdict==='right'?'#D85A30':'#1D9E75';h+='<line x1="'+X(f.b.x)+'" y1="'+Y(f.b.y)+'" x2="'+X(f.cur.x)+'" y2="'+Y(f.cur.y)+'" stroke="'+col+'" stroke-width="2" stroke-dasharray="6 4"/>';}
+  if(f.verdict==='right'){h+='<line x1="'+X(f.a.x)+'" y1="'+Y(f.a.y)+'" x2="'+X(f.cur.x)+'" y2="'+Y(f.cur.y)+'" stroke="#D85A30" stroke-width="1.5" stroke-dasharray="2 3"/>';}
+  P.forEach(p=>{
+    const x=X(p.x),y=Y(p.y);
+    const inSt=f.stack.includes(p),rem=f.removed.includes(p);
+    let fill='#888780',r=5,stroke='none',sw=0;
+    if(inSt){fill='#1D9E75';r=6;}
+    if(rem){fill='none';stroke='#888780';sw=1.5;r=5;}
+    if(p===O&&f.stage>=1){fill='#7F77DD';r=8;}
+    if(f.verdict==='right'&&p===f.b){fill='#D85A30';r=8;}
+    h+='<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="'+sw+'"/>';
+    if(f.cur===p){h+='<circle cx="'+x+'" cy="'+y+'" r="12" fill="none" stroke="#BA7517" stroke-width="2.5"/>';}
+    let t=null,bold=false;
+    if(p===O&&f.stage>=1)t='O';
+    else if(f.stage>=2){t=lab(p);}
+    if(f.verdict&&(p===f.a||p===f.b||p===f.cur)){t=(p===f.a?'a':p===f.b?'b':'p')+' ('+lab(p)+')';if(p===O)t='a (O)';bold=true;}
+    if(t){
+      const left=p.x<50;
+      const tx=p===O?x:(left?x-12:x+12),ty=p===O?y+24:y-9;
+      h+='<text x="'+tx+'" y="'+ty+'" font-size="13" text-anchor="'+(p===O?'middle':(left?'end':'start'))+'" style="fill:var(--text-'+(bold?'primary':'secondary')+');font-weight:'+(bold?500:400)+'">'+t+'</text>';
+    }
+  });
+  svg.innerHTML=h;
+  document.getElementById('stk').innerHTML=f.stack.map((p,k)=>'<span class="chip'+(k===f.stack.length-1?' top':'')+'">'+lab(p)+'</span>').join('')||'<span style="font-size:13px;color:var(--text-muted)">empty</span>';
+  document.getElementById('cap').textContent=f.text;
+  document.getElementById('cnt').textContent='Step '+(i+1)+' / '+F.length;
+}
+function stop(){if(timer){clearInterval(timer);timer=null;}document.getElementById('pl').innerHTML='<i class="ti ti-player-play" aria-hidden="true"></i> Play';}
+function go(d){i=Math.max(0,Math.min(F.length-1,i+d));draw();}
+document.getElementById('nx').onclick=()=>{stop();go(1);};
+document.getElementById('bk').onclick=()=>{stop();go(-1);};
+document.getElementById('rs').onclick=()=>{stop();i=0;draw();};
+document.getElementById('pl').onclick=()=>{
+  if(timer){stop();return;}
+  if(i>=F.length-1)i=0;
+  draw();
+  document.getElementById('pl').innerHTML='<i class="ti ti-player-pause" aria-hidden="true"></i> Pause';
+  timer=setInterval(()=>{if(i>=F.length-1){stop();return;}go(1);},1800);
+};
+draw();
+</script>
