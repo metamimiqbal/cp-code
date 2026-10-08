@@ -63,46 +63,42 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    ll n; cin>>n;
-    VEC v(n);
-    MAP mp;
-    rep(i, 0, n) {
-        cin>>v[i];
-        mp[v[i]]++;
-    }
-
-    vector<pair<ll, ll>>vpr;
-    for(auto [x, y]: mp) {
-        vpr.push_back({x, y});
-    }
-    sort(rall(vpr));
-    n = sz(vpr);
-    rep(i, 0, n) {
-        ll f = vpr[i].first;
-        ll s = vpr[i].second;
-        rep(k, 0, s) cout<<f<<spc;
-        rep(j, i+1, n) {
-            ll ff = vpr[j].first;
-            ll ss = vpr[j].second;
-            if(ss >= s) {
-                ss -= s;
-                vpr[j].second = ss;
-                rep(k, 0, s) cout<<ff<<spc;
-            } else {
-                // s > ss
-                rep(k, 0, ss) cout<<ff<<spc;
-                vpr[j].second = 0;
+    ll n; string s; cin>>n;
+    cin.ignore();
+    cin>>s;
+    stack<ll>stk;
+    VEC ans;
+    rep(i, 1, n+1) {
+        if(s[i-1]=='1') stk.push(i);
+        else if(s[i-1] == '2') {
+            if(!stk.empty()) {
+                stk.pop(); 
+                ans.push_back(i);
             }
+            //
         }
-    }
+    } 
 
-    cout<<nl;
+    while(!stk.empty()) {
+        ans.push_back(stk.top());
+        stk.pop();
+    }
+    cout<<ans.size()<<nl;
+    // dbg(ans.size());
+    if(ans.size()) {
+        sort(all(ans));
+        for(auto u: ans) cout<<u<<spc;
+        cout<<nl;
+    } else {
+        cout<<nl;
+    }
+    
 }
 
 signed main() {
     THINK_LIKE_JACK_SPARROW
 
-    // int tt; cin>>tt; while(tt--)
+    int tt; cin>>tt; while(tt--)
     solve();
 
     return 0;

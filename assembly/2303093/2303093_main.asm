@@ -25,8 +25,8 @@ main proc
      
      mov ah, 01h
      int 21h
-     mov dl, al ; type in dl: types "S", "N"
-     ; type S will get 10% on sum_of_quantiy*unit_price
+     mov dl, al ; type <- input
+     
      
      push dx;saving dl
      lea dx, nl

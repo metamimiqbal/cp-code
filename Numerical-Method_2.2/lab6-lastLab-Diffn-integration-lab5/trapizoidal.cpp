@@ -30,6 +30,7 @@ int main()
 }
 
 /*
+testcase for trapizoidal - ensure just the output, not this comment itself in the report
 0
 1
 4

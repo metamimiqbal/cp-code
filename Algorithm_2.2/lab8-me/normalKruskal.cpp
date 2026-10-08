@@ -12,11 +12,11 @@ using namespace std;
 
 vector<ll>parent(1e6);
 
-void makeSet(ll n) { // self looping each
+void makeSet(ll n) { 
     rep(i, 1, n+1) parent[i] = i;
 }
 
-ll findSet(ll n) { // return root: which is ofc self loop.
+ll findSet(ll n) { 
     if(n == parent[n]) return n;
     return findSet(parent[n]);
 }

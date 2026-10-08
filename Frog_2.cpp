@@ -63,40 +63,33 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    ll n; cin>>n;
-    VEC v(n);
-    MAP mp;
-    rep(i, 0, n) {
-        cin>>v[i];
-        mp[v[i]]++;
-    }
+    ll n, k; cin>>n>>k;
+    VEC v(n+1);
+    rep(i, 1, n+1) cin>>v[i];
 
-    vector<pair<ll, ll>>vpr;
-    for(auto [x, y]: mp) {
-        vpr.push_back({x, y});
-    }
-    sort(rall(vpr));
-    n = sz(vpr);
-    rep(i, 0, n) {
-        ll f = vpr[i].first;
-        ll s = vpr[i].second;
-        rep(k, 0, s) cout<<f<<spc;
-        rep(j, i+1, n) {
-            ll ff = vpr[j].first;
-            ll ss = vpr[j].second;
-            if(ss >= s) {
-                ss -= s;
-                vpr[j].second = ss;
-                rep(k, 0, s) cout<<ff<<spc;
-            } else {
-                // s > ss
-                rep(k, 0, ss) cout<<ff<<spc;
-                vpr[j].second = 0;
+    vector<ll>dp(n+1);
+    dp[1] = 0;
+    dp[2] = abs(v[2]-v[1]);
+
+    rep(i, 3, n+1) {
+        ll ii = i - k;
+        // ll mn = INF;
+        dp[i] = INF;
+        if(ii <= 0) {
+            rep(j, 1, i) {
+                dp[i] = min(dp[j]+abs(v[i]-v[j]), dp[i]);
+            }
+        } else {
+            rep(j, ii, i) {
+                dp[i] = min(dp[j]+abs(v[i]-v[j]), dp[i]);
             }
         }
+        // dp[i] = mn;
+        // dbg(dp[i]);
+        // dbg(i);
+        // cout<<nl;
     }
-
-    cout<<nl;
+    cout<<dp[n]<<nl;
 }
 
 signed main() {

@@ -10,52 +10,58 @@ using namespace std;
 #define nl "\n"
 #define spc " "
 
-vector<ll>parent(1e6);
-vector<ll>rank_value(1e6);
+bool cmp(vector<int>&a, vector<int>&b) {
+      return a[2] < b[2];
+  }
+  
+  vector<int>parent, rank_vec;
+  void parenting(int n) {
+      for(int i=0; i<n; i++) {
+          parent[i] = i;
+          rank_vec[i] = 1;
+      }
+  }
+  
+  int findRoot(int x) {
+      if(parent[x] == x) return x;
+      return parent[x] = findRoot(parent[x]);
+  }
+  
+  void uniting(int x, int y) {
+      int s1 = findRoot(x), s2 = findRoot(y);
+      
+      if(rank_vec[s1] == rank_vec[s2]) parent[s1] = s2, rank_vec[s1]++;
+      else if(rank_vec[s1] > rank_vec[s2]) parent[s2] = s1;
+      else if(rank_vec[s2] > rank_vec[s1]) parent[s1] = s2;
+  }
 
-void makeSet(ll n) { // self looping each
-    rep(i, 1, n+1) {
-        parent[i] = i;
-        rank_value[i] = 0;
+int kruskalsMST(int V, vector<vector<int>> &edges) {
+    parent.resize(V);
+    rank_vec.resize(V);
+    sort(edges.begin(), edges.end(), cmp);
+    
+    parenting(V);
+    
+    int cst = 0, cn = 0;
+    for(auto edge: edges) {
+        int u = edge[0], v = edge[1], w = edge[2];
+        
+        if(findRoot(u) != findRoot(v)) {
+            uniting(u, v);
+            cst += w;
+            cn++;
+            if(cn == V-1) {
+                break;
+            }
+        }
     }
+    return cst;
 }
 
-ll findSet(ll n) { // return root: which is ofc self loop.
-    if(n == parent[n]) return n;
-    parent[n] = findSet(parent[n]);
-    return parent[n];
-}
 
-void unionSet(ll a, ll b) {
-    ll x = findSet(a);
-    ll y = findSet(b);
-    if(x == y) return;
-    if(rank_value[x] < rank_value[y]) parent[x] = y;
-    else if(rank_value[x] > rank_value[y]) parent[y] = x;
-    else { // rank_value[x] = rank_value[y]k
-        parent[y] = x;
-        rank_value[x]++;
-    }
-}
-
-bool sameSet(ll a, ll b) {
-    return findSet(a) == findSet(b);
-}
 
 int main() {
-    ll n; cin>>n;
-    makeSet(n);
     
-    ll numberOfUnions; cin>>numberOfUnions;
-    rep(i, 0, numberOfUnions) {
-        ll a, b; cin>>a>>b;
-        unionSet(a, b);
-    }
-    
-    ll a, b; cin>>a>>b;
-    if(sameSet(a, b)) cout<<a<<" and "<<b<<" are in the same set\n";
-    else cout<<a<<" and "<<b<<" are not in the same set\n";
-
     return 0;
 }
 

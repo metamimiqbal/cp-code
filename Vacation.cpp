@@ -64,45 +64,37 @@ inline T sq(T x) { return x * x; }
 // [ Why So Serious ]
 void solve() {
     ll n; cin>>n;
-    VEC v(n);
-    MAP mp;
-    rep(i, 0, n) {
-        cin>>v[i];
-        mp[v[i]]++;
-    }
+    VEC a(n+1), b(n+1), c(n+1);
+    rep(i, 1, n+1) cin>>a[i]>>b[i]>>c[i];
 
-    vector<pair<ll, ll>>vpr;
-    for(auto [x, y]: mp) {
-        vpr.push_back({x, y});
-    }
-    sort(rall(vpr));
-    n = sz(vpr);
-    rep(i, 0, n) {
-        ll f = vpr[i].first;
-        ll s = vpr[i].second;
-        rep(k, 0, s) cout<<f<<spc;
-        rep(j, i+1, n) {
-            ll ff = vpr[j].first;
-            ll ss = vpr[j].second;
-            if(ss >= s) {
-                ss -= s;
-                vpr[j].second = ss;
-                rep(k, 0, s) cout<<ff<<spc;
-            } else {
-                // s > ss
-                rep(k, 0, ss) cout<<ff<<spc;
-                vpr[j].second = 0;
-            }
+    vector<vector<ll>>dp(n+1, vector<ll>(4));
+    
+    rep(i, 1, n+1) {
+        rep(j, 1, 4) { 
+            if(j == 1) dp[i][j] = a[i];
+            if(j == 2) dp[i][j] = b[i];
+            if(j == 3) dp[i][j] = c[i];
         }
     }
 
-    cout<<nl;
+    rep(i, 1, n+1) {
+        rep(j, 1, 4) {
+            if(j == 1) dp[i][j] = dp[i][j] + max(dp[i-1][j+1], dp[i-1][j+2]);
+            else if(j==2) dp[i][j] = dp[i][j] + max(dp[i-1][j-1], dp[i-1][j+1]);
+            else dp[i][j] = dp[i][j] + max(dp[i-1][j-1], dp[i-1][j-2]);
+        }
+    }
+    ll ans = 0;
+    rep(j, 1, 4) {
+        ans = max(ans, dp[n][j]);
+    }
+    cout<<ans<<nl;
 }
 
 signed main() {
     THINK_LIKE_JACK_SPARROW
 
-    // int tt; cin>>tt; while(tt--)
+    //int tt; cin>>tt; while(tt--)
     solve();
 
     return 0;

@@ -17,18 +17,14 @@ int main() {
 
     vector<vector<flt>> D(n, vector<flt>(n, 0));
 
-    // Original data
     for (int i = 0; i < n; i++)
         D[0][i] = y[i];
 
-    // Build difference table
     for (int k = 1; k < n; k++) {
         for (int i = 0; i < n - k; i++) {
             D[k][i] = D[k - 1][i + 1] - D[k - 1][i];
         }
     }
-
-    // Print difference table
     cout << fixed << setprecision(6);
 
     cout << "\nDifference Table:\n";
@@ -43,7 +39,6 @@ int main() {
     int b, K;
     cin >> b >> K;
 
-    // First derivative
     flt s1 = 0;
 
     for (int k = 1; k <= K; k++) {
@@ -51,7 +46,6 @@ int main() {
         s1 += nabla / k;
     }
 
-    // Second derivative
     vector<flt> c2 = {
         1.0L,
         1.0L,

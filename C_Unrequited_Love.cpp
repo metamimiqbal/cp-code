@@ -65,44 +65,37 @@ inline T sq(T x) { return x * x; }
 void solve() {
     ll n; cin>>n;
     VEC v(n);
+    rep(i, 0, n) cin>>v[i];
+    VEC calc;
+    rep(i, 0, n-4) {
+        calc.push_back((v[i]+v[i+2]-v[i+4]));
+        // dbg(i+1);
+        // dbg(calc.back());
+    }
+    ll ans = 0;
     MAP mp;
-    rep(i, 0, n) {
-        cin>>v[i];
-        mp[v[i]]++;
-    }
 
-    vector<pair<ll, ll>>vpr;
+    for(auto u: calc) {
+        mp[u]++;
+    }
     for(auto [x, y]: mp) {
-        vpr.push_back({x, y});
-    }
-    sort(rall(vpr));
-    n = sz(vpr);
-    rep(i, 0, n) {
-        ll f = vpr[i].first;
-        ll s = vpr[i].second;
-        rep(k, 0, s) cout<<f<<spc;
-        rep(j, i+1, n) {
-            ll ff = vpr[j].first;
-            ll ss = vpr[j].second;
-            if(ss >= s) {
-                ss -= s;
-                vpr[j].second = ss;
-                rep(k, 0, s) cout<<ff<<spc;
-            } else {
-                // s > ss
-                rep(k, 0, ss) cout<<ff<<spc;
-                vpr[j].second = 0;
-            }
-        }
+        // cout<<x<<spc<<y<<nl;
+        ans += y*(y-1)/2;
+        // dbg(y);
+    }k
+
+    rep(i, 0, sz(calc)) {
+       if(i+2<sz(calc) && calc[i] == calc[i+2]) --ans; 
+       if(i+4<sz(calc) && calc[i] == calc[i+4]) --ans;
     }
 
-    cout<<nl;
+    cout<<ans<<nl;
 }
 
 signed main() {
     THINK_LIKE_JACK_SPARROW
 
-    // int tt; cin>>tt; while(tt--)
+    int tt; cin>>tt; while(tt--)
     solve();
 
     return 0;

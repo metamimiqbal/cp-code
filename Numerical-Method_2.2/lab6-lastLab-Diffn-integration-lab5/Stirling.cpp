@@ -17,18 +17,15 @@ int main() {
 
     vector<vector<flt>> D(n, vector<flt>(n, 0));
 
-    // Original data
     for (int i = 0; i < n; i++)
         D[0][i] = y[i];
 
-    // Build difference table
     for (int k = 1; k < n; k++) {
         for (int i = 0; i < n - k; i++) {
             D[k][i] = D[k - 1][i + 1] - D[k - 1][i];
         }
     }
 
-    // Print difference table
     cout << fixed << setprecision(6);
 
     cout << "\nDifference Table:\n";
@@ -43,17 +40,15 @@ int main() {
     int b;
     cin >> b;
 
-    // Maximum usable distance on both sides
     int m = min(b, n - 1 - b);
 
-    // Coefficients for Stirling first derivative
     vector<flt> alpha = {
         1.0L,
         -1.0L / 6,
         1.0L / 30
     };
 
-    // Coefficients for Stirling second derivative
+
     vector<flt> beta = {
         1.0L,
         -1.0L / 12,
@@ -63,7 +58,6 @@ int main() {
     flt s1 = 0;
     flt s2 = 0;
 
-    // First derivative
     for (int j = 1; j <= 3 && 2 * j - 1 <= m; j++) {
         int k = 2 * j - 1;
 
@@ -75,7 +69,6 @@ int main() {
         s1 += alpha[j - 1] * avg;
     }
 
-    // Second derivative
     for (int j = 1; j <= 3 && 2 * j <= m + 1; j++) {
         int k = 2 * j;
 

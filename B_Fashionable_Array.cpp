@@ -102,7 +102,7 @@ void solve() {
 signed main() {
     THINK_LIKE_JACK_SPARROW
 
-    // int tt; cin>>tt; while(tt--)
+    int tt; cin>>tt; while(tt--)
     solve();
 
     return 0;

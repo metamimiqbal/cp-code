@@ -17,18 +17,15 @@ int main() {
 
     vector<vector<flt>> D(n, vector<flt>(n, 0));
 
-    // 0th difference = original y values
     for (int i = 0; i < n; i++)
         D[0][i] = y[i];
 
-    // Build forward difference table
     for (int k = 1; k < n; k++) {
         for (int i = 0; i < n - k; i++) {
             D[k][i] = D[k - 1][i + 1] - D[k - 1][i];
         }
     }
 
-    // Print difference table
     cout << fixed << setprecision(6);
 
     cout << "\nDifference Table:\n";
@@ -43,7 +40,6 @@ int main() {
     int b, K;
     cin >> b >> K;
 
-    // Coefficients for first derivative
     vector<flt> c1 = {
         1.0L,
         -1.0L / 2,
@@ -53,7 +49,6 @@ int main() {
         -1.0L / 6
     };
 
-    // Coefficients for second derivative
     vector<flt> c2 = {
         1.0L,
         -1.0L,
@@ -62,19 +57,16 @@ int main() {
         137.0L / 180
     };
 
-    // Make sure requested differences exist
     K = min(K, n - 1 - b);
     K = min(K, 6);
 
     flt s1 = 0;
     flt s2 = 0;
 
-    // First derivative
     for (int k = 1; k <= K; k++) {
         s1 += c1[k - 1] * D[k][b];
     }
     
-    // Second derivative
     for (int k = 2; k <= K; k++) {
         s2 += c2[k - 2] * D[k][b];
     }

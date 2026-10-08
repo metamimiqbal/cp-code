@@ -65,38 +65,16 @@ inline T sq(T x) { return x * x; }
 void solve() {
     ll n; cin>>n;
     VEC v(n);
-    MAP mp;
-    rep(i, 0, n) {
-        cin>>v[i];
-        mp[v[i]]++;
-    }
+    rep(i, 0, n) cin>>v[i];
 
-    vector<pair<ll, ll>>vpr;
-    for(auto [x, y]: mp) {
-        vpr.push_back({x, y});
-    }
-    sort(rall(vpr));
-    n = sz(vpr);
-    rep(i, 0, n) {
-        ll f = vpr[i].first;
-        ll s = vpr[i].second;
-        rep(k, 0, s) cout<<f<<spc;
-        rep(j, i+1, n) {
-            ll ff = vpr[j].first;
-            ll ss = vpr[j].second;
-            if(ss >= s) {
-                ss -= s;
-                vpr[j].second = ss;
-                rep(k, 0, s) cout<<ff<<spc;
-            } else {
-                // s > ss
-                rep(k, 0, ss) cout<<ff<<spc;
-                vpr[j].second = 0;
-            }
-        }
-    }
+    vector<ll>dp(n);
+    dp[0] = 0;
+    dp[1] = abs(v[1]-v[0]);
 
-    cout<<nl;
+    rep(i, 2, n) {
+        dp[i] = min(dp[i-1]+abs(v[i]-v[i-1]), dp[i-2]+abs(v[i]-v[i-2]));
+    }
+    cout<<dp[n-1]<<nl;
 }
 
 signed main() {

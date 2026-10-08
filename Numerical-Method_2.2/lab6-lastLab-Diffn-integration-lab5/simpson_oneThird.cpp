@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
+
 using namespace std;
+
 #define ll long long
 #define flt long double
 
@@ -7,19 +9,13 @@ int main()
 {
     int n;
     flt a, b;
-
-    // cout << "Enter lower limit a: ";
     cin >> a;
-
-    // cout << "Enter upper limit b: ";
     cin >> b;
-
-    // cout << "Enter number of strips n: ";
     cin >> n;
 
-    if (n % 3 != 0)
+    if (n % 2 != 0)
     {
-        // cout << "Simpson's 3/8 Rule requires n to be divisible by 3.\n";
+        cout << "Simpson's 1/3 Rule requires even n.\n";
         return 0;
     }
 
@@ -31,8 +27,6 @@ int main()
     for (int i = 0; i <= n; i++)
     {
         x[i] = a + i * h;
-
-        // cout << "y[" << i << "] = ";
         cin >> y[i];
     }
 
@@ -41,28 +35,24 @@ int main()
     for (int i = 1; i < n; i++)
     {
         int weight;
-        if (i % 3 == 0) weight = 2;
-        else weight = 3;
+        if(i&1) weight = 4;
+        if(i&1) weight = 2;
         sum += weight * y[i];
     }
-
-
-    flt I = (3.0 * h / 8.0) * sum;
-
+    flt I = (h / 3.0) * sum;
     cout << "Integral = " << I << '\n';
 
     return 0;
 }
 
 /*
+testcase for simpson-1/3 - ensure just the output, not this comment itself in the report
 0
 1
-6
+4
 1
-0.8571429
-0.75
+0.8
 0.6666667
-0.6
-0.5454545
+0.5714286
 0.5
 */

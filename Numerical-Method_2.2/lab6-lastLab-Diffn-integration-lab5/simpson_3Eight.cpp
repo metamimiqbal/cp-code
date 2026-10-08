@@ -1,7 +1,5 @@
 #include <bits/stdc++.h>
-
 using namespace std;
-
 #define ll long long
 #define flt long double
 
@@ -9,13 +7,11 @@ int main()
 {
     int n;
     flt a, b;
-    cin >> a;
-    cin >> b;
-    cin >> n;
 
-    if (n % 2 != 0)
+    cin>>a>>b>>n;
+
+    if (n % 3 != 0)
     {
-        cout << "Simpson's 1/3 Rule requires even n.\n";
         return 0;
     }
 
@@ -27,6 +23,7 @@ int main()
     for (int i = 0; i <= n; i++)
     {
         x[i] = a + i * h;
+
         cin >> y[i];
     }
 
@@ -35,23 +32,29 @@ int main()
     for (int i = 1; i < n; i++)
     {
         int weight;
-        if(i&1) weight = 4;
-        if(i&1) weight = 2;
+        if (i % 3 == 0) weight = 2;
+        else weight = 3;
         sum += weight * y[i];
     }
-    flt I = (h / 3.0) * sum;
+
+
+    flt I = (3.0 * h / 8.0) * sum;
+
     cout << "Integral = " << I << '\n';
 
     return 0;
 }
 
 /*
+testcase for simpson-3/8
 0
 1
-4
+6
 1
-0.8
+0.8571429
+0.75
 0.6666667
-0.5714286
+0.6
+0.5454545
 0.5
 */
