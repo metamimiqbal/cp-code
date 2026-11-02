@@ -14,7 +14,6 @@ ll partition(ll l, ll r) {
             swap(vec[i], vec[j]);
         }
     }
-
     swap(vec[i+1], vec[r]);
     return i+1;
 }
@@ -30,9 +29,7 @@ void qs(ll l, ll r) {
 
 int main() {
     qs(0, vec.size()-1);
-
     for(ll x : vec) cout<<x<<" ";
     cout<<endl;
-
     return 0;
 }
