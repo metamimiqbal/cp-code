@@ -1,0 +1,44 @@
+.MODEL SMALL
+.STACK 100H
+.CODE
+MAIN PROC
+    MOV AX, @DATA
+    MOV DS, AX
+
+    XOR BX, BX
+
+INP:
+    MOV AH, 01H
+    INT 21H
+    CMP AL, 0DH
+    JE END_INP
+
+    SUB AL, 30H
+    SHL BX, 1
+    OR  BL, AL
+    JMP INP
+
+END_INP:
+    MOV CX, 16
+
+PUSHING:
+    XOR AX, AX
+    SHR BX, 1
+    ADC AX, 0
+    PUSH AX
+    LOOP PUSHING
+
+    MOV CX, 16
+
+POPPING:
+    POP DX
+    ADD DL, 30H
+    MOV AH, 02H
+    INT 21H
+    LOOP POPPING
+
+    MOV AH, 4CH
+    INT 21H
+MAIN ENDP
+END MAIN
+

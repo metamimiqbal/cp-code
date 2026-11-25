@@ -63,15 +63,16 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    ll x0, j; cin>>x0>>j;
+    ll x, n; cin>>x>>n;
 
     ll toAdd = 0;
-    if(j%4 == 1) toAdd = -j;
-    else if(j%4 == 2) toAdd = 1;
-    else if(j%4 == 3) toAdd = j+1;
+    if(n%4 == 1) toAdd = -n;
+    else if(n%4 == 2) toAdd = 1;
+    else if(n%4 == 3) toAdd = n+1;
 
-    if(x0&1) cout<<x0-toAdd<<nl;
-    else cout<<x0+toAdd<<nl;
+
+    if(x&1) cout<<x-toAdd<<nl;
+    else cout<<x+toAdd<<nl;     
 }
 
 signed main() {

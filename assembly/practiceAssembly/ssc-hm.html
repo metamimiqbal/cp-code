@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>সেট ও ফাংশন (Set & Function) — Interactive Scrubber</title>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0b0f19;
+      --bg-card: #131b2e;
+      --bg-panel: #1a243d;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.25);
+      --emerald: #34d399;
+      --amber: #fbbf24;
+      --rose: #fb7185;
+      --purple: #c084fc;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border: #263354;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Top Header & Chapter Pills */
+    header {
+      background: rgba(19, 27, 46, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      color: #0b0f19;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+    }
+
+    .brand h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .chapter-nav {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .chap-btn {
+      background: var(--bg-panel);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .chap-btn:hover {
+      color: var(--text-main);
+      border-color: var(--accent);
+    }
+
+    .chap-btn.active {
+      background: var(--accent);
+      color: #0b0f19;
+      border-color: var(--accent);
+      font-weight: 600;
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    /* Main Workspace */
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 20px;
+      padding: 20px 24px;
+      overflow: hidden;
+    }
+
+    @media (max-width: 950px) {
+      main {
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+      }
+    }
+
+    .stage-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .stage-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(26, 36, 61, 0.5);
+    }
+
+    .stage-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .stage-controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .ctrl-btn {
+      background: var(--bg-panel);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      padding: 5px 11px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .ctrl-btn:hover {
+      border-color: var(--accent);
+    }
+
+    .ctrl-btn.active {
+      background: var(--accent);
+      color: #0b0f19;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+
+    .canvas-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      position: relative;
+      min-height: 320px;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      max-height: 460px;
+      overflow: visible;
+    }
+
+    /* Right Panel: Textbook Concept & Live Math */
+    .info-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 20px;
+    }
+
+    .card h2 {
+      font-size: 1.3rem;
+      margin-bottom: 6px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .page-ref {
+      font-size: 0.75rem;
+      background: var(--bg-panel);
+      color: var(--amber);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      font-weight: 500;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+
+    .formula-box {
+      background: #0d1322;
+      border-left: 3px solid var(--accent);
+      padding: 12px 14px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--emerald);
+      margin-top: 8px;
+      overflow-x: auto;
+    }
+
+    .live-readout {
+      background: linear-gradient(180deg, rgba(26, 36, 61, 0.6), rgba(19, 27, 46, 0.9));
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 20px;
+    }
+
+    .readout-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .readout-value {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--text-main);
+    }
+
+    .badge-item {
+      display: inline-block;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin: 3px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--accent);
+    }
+
+    /* Bottom Scrubber Bar */
+    footer {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .scrubber-top {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .play-btn {
+      background: var(--accent);
+      color: #0b0f19;
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s, box-shadow 0.15s;
+      flex-shrink: 0;
+    }
+
+    .play-btn:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 14px var(--accent-glow);
+    }
+
+    .slider-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+    }
+
+    input[type="range"]#masterScrubber {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 8px;
+      background: var(--bg-panel);
+      border-radius: 999px;
+      outline: none;
+      cursor: pointer;
+      border: 1px solid var(--border);
+    }
+
+    input[type="range"]#masterScrubber::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid #0b0f19;
+      box-shadow: 0 0 12px var(--accent);
+      cursor: grab;
+      transition: transform 0.1s;
+    }
+
+    input[type="range"]#masterScrubber::-webkit-slider-thumb:active {
+      cursor: grabbing;
+      transform: scale(1.15);
+    }
+
+    .ticks {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      padding: 0 4px;
+    }
+
+    .tick {
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .tick:hover, .tick.active {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .scrubber-status {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--amber);
+      min-width: 110px;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <span class="brand-badge">উচ্চতর গণিত • অধ্যায় ১</span>
+      <h1>সেট ও ফাংশন (Set & Function)</h1>
+    </div>
+    <div class="chapter-nav" id="chapterNav"></div>
+  </header>
+
+  <main>
+    <!-- Left Interactive Visual Stage -->
+    <div class="stage-container">
+      <div class="stage-header">
+        <div class="stage-title" id="stageTitle">দৃশ্যমান ল্যাব (Visual Stage)</div>
+        <div class="stage-controls" id="stageControls"></div>
+      </div>
+      <div class="canvas-wrap" id="canvasWrap">
+        <svg id="mainSvg" viewBox="0 0 600 400"></svg>
+      </div>
+    </div>
+
+    <!-- Right Explanation & Live Math Readout -->
+    <div class="info-panel">
+      <div class="card">
+        <h2 id="conceptHeading">শিরোনাম</h2>
+        <p id="conceptDesc">বর্ণনা...</p>
+        <div class="formula-box" id="conceptFormula"></div>
+      </div>
+
+      <div class="live-readout">
+        <div class="readout-label">লাইভ গাণিতিক বিশ্লেষণ (Live State Readout)</div>
+        <div class="readout-value" id="liveReadout"></div>
+      </div>
+
+      <div class="card" style="padding: 14px 20px;">
+        <div class="readout-label">কীভাবে ব্যবহার করবেন (Scrubber Guide)</div>
+        <p style="margin-bottom:0; font-size:0.88rem;">
+          নিচের <strong>Master Timeline Slider</strong> টি ডানে-বামে টেনে (Scrub করে) প্রতিটি গাণিতিক ধারণার ভেতরের পরিবর্তনগুলো অ্যানিমেশনের মাধ্যমে দেখুন। কিবোর্ডের <span class="mono">←</span> এবং <span class="mono">→</span> অ্যারো চেপেও নিয়ন্ত্রণ করতে পারেন।
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="scrubber-top">
+      <button class="play-btn" id="playBtn" title="Play / Pause Scrubber">▶</button>
+      <div class="slider-wrap">
+        <input type="range" id="masterScrubber" min="0" max="700" value="0" step="1">
+        <div class="ticks" id="scrubberTicks"></div>
+      </div>
+      <div class="scrubber-status" id="scrubberStatus">Step 1 / 7</div>
+    </div>
+  </footer>
+
+  <script>
+    // =========================================================================
+    // CHAPTER DATA MODEL (7 Key Moments from Higher Math Chapter 1 PDF)
+    // =========================================================================
+    const chapters = [
+      {
+        id: 0,
+        shortTitle: "১. সেট ও উপসেট",
+        title: "সেট গঠন ও বর্গের সেট (Tabular vs Set Builder)",
+        page: "পৃষ্ঠা ১–৩",
+        desc: "বাস্তব বা চিন্তা জগতের বস্তুর সুনির্ধারিত সংগ্রহকে সেট বলে। বইয়ের প্রথম উদাহরণে 10 থেকে বড় নয় এমন স্বাভাবিক সংখ্যার বর্গের সেট S = {1, 4, 9, ..., 100} আলোচনা করা হয়েছে। স্লাইডারটি টেনে 1 থেকে 10 পর্যন্ত স্বাভাবিক সংখ্যা এবং তাদের পূর্ণবর্গ উপাদানগুলোর গঠন দেখুন।",
+        formula: "S = {x : x, 100 থেকে বড় নয় এমন পূর্ণবর্গ সংখ্যা} = {1, 4, 9, 16, 25, 36, 49, 64, 81, 100}",
+        subMode: "squares"
+      },
+      {
+        id: 1,
+        shortTitle: "২. শক্তি সেট P(A)",
+        title: "শক্তি সেট ও ২ⁿ সূত্র (Power Set Generator)",
+        page: "পৃষ্ঠা ৪–৫",
+        desc: "কোনো সেট A এর সকল উপসেটের সেটকে তার শক্তি সেট P(A) বলা হয়। সেটের উপাদান সংখ্যা n হলে তার শক্তি সেটের উপাদান সংখ্যা 2ⁿ হয়। স্লাইডার টেনে Ø থেকে {a, b, c} পর্যন্ত ৮টি উপসেট কীভাবে তৈরি হয় তা ক্রমান্বয়ে দেখুন।",
+        formula: "A = {a, b, c} ⇒ n(A) = 3 ⇒ n(P(A)) = 2³ = 8 টি উপসেট",
+        subMode: "powerset"
+      },
+      {
+        id: 2,
+        shortTitle: "৩. ভেনচিত্র ও ডি মরগ্যান",
+        title: "ভেনচিত্র, সেট প্রক্রিয়া ও ডি মরগ্যানের সূত্র",
+        page: "পৃষ্ঠা ৫–৮ (উদাহরণ ৮)",
+        desc: "সার্বিক সেট U = {0,1,2,3,4,5,6,7,8,9}, মৌলিক সংখ্যার সেট A = {2,3,5,7} এবং বিজোড় সংখ্যার সেট B = {1,3,5,7,9}। স্লাইডার বা উপরের বাটন চেপে সংযোগ (A∪B), ছেদ (A∩B), অন্তর (A\\B) এবং ডি মরগ্যানের সূত্র (A∪B)' = A'∩B' ভেনচিত্রে যাচাই করুন।",
+        formula: "(A ∪ B)' = A' ∩ B' = {0, 4, 6, 8}  |  (A ∩ B)' = A' ∪ B' = {0, 1, 2, 4, 6, 8, 9}",
+        subMode: "union"
+      },
+      {
+        id: 3,
+        shortTitle: "৪. এক-এক মিল ও অনন্ত সেট",
+        title: "সমতুল সেট ও অনন্ত সেটের রহস্য (N ~ 2N)",
+        page: "পৃষ্ঠা ১১–১৩ (উদাহরণ ১৪)",
+        desc: "স্বাভাবিক সংখ্যার সেট N = {1, 2, 3, ...} এবং জোড় সংখ্যার সেট A = {2, 4, 6, ...} এর মধ্যে n ↔ 2n নিয়মে এক-এক মিল স্থাপন করা যায়। প্রতিজ্ঞা ৭ অনুযায়ী, কোনো সেট অনন্ত (Infinite) হবে যদি ও কেবল যদি সেটটি তার নিজের একটি প্রকৃত উপসেটের সমতুল হয়!",
+        formula: "N ↔ A : n ↔ 2n, যেখানে n ∈ N  ∴ N ~ A (যদিও A ⊂ N)",
+        subMode: "bijection"
+      },
+      {
+        id: 4,
+        shortTitle: "৫. বাস্তব সমস্যা (ভেনচিত্র)",
+        title: "বাস্তব সমস্যা সমাধানে ভেনচিত্র (উদাহরণ ১৫–১৭)",
+        page: "পৃষ্ঠা ১৫–১৮",
+        desc: "উদাহরণ ১৭: 24 জন ছাত্রের মধ্যে 18 জন বাস্কেটবল (B) এবং 12 জন ভলিবল (V) পছন্দ করে। ধরি উভয় খেলা পছন্দ করে n(B∩V) = x জন। স্লাইডার টেনে x এর মান 6 (ন্যূনতম, যখন B∪V = U) থেকে 12 (বৃহত্তম, যখন V ⊂ B) পর্যন্ত পরিবর্তন করে ভেনচিত্রের পরিবর্তন দেখুন!",
+        formula: "n(B ∪ V) = n(B) + n(V) - n(B ∩ V) = (18 - x) + x + (12 - x) = 30 - x",
+        subMode: "basketball"
+      },
+      {
+        id: 5,
+        shortTitle: "৬. ফাংশন ও বিপরীত ফাংশন",
+        title: "অন্বয়, ফাংশন, এক-এক, সার্বিক ও বিপরীত ফাংশন",
+        page: "পৃষ্ঠা ২২–২৯",
+        desc: "বইয়ের ২৪ ও ২৫ পৃষ্ঠার চিত্রের মাধ্যমে দেখুন কখন একটি অন্বয় ফাংশন হয়, এবং কখন সেটি এক-এক (One-to-One), সার্বিক (Onto) ও বিপরীতযোগ্য (Invertible) হয়। স্লাইডার টেনে ৪টি ভিন্ন কেস এবং তীরের দিক পরিবর্তন (f থেকে f⁻¹) পরীক্ষা করুন।",
+        formula: "f : A → B এক-এক ও সার্বিক হলে বিপরীত ফাংশন f⁻¹ : B → A বিদ্যমান থাকে যেখানে f(a) = b ⇔ f⁻¹(b) = a",
+        subMode: "func_types"
+      },
+      {
+        id: 6,
+        shortTitle: "৭. লেখচিত্র ও উল্লম্ব রেখা পরীক্ষা",
+        title: "সরলরৈখিক, দ্বিঘাত, বৃত্ত ও বিপরীত ফাংশনের লেখচিত্র",
+        page: "পৃষ্ঠা ২৯–৩৩ (উদাহরণ ৩৩, ৩৫)",
+        desc: "স্লাইডারটি টেনে লেখচিত্রের উপর দিয়ে একটি উল্লম্ব রেখা (x = k) স্ক্যান করুন! সরলরৈখিক (y = 3x+2) ও দ্বিঘাত (y = x²-4x-1) ফাংশনে রেখাটি একটিমাত্র বিন্দুতে ছেদ করে, কিন্তু বৃত্তে (x²+y² = 16) দুটি বিন্দুতে ছেদ করে—তাই বৃত্ত ফাংশন নয়!",
+        formula: "সরলরৈখিক: y = 3x + 2 | পরাবৃত্ত: y = x² - 4x - 1 | বৃত্ত: x² + y² = 4² | বিপরীত: f(x) = 3x + 1 (0 ≤ x ≤ 2)",
+        subMode: "quadratic"
+      }
+    ];
+
+    // =========================================================================
+    // STATE MANAGEMENT
+    // =========================================================================
+    let state = {
+      scrubber: 0, // 0 to 700 (100 units per chapter)
+      playing: false,
+      vennOp: 'union', // union, inter, diff, comp, demorgan1, demorgan2
+      probMode: 'ex17', // ex17 (Basketball/Volleyball), ex16 (35 girls 3 sets), ex15 (Bengali/English)
+      graphMode: 'quadratic' // linear, quadratic, circle, inverse
+    };
+
+    const svg = document.getElementById('mainSvg');
+    const masterScrubber = document.getElementById('masterScrubber');
+    const playBtn = document.getElementById('playBtn');
+    const scrubberStatus = document.getElementById('scrubberStatus');
+    const conceptHeading = document.getElementById('conceptHeading');
+    const conceptDesc = document.getElementById('conceptDesc');
+    const conceptFormula = document.getElementById('conceptFormula');
+    const liveReadout = document.getElementById('liveReadout');
+    const stageTitle = document.getElementById('stageTitle');
+    const stageControls = document.getElementById('stageControls');
+    const chapterNav = document.getElementById('chapterNav');
+    const scrubberTicks = document.getElementById('scrubberTicks');
+
+    // Initialize Navigation & Ticks
+    chapters.forEach((ch, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'chap-btn';
+      btn.textContent = ch.shortTitle;
+      btn.onclick = () => jumpToChapter(idx);
+      chapterNav.appendChild(btn);
+
+      const tick = document.createElement('span');
+      tick.className = 'tick';
+      tick.textContent = ch.shortTitle;
+      tick.onclick = () => jumpToChapter(idx);
+      scrubberTicks.appendChild(tick);
+    });
+
+    function jumpToChapter(idx) {
+      state.scrubber = idx * 100 + 50; // land in middle of chapter animation
+      if (idx === 1) state.scrubber = 185; // show all power sets clearly
+      if (idx === 4) state.scrubber = 440;
+      masterScrubber.value = state.scrubber;
+      render();
+    }
+
+    masterScrubber.addEventListener('input', (e) => {
+      state.scrubber = parseInt(e.target.value, 10);
+      render();
+    });
+
+    // Keyboard scrubbing
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') {
+        state.scrubber = Math.min(700, state.scrubber + 5);
+        masterScrubber.value = state.scrubber;
+        render();
+      } else if (e.key === 'ArrowLeft') {
+        state.scrubber = Math.max(0, state.scrubber - 5);
+        masterScrubber.value = state.scrubber;
+        render();
+      } else if (e.key === ' ') {
+        e.preventDefault();
+        togglePlay();
+      }
+    });
+
+    let animTimer = null;
+    function togglePlay() {
+      state.playing = !state.playing;
+      playBtn.textContent = state.playing ? '⏸' : '▶';
+      if (state.playing) {
+        if (state.scrubber >= 700) state.scrubber = 0;
+        animTimer = setInterval(() => {
+          state.scrubber += 1.5;
+          if (state.scrubber >= 700) {
+            state.scrubber = 700;
+            togglePlay();
+          }
+          masterScrubber.value = Math.round(state.scrubber);
+          render();
+        }, 35);
+      } else {
+        clearInterval(animTimer);
+      }
+    }
+    playBtn.onclick = togglePlay;
+
+    // =========================================================================
+    // MAIN RENDER ENGINE
+    // =========================================================================
+    let lastChapIdx = -1;
+
+    function render() {
+      const chapIdx = Math.min(6, Math.floor(state.scrubber / 100));
+      const localProgress = (state.scrubber - chapIdx * 100) / 100; // 0.0 to 1.0 within chapter
+
+      // Update active nav buttons
+      Array.from(chapterNav.children).forEach((b, i) => b.classList.toggle('active', i === chapIdx));
+      Array.from(scrubberTicks.children).forEach((t, i) => t.classList.toggle('active', i === chapIdx));
+
+      const chap = chapters[chapIdx];
+      scrubberStatus.textContent = `অধ্যায় ১.${chapIdx + 1} • ${Math.round(localProgress * 100)}%`;
+
+      // Update static chapter info if chapter changed
+      if (chapIdx !== lastChapIdx) {
+        conceptHeading.innerHTML = `${chap.title} <span class="page-ref">${chap.page}</span>`;
+        conceptDesc.textContent = chap.desc;
+        conceptFormula.textContent = chap.formula;
+        stageTitle.textContent = chap.shortTitle + " — ইন্টারেক্টিভ ভিজ্যুয়ালাইজার";
+        buildStageControls(chapIdx);
+        lastChapIdx = chapIdx;
+      }
+
+      // Render specific chapter canvas & live readout
+      switch (chapIdx) {
+        case 0: renderChapter0(localProgress); break;
+        case 1: renderChapter1(localProgress); break;
+        case 2: renderChapter2(localProgress); break;
+        case 3: renderChapter3(localProgress); break;
+        case 4: renderChapter4(localProgress); break;
+        case 5: renderChapter5(localProgress); break;
+        case 6: renderChapter6(localProgress); break;
+      }
+    }
+
+    function buildStageControls(chapIdx) {
+      stageControls.innerHTML = '';
+      if (chapIdx === 2) {
+        const ops = [
+          { k: 'union', label: 'A ∪ B (সংযোগ)' },
+          { k: 'inter', label: 'A ∩ B (ছেদ)' },
+          { k: 'diff', label: 'A \\ B (অন্তর)' },
+          { k: 'demorgan1', label: "(A ∪ B)' = A' ∩ B'" },
+          { k: 'demorgan2', label: "(A ∩ B)' = A' ∪ B'" }
+        ];
+        ops.forEach(op => {
+          const b = document.createElement('button');
+          b.className = 'ctrl-btn' + (state.vennOp === op.k ? ' active' : '');
+          b.textContent = op.label;
+          b.onclick = () => {
+            state.vennOp = op.k;
+            buildStageControls(2);
+            render();
+          };
+          stageControls.appendChild(b);
+        });
+      } else if (chapIdx === 4) {
+        const probs = [
+          { k: 'ex17', label: 'উদাহরণ ১৭ (বাস্কেটবল-ভলিবল)' },
+          { k: 'ex16', label: 'উদাহরণ ১৬ (৩৫ জন বালিকা - ৩টি সেট)' },
+          { k: 'ex15', label: 'উদাহরণ ১৫ (বাংলা-ইংরেজি)' }
+        ];
+        probs.forEach(p => {
+          const b = document.createElement('button');
+          b.className = 'ctrl-btn' + (state.probMode === p.k ? ' active' : '');
+          b.textContent = p.label;
+          b.onclick = () => {
+            state.probMode = p.k;
+            buildStageControls(4);
+            render();
+          };
+          stageControls.appendChild(b);
+        });
+      } else if (chapIdx === 6) {
+        const graphs = [
+          { k: 'quadratic', label: 'দ্বিঘাত: y = x² - 4x - 1' },
+          { k: 'linear', label: 'সরলরৈখিক: y = 3x + 2' },
+          { k: 'circle', label: 'বৃত্ত: x² + y² = 16' },
+          { k: 'inverse', label: 'বিপরীত ফাংশন: f ও f⁻¹' }
+        ];
+        graphs.forEach(g => {
+          const b = document.createElement('button');
+          b.className = 'ctrl-btn' + (state.graphMode === g.k ? ' active' : '');
+          b.textContent = g.label;
+          b.onclick = () => {
+            state.graphMode = g.k;
+            buildStageControls(6);
+            render();
+          };
+          stageControls.appendChild(b);
+        });
+      }
+    }
+
+    // =========================================================================
+    // SCENE 0: SET BUILDER & SQUARES (S = {1, 4, 9, ..., 100})
+    // =========================================================================
+    function renderChapter0(t) {
+      const count = Math.max(1, Math.min(10, Math.ceil(t * 10)));
+      const elements = [];
+      for (let i = 1; i <= count; i++) elements.push(i * i);
+
+      let html = `
+        <text x="300" y="36" text-anchor="middle" fill="#94a3b8" font-size="15">
+          সেট গঠন পদ্ধতি: S = { x : x = n², n ∈ N এবং n ≤ ${count} }
+        </text>
+      `;
+
+      // Render 2 rows of 5 cards
+      for (let i = 1; i <= 10; i++) {
+        const active = i <= count;
+        const col = (i - 1) % 5;
+        const row = Math.floor((i - 1) / 5);
+        const x = 55 + col * 102;
+        const y = 75 + row * 125;
+        const sq = i * i;
+
+        html += `
+          <g transform="translate(${x}, ${y})" opacity="${active ? 1 : 0.2}">
+            <rect width="86" height="96" rx="12" fill="${active ? '#1e293b' : '#0f172a'}" 
+                  stroke="${active ? '#38bdf8' : '#334155'}" stroke-width="${i === count ? 2.5 : 1.5}"/>
+            <text x="43" y="28" text-anchor="middle" fill="#94a3b8" font-size="12" class="mono">n = ${i}</text>
+            <line x1="16" y1="38" x2="70" y2="38" stroke="#334155" stroke-width="1"/>
+            <text x="43" y="72" text-anchor="middle" fill="${active ? '#38bdf8' : '#475569'}" font-size="22" font-weight="700" class="mono">${sq}</text>
+            <text x="43" y="88" text-anchor="middle" fill="#34d399" font-size="10" class="mono">${sq} ∈ S</text>
+          </g>
+        `;
+      }
+
+      // Subset / Non-member check bar at bottom
+      const checkNum = count * count + 1;
+      html += `
+        <rect x="55" y="330" width="490" height="46" rx="10" fill="#131b2e" stroke="#263354"/>
+        <text x="300" y="358" text-anchor="middle" fill="#f1f5f9" font-size="15" class="mono">
+          উপাদান পরীক্ষা:  ${count * count} ∈ S (সদস্য)   |   ${checkNum} ∉ S (সদস্য নয়)
+        </text>
+      `;
+
+      svg.innerHTML = html;
+
+      liveReadout.innerHTML = `
+        <div><strong>তালিকা পদ্ধতি (Tabular Form):</strong></div>
+        <div style="margin: 6px 0;">
+          S = { ${elements.map(e => `<span class="badge-item">${e}</span>`).join('')} }
+        </div>
+        <div style="font-size:0.9rem; color:var(--text-muted);">
+          বর্তমান উপাদান সংখ্যা, <span class="mono">n(S) = ${count}</span>। যেকোনো সেট A এর জন্য <span class="mono">A ⊆ A</span> এবং ফাঁকা সেট <span class="mono">Ø ⊆ S</span>।
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // SCENE 1: POWER SET P(A) Hasse Diagram & 2^n subsets
+    // =========================================================================
+    function renderChapter1(t) {
+      const subsets = [
+        { label: "Ø", level: 0, x: 300, y: 340, elems: "ফাঁকা সেট (০ উপাদান)" },
+        { label: "{a}", level: 1, x: 150, y: 240, elems: "১টি উপাদান" },
+        { label: "{b}", level: 1, x: 300, y: 240, elems: "১টি উপাদান" },
+        { label: "{c}", level: 1, x: 450, y: 240, elems: "১টি উপাদান" },
+        { label: "{a,b}", level: 2, x: 150, y: 140, elems: "২টি উপাদান" },
+        { label: "{a,c}", level: 2, x: 300, y: 140, elems: "২টি উপাদান" },
+        { label: "{b,c}", level: 2, x: 450, y: 140, elems: "২টি উপাদান" },
+        { label: "{a,b,c}", level: 3, x: 300, y: 45, elems: "মূল সেট A (৩টি উপাদান)" }
+      ];
+
+      const edges = [
+        [0,1], [0,2], [0,3],
+        [1,4], [1,5], [2,4], [2,6], [3,5], [3,6],
+        [4,7], [5,7], [6,7]
+      ];
+
+      const activeCount = Math.max(1, Math.min(8, Math.ceil(t * 8)));
+
+      let html = `
+        <text x="30" y="35" fill="#94a3b8" font-size="13">মাত্রা ৩ (n=3)</text>
+        <text x="30" y="145" fill="#94a3b8" font-size="13">মাত্রা ২</text>
+        <text x="30" y="245" fill="#94a3b8" font-size="13">মাত্রা ১</text>
+        <text x="30" y="345" fill="#94a3b8" font-size="13">মাত্রা ০ (Ø)</text>
+      `;
+
+      // Draw Hasse edges
+      edges.forEach(([u, v]) => {
+        const isLit = u < activeCount && v < activeCount;
+        html += `<line x1="${subsets[u].x}" y1="${subsets[u].y}" x2="${subsets[v].x}" y2="${subsets[v].y}" 
+                       stroke="${isLit ? '#38bdf8' : '#1e293b'}" stroke-width="${isLit ? 2 : 1}" stroke-dasharray="${isLit ? '' : '4 4'}"/>`;
+      });
+
+      // Draw nodes
+      subsets.forEach((s, idx) => {
+        const isLit = idx < activeCount;
+        const isCurrent = idx === activeCount - 1;
+        html += `
+          <g transform="translate(${s.x}, ${s.y})">
+            <rect x="-46" y="-22" width="92" height="44" rx="22" 
+                  fill="${isCurrent ? '#38bdf8' : (isLit ? '#1e293b' : '#0f172a')}"
+                  stroke="${isLit ? '#38bdf8' : '#334155'}" stroke-width="${isCurrent ? 3 : 1.5}"/>
+            <text x="0" y="6" text-anchor="middle" fill="${isCurrent ? '#0b0f19' : (isLit ? '#f8fafc' : '#475569')}" 
+                  font-weight="700" font-size="15" class="mono">${s.label}</text>
+          </g>
+        `;
+      });
+
+      svg.innerHTML = html;
+
+      const visibleList = subsets.slice(0, activeCount).map(s => `<span class="badge-item">${s.label}</span>`).join('');
+      liveReadout.innerHTML = `
+        <div><strong>শক্তি সেট P(A) গঠন (${activeCount} / 8 টি উপসেট):</strong></div>
+        <div style="margin:6px 0;">P(A) = { ${visibleList} }</div>
+        <div style="font-size:0.9rem; color:var(--amber);">
+          লক্ষ্য করুন (উদাহরণ ৬): যদি A = {a,b} ও B = {b,c} হয়, তবে P(A) ∪ P(B) তে ৬টি উপসেট থাকে, কিন্তু P(A ∪ B) তে 2³ = 8 টি উপসেট থাকে ({a,c} এবং {a,b,c} অতিরিক্ত)। তাই <strong>P(A) ∪ P(B) ⊆ P(A ∪ B)</strong>।
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // SCENE 2: VENN DIAGRAM & DE MORGAN'S LAWS (Example 8)
+    // =========================================================================
+    function renderChapter2(t) {
+      // Allow scrubber to cycle through operations if user scrubs within chapter 2
+      const opsOrder = ['union', 'inter', 'diff', 'demorgan1', 'demorgan2'];
+      const autoOpIdx = Math.min(4, Math.floor(t * 5));
+      const activeOp = state.vennOp || opsOrder[autoOpIdx];
+
+      // Elements of U = {0..9}, A = {2,3,5,7}, B = {1,3,5,7,9}
+      // Regions:
+      // onlyA: {2}
+      // both: {3, 5, 7}
+      // onlyB: {1, 9}
+      // outside: {0, 4, 6, 8}
+      const highlight = {
+        onlyA: false,
+        both: false,
+        onlyB: false,
+        outside: false,
+        title: '',
+        result: '',
+        desc: ''
+      };
+
+      if (activeOp === 'union') {
+        highlight.onlyA = highlight.both = highlight.onlyB = true;
+        highlight.title = "সংযোগ সেট: A ∪ B";
+        highlight.result = "{1, 2, 3, 5, 7, 9}";
+        highlight.desc = "A অথবা B উভয় সেটের সকল উপাদান।";
+      } else if (activeOp === 'inter') {
+        highlight.both = true;
+        highlight.title = "ছেদ সেট: A ∩ B";
+        highlight.result = "{3, 5, 7}";
+        highlight.desc = "A এবং B উভয় সেটের সাধারণ (Common) মৌলিক ও বিজোড় সংখ্যা।";
+      } else if (activeOp === 'diff') {
+        highlight.onlyA = true;
+        highlight.title = "সেটের অন্তর: A \\ B (বা A ∩ B')";
+        highlight.result = "{2}";
+        highlight.desc = "A থেকে B এর উপাদানগুলো বাদ দিলে শুধুমাত্র জোড় মৌলিক সংখ্যা 2 থাকে।";
+      } else if (activeOp === 'demorgan1') {
+        highlight.outside = true;
+        highlight.title = "ডি মরগ্যানের ১ম সূত্র: (A ∪ B)' = A' ∩ B'";
+        highlight.result = "{0, 4, 6, 8}";
+        highlight.desc = "যারা মৌলিকও নয় এবং বিজোড়ও নয় (বৃত্ত দুটির বাইরের অংশ)।";
+      } else if (activeOp === 'demorgan2') {
+        highlight.onlyA = highlight.onlyB = highlight.outside = true;
+        highlight.title = "ডি মরগ্যানের ২য় সূত্র: (A ∩ B)' = A' ∪ B'";
+        highlight.result = "{0, 1, 2, 4, 6, 8, 9}";
+        highlight.desc = "সাধারণ ছেদ অংশ {3,5,7} বাদে সার্বিক সেটের বাকি সব উপাদান।";
+      }
+
+      const cOutside = highlight.outside ? 'rgba(56, 189, 248, 0.22)' : '#0f172a';
+      const cOnlyA = highlight.onlyA ? 'rgba(56, 189, 248, 0.45)' : 'rgba(30, 41, 59, 0.5)';
+      const cOnlyB = highlight.onlyB ? 'rgba(56, 189, 248, 0.45)' : 'rgba(30, 41, 59, 0.5)';
+      const cBoth = highlight.both ? 'rgba(52, 211, 153, 0.6)' : 'rgba(15, 23, 42, 0.8)';
+
+      svg.innerHTML = `
+        <defs>
+          <clipPath id="clipA"><circle cx="235" cy="200" r="115"/></clipPath>
+          <clipPath id="clipB"><circle cx="365" cy="200" r="115"/></clipPath>
+        </defs>
+
+        <!-- Universal Set Box U -->
+        <rect x="40" y="35" width="520" height="330" rx="16" fill="${cOutside}" stroke="#475569" stroke-width="2"/>
+        <text x="535" y="65" fill="#94a3b8" font-size="20" font-weight="700" class="mono">U</text>
+
+        <!-- Circle A Base -->
+        <circle cx="235" cy="200" r="115" fill="${cOnlyA}" stroke="#38bdf8" stroke-width="2.5"/>
+        <!-- Circle B Base -->
+        <circle cx="365" cy="200" r="115" fill="${cOnlyB}" stroke="#c084fc" stroke-width="2.5"/>
+
+        <!-- Intersection A ∩ B overlay -->
+        <circle cx="365" cy="200" r="115" clip-path="url(#clipA)" fill="${cBoth}"/>
+        <!-- Re-stroke circles for crispness -->
+        <circle cx="235" cy="200" r="115" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+        <circle cx="365" cy="200" r="115" fill="none" stroke="#c084fc" stroke-width="2.5"/>
+
+        <!-- Labels -->
+        <text x="155" y="105" fill="#38bdf8" font-size="18" font-weight="700">A (মৌলিক)</text>
+        <text x="395" y="105" fill="#c084fc" font-size="18" font-weight="700">B (বিজোড়)</text>
+
+        <!-- Elements in A \ B -->
+        <g transform="translate(175, 200)">
+          <circle r="20" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+          <text y="6" text-anchor="middle" fill="#f8fafc" font-size="18" font-weight="700" class="mono">2</text>
+        </g>
+
+        <!-- Elements in A ∩ B -->
+        <g transform="translate(300, 150)">
+          <circle r="18" fill="#1e293b" stroke="#34d399" stroke-width="2"/>
+          <text y="6" text-anchor="middle" fill="#34d399" font-size="16" font-weight="700" class="mono">3</text>
+        </g>
+        <g transform="translate(300, 200)">
+          <circle r="18" fill="#1e293b" stroke="#34d399" stroke-width="2"/>
+          <text y="6" text-anchor="middle" fill="#34d399" font-size="16" font-weight="700" class="mono">5</text>
+        </g>
+        <g transform="translate(300, 250)">
+          <circle r="18" fill="#1e293b" stroke="#34d399" stroke-width="2"/>
+          <text y="6" text-anchor="middle" fill="#34d399" font-size="16" font-weight="700" class="mono">7</text>
+        </g>
+
+        <!-- Elements in B \ A -->
+        <g transform="translate(425, 175)">
+          <circle r="19" fill="#1e293b" stroke="#c084fc" stroke-width="2"/>
+          <text y="6" text-anchor="middle" fill="#f8fafc" font-size="17" font-weight="700" class="mono">1</text>
+        </g>
+        <g transform="translate(425, 230)">
+          <circle r="19" fill="#1e293b" stroke="#c084fc" stroke-width="2"/>
+          <text y="6" text-anchor="middle" fill="#f8fafc" font-size="17" font-weight="700" class="mono">9</text>
+        </g>
+
+        <!-- Elements in (A ∪ B)' -->
+        <text x="85" y="85" fill="#94a3b8" font-size="17" font-weight="600" class="mono">0</text>
+        <text x="85" y="330" fill="#94a3b8" font-size="17" font-weight="600" class="mono">4</text>
+        <text x="505" y="330" fill="#94a3b8" font-size="17" font-weight="600" class="mono">6</text>
+        <text x="300" y="348" fill="#94a3b8" font-size="17" font-weight="600" class="mono">8</text>
+      `;
+
+      liveReadout.innerHTML = `
+        <div style="color:var(--accent); font-weight:700; font-size:1.05rem;">${highlight.title} = <span class="mono">${highlight.result}</span></div>
+        <div style="margin-top:4px;">${highlight.desc}</div>
+        <div style="margin-top:8px; font-size:0.85rem; color:var(--text-muted);" class="mono">
+          A = {2,3,5,7}, B = {1,3,5,7,9} | A' = {0,1,4,6,8,9}, B' = {0,2,4,6,8}
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // SCENE 3: ONE-TO-ONE CORRESPONDENCE & INFINITE SETS (N ~ 2N)
+    // =========================================================================
+    function renderChapter3(t) {
+      const maxPairs = 7;
+      const visiblePairs = Math.max(1, Math.ceil(t * maxPairs));
+
+      let html = `
+        <!-- Left Oval N -->
+        <ellipse cx="170" cy="205" rx="75" ry="165" fill="#131b2e" stroke="#38bdf8" stroke-width="2.5"/>
+        <text x="170" y="25" text-anchor="middle" fill="#38bdf8" font-size="17" font-weight="700">স্বাভাবিক সংখ্যা N</text>
+
+        <!-- Right Oval A = 2N -->
+        <ellipse cx="430" cy="205" rx="75" ry="165" fill="#131b2e" stroke="#34d399" stroke-width="2.5"/>
+        <text x="430" y="25" text-anchor="middle" fill="#34d399" font-size="17" font-weight="700">জোড় সংখ্যা A ⊂ N</text>
+      `;
+
+      const labelsN = ['1', '2', '3', '4', '5', 'n', '...'];
+      const labelsA = ['2', '4', '6', '8', '10', '2n', '...'];
+
+      for (let i = 0; i < maxPairs; i++) {
+        const y = 78 + i * 42;
+        const active = i < visiblePairs;
+        const color = active ? '#fbbf24' : '#334155';
+
+        html += `
+          <g opacity="${active ? 1 : 0.25}">
+            <text x="155" y="${y + 5}" text-anchor="end" fill="#f8fafc" font-size="17" font-weight="700" class="mono">${labelsN[i]}</text>
+            <text x="445" y="${y + 5}" text-anchor="start" fill="#34d399" font-size="17" font-weight="700" class="mono">${labelsA[i]}</text>
+            <line x1="175" y1="${y}" x2="425" y2="${y}" stroke="${color}" stroke-width="2"/>
+            <polygon points="425,${y} 415,${y-5} 415,${y+5}" fill="${color}"/>
+            <polygon points="175,${y} 185,${y-5} 185,${y+5}" fill="${color}"/>
+          </g>
+        `;
+      }
+
+      svg.innerHTML = html;
+
+      liveReadout.innerHTML = `
+        <div><strong>এক-এক মিল (Bijection): <span class="mono">k ↔ 2k</span></strong></div>
+        <div style="margin-top:4px;">
+          যদিও বিজোড় সংখ্যাগুলো {1, 3, 5, ...} বাদ দিয়ে জোড় সংখ্যার সেট <span class="mono">A</span> গঠিত হয়েছে (অর্থাৎ <span class="mono">A</span> হচ্ছে <span class="mono">N</span> এর একটি প্রকৃত উপসেট, <span class="mono">A ⊂ N</span>), তবুও প্রতিটি স্বাভাবিক সংখ্যার জন্য একটি অনন্য জোড় সংখ্যা পাওয়া যাচ্ছে!
+        </div>
+        <div style="margin-top:6px; color:var(--emerald); font-weight:600;">
+          প্রতিজ্ঞা ৭: কোনো সেট অনন্ত (Infinite) হবে যদি ও কেবল যদি সেটটি তার নিজের একটি প্রকৃত উপসেটের সমতুল (Equivalent) হয়।
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // SCENE 4: REAL WORLD VENN PROBLEMS (Examples 15, 16, 17)
+    // =========================================================================
+    function renderChapter4(t) {
+      if (state.probMode === 'ex17') {
+        // Basketball (18) & Volleyball (12), Total U = 24. x goes from 6 to 12
+        const x = Math.round(6 + t * 6); // 6..12
+        const onlyB = 18 - x;
+        const onlyV = 12 - x;
+        const unionBV = 30 - x;
+        const neither = 24 - unionBV;
+
+        // Animate circle distance based on x (more overlap as x grows)
+        const dist = 140 - (x - 6) * 12;
+        const cxB = 300 - dist / 2;
+        const cxV = 300 + dist / 2;
+
+        svg.innerHTML = `
+          <rect x="40" y="30" width="520" height="340" rx="16" fill="#0f172a" stroke="#475569" stroke-width="2"/>
+          <text x="60" y="62" fill="#94a3b8" font-size="16" font-weight="700">মোট ছাত্র n(U) = 24</text>
+          <text x="535" y="62" text-anchor="end" fill="#fb7185" font-size="15" font-weight="600">কোনোটিই খেলে না: ${neither} জন</text>
+
+          <circle cx="${cxB}" cy="205" r="110" fill="rgba(56, 189, 248, 0.25)" stroke="#38bdf8" stroke-width="2.5"/>
+          <circle cx="${cxV}" cy="205" r="95" fill="rgba(251, 191, 36, 0.25)" stroke="#fbbf24" stroke-width="2.5"/>
+
+          <text x="${cxB - 45}" y="110" fill="#38bdf8" font-size="16" font-weight="700">বাস্কেটবল n(B)=18</text>
+          <text x="${cxV + 35}" y="110" text-anchor="middle" fill="#fbbf24" font-size="16" font-weight="700">ভলিবল n(V)=12</text>
+
+          <!-- Region Counts -->
+          <text x="${cxB - 55}" y="205" text-anchor="middle" fill="#f8fafc" font-size="22" font-weight="700" class="mono">${onlyB}</text>
+          <text x="${cxB - 55}" y="228" text-anchor="middle" fill="#94a3b8" font-size="12">শুধু বাস্কেটবল (18-x)</text>
+
+          <text x="300" y="205" text-anchor="middle" fill="#34d399" font-size="26" font-weight="700" class="mono">x = ${x}</text>
+          <text x="300" y="228" text-anchor="middle" fill="#34d399" font-size="12">উভয় খেলা (B ∩ V)</text>
+
+          <text x="${cxV + 50}" y="205" text-anchor="middle" fill="#f8fafc" font-size="22" font-weight="700" class="mono">${onlyV}</text>
+          <text x="${cxV + 50}" y="228" text-anchor="middle" fill="#94a3b8" font-size="12">শুধু ভলিবল (12-x)</text>
+
+          <text x="300" y="348" text-anchor="middle" fill="#38bdf8" font-size="16" font-weight="600" class="mono">
+            n(B ∪ V) = 30 - ${x} = ${unionBV} জন
+          </text>
+        `;
+
+        liveReadout.innerHTML = `
+          <div><strong>উদাহরণ ১৭ (পৃষ্ঠা ১৭–১৮): সম্ভাব্য ন্যূনতম ও বৃহত্তম মান</strong></div>
+          <div style="margin-top:4px;">
+            স্লাইডার অনুযায়ী উভয় খেলা পছন্দ করে <span class="badge-item">x = ${x}</span> জন।
+            ${x === 6 ? '<span style="color:var(--emerald); font-weight:700;"> (এটিই সম্ভাব্য ক্ষুদ্রতম মান, যখন B ∪ V = U বা 30 - x = 24)</span>' : ''}
+            ${x === 12 ? '<span style="color:var(--amber); font-weight:700;"> (এটিই সম্ভাব্য বৃহত্তম মান, যখন V ⊂ B অর্থাৎ ভলিবল খেলা সবাই বাস্কেটবলও খেলে!)</span>' : ''}
+          </div>
+          <div style="margin-top:6px; font-size:0.9rem; color:var(--text-muted);">
+            শুধু বাস্কেটবল = ${onlyB} জন | উভয়টি = ${x} জন | শুধু ভলিবল = ${onlyV} জন | মোট কমপক্ষে একটি = ${unionBV} জন।
+          </div>
+        `;
+      } else if (state.probMode === 'ex16') {
+        // 35 Girls: J (Run=15), S (Swim), D (Dance)
+        // Regions from Page 17:
+        // center = 4, J&S only = 7, only J = 2, J&D only = y
+        // only D = 2x, S&D only = x, only S = 2
+        // Solved: n(J') = 35 - 15 = 20 => 2x + x + 2 = 20 => x = 6. And y + 4 + 7 + 2 = 15 => y = 2.
+        const showSolved = t > 0.45;
+        const xVal = showSolved ? "6 (যেহেতু 3x+2=20)" : "x";
+        const twoXVal = showSolved ? "12 (2x)" : "2x";
+        const yVal = showSolved ? "2 (y)" : "y";
+
+        svg.innerHTML = `
+          <rect x="40" y="20" width="520" height="360" rx="16" fill="#0f172a" stroke="#475569" stroke-width="2"/>
+          <text x="60" y="50" fill="#94a3b8" font-size="15" font-weight="700">মোট বালিকা = 35 জন | দৌড় n(J) = 15 জন</text>
+
+          <!-- D (Dance - Top) -->
+          <circle cx="300" cy="145" r="88" fill="rgba(192, 132, 252, 0.2)" stroke="#c084fc" stroke-width="2"/>
+          <text x="300" y="45" text-anchor="middle" fill="#c084fc" font-size="15" font-weight="700">D (নাচ)</text>
+
+          <!-- J (Run - Bottom Left) -->
+          <circle cx="235" cy="245" r="88" fill="rgba(56, 189, 248, 0.2)" stroke="#38bdf8" stroke-width="2"/>
+          <text x="125" y="325" fill="#38bdf8" font-size="15" font-weight="700">J (দৌড়)</text>
+
+          <!-- S (Swim - Bottom Right) -->
+          <circle cx="365" cy="245" r="88" fill="rgba(52, 211, 153, 0.2)" stroke="#34d399" stroke-width="2"/>
+          <text x="455" y="325" fill="#34d399" font-size="15" font-weight="700">S (সাঁতার)</text>
+
+          <!-- 7 Region Labels -->
+          <text x="300" y="110" text-anchor="middle" fill="#f8fafc" font-size="16" font-weight="700" class="mono">${twoXVal}</text>
+          <text x="242" y="175" text-anchor="middle" fill="#fbbf24" font-size="17" font-weight="700" class="mono">${yVal}</text>
+          <text x="358" y="175" text-anchor="middle" fill="#34d399" font-size="15" font-weight="700" class="mono">${xVal}</text>
+          <text x="300" y="215" text-anchor="middle" fill="#f8fafc" font-size="18" font-weight="700" class="mono">4</text>
+          <text x="195" y="265" text-anchor="middle" fill="#f8fafc" font-size="18" font-weight="700" class="mono">2</text>
+          <text x="300" y="275" text-anchor="middle" fill="#f8fafc" font-size="18" font-weight="700" class="mono">7</text>
+          <text x="405" y="265" text-anchor="middle" fill="#f8fafc" font-size="18" font-weight="700" class="mono">2</text>
+        `;
+
+        liveReadout.innerHTML = `
+          <div><strong>উদাহরণ ১৬ (পৃষ্ঠা ১৬–১৭): ৩টি সেটের ভেনচিত্র বিশ্লেষণ</strong></div>
+          <div style="margin-top:4px;">
+            ১) যারা দৌড় পছন্দ করে না, <span class="mono">n(J') = 35 - 15 = 20</span>। চিত্রে J বৃত্তের বাইরে আছে <span class="mono">2x + x + 2 = 20 ⇒ 3x = 18 ⇒ x = 6</span>।<br>
+            ২) দৌড় ও নাচ পছন্দ করে কিন্তু সাঁতার নয় (<span class="mono">J ∩ D ∩ S'</span>) = <span class="mono">y</span>। যেহেতু <span class="mono">n(J) = y + 4 + 7 + 2 = 15</span>, তাই <span class="badge-item">y = 2 জন</span>।
+          </div>
+        `;
+      } else {
+        // Example 15: 50 people, E = 35, E ∩ B = 25
+        svg.innerHTML = `
+          <rect x="40" y="30" width="520" height="340" rx="16" fill="#0f172a" stroke="#475569" stroke-width="2"/>
+          <text x="60" y="62" fill="#94a3b8" font-size="16" font-weight="700">মোট লোক n(S) = n(E ∪ B) = 50 জন</text>
+
+          <circle cx="235" cy="205" r="110" fill="rgba(56, 189, 248, 0.25)" stroke="#38bdf8" stroke-width="2.5"/>
+          <circle cx="365" cy="205" r="110" fill="rgba(52, 211, 153, 0.25)" stroke="#34d399" stroke-width="2.5"/>
+
+          <text x="175" y="195" text-anchor="middle" fill="#f8fafc" font-size="22" font-weight="700" class="mono">10</text>
+          <text x="175" y="220" text-anchor="middle" fill="#94a3b8" font-size="13">শুধু ইংরেজি (E\\B)</text>
+
+          <text x="300" y="195" text-anchor="middle" fill="#fbbf24" font-size="24" font-weight="700" class="mono">25</text>
+          <text x="300" y="220" text-anchor="middle" fill="#fbbf24" font-size="13">উভয় ভাষা (E ∩ B)</text>
+
+          <text x="425" y="195" text-anchor="middle" fill="#34d399" font-size="24" font-weight="700" class="mono">15</text>
+          <text x="425" y="220" text-anchor="middle" fill="#34d399" font-size="13">কেবল বাংলা (B\\E)</text>
+        `;
+
+        liveReadout.innerHTML = `
+          <div><strong>উদাহরণ ১৫ (পৃষ্ঠা ১৫–১৬):</strong></div>
+          <div style="margin-top:4px;">
+            <span class="mono">n(E ∪ B) = n(E) + n(B) - n(E ∩ B) ⇒ 50 = 35 + n(B) - 25 ⇒ n(B) = 40 জন</span> (বাংলা বলতে পারে)।<br>
+            কেবলমাত্র বাংলা বলতে পারে <span class="mono">n(B \\ E) = 40 - 25 = 15 জন</span>।
+          </div>
+        `;
+      }
+    }
+
+    // =========================================================================
+    // SCENE 5: FUNCTION MAPPING & INVERSE FUNCTION (Pages 24-25)
+    // =========================================================================
+    function renderChapter5(t) {
+      // 4 sub-states across t (0..1):
+      // 0: Not a function (Ex 26: 2 maps to 4 and 5)
+      // 1: One-to-One but NOT Onto (Page 24 Left: a->1, b->2, c->4, 3 left out)
+      // 2: Onto but NOT One-to-One (Page 24 Mid: a->1, b->2, c->2)
+      // 3: Bijective & Invertible f^-1 (Page 24 Right: a->2, b->1, c->3)
+      const modeIdx = Math.min(3, Math.floor(t * 4));
+      const isReverse = t > 0.88; // At the very end of the chapter scrubber, flip arrows for f^-1!
+
+      const configs = [
+        {
+          name: "১. ফাংশন নয় (অন্বয় মাত্র - উদাহরণ ২৬)",
+          dom: ['1', '2', '3'],
+          cod: ['2', '4', '5'],
+          edges: [[0,0], [1,1], [1,2], [2,1], [2,2]],
+          verdict: "❌ এটি ফাংশন নয়, কারণ ডোমেনের একই উপাদান 2 এর দুটি ভিন্ন প্রতিবিম্ব (4 ও 5) রয়েছে!",
+          color: "#fb7185"
+        },
+        {
+          name: "২. এক-এক (One-to-One) কিন্তু সার্বিক (Onto) নয়",
+          dom: ['a', 'b', 'c'],
+          cod: ['1', '2', '3', '4'],
+          edges: [[0,0], [1,1], [2,3]],
+          verdict: "⚠️ এক-এক ফাংশন, কিন্তু সার্বিক নয় (কোডোমেনের 3 এর কোনো প্রাক-প্রতিবিম্ব নেই)। তাই বিপরীত ফাংশন সম্ভব নয়।",
+          color: "#fbbf24"
+        },
+        {
+          name: "৩. সার্বিক (Onto) কিন্তু এক-এক নয়",
+          dom: ['a', 'b', 'c'],
+          cod: ['1', '2'],
+          edges: [[0,0], [1,1], [2,1]],
+          verdict: "⚠️ সার্বিক ফাংশন (রেঞ্জ = কোডোমেন), কিন্তু এক-এক নয় কারণ b ও c উভয়েরই প্রতিবিম্ব 2।",
+          color: "#fbbf24"
+        },
+        {
+          name: isReverse ? "৪. বিপরীত ফাংশন f⁻¹ : D → A (তীর উল্টে গেছে!)" : "৪. এক-এক ও সার্বিক ফাংশন f : A → D (বিপরীতযোগ্য)",
+          dom: ['a', 'b', 'c'],
+          cod: ['1', '2', '3'],
+          edges: [[0,1], [1,0], [2,2]],
+          verdict: isReverse
+            ? "✅ বিপরীত ফাংশন সক্রিয়! f⁻¹(1) = b, f⁻¹(2) = a, f⁻¹(3) = c।"
+            : "✅ এক-এক এবং সার্বিক! তাই এর বিপরীত ফাংশন f⁻¹ বিদ্যমান (স্লাইডারটি আরও একটু ডানে টেনে f⁻¹ দেখুন)।",
+          color: "#34d399"
+        }
+      ];
+
+      const cfg = configs[modeIdx];
+
+      let html = `
+        <text x="300" y="32" text-anchor="middle" fill="${cfg.color}" font-size="17" font-weight="700">${cfg.name}</text>
+
+        <!-- Domain Oval -->
+        <ellipse cx="175" cy="210" rx="68" ry="135" fill="#131b2e" stroke="#38bdf8" stroke-width="2.5"/>
+        <text x="175" y="60" text-anchor="middle" fill="#38bdf8" font-size="15" font-weight="700">${isReverse ? 'প্রাক-প্রতিবিম্ব সেট A' : 'ডোমেন A'}</text>
+
+        <!-- Codomain Oval -->
+        <ellipse cx="425" cy="210" rx="68" ry="135" fill="#131b2e" stroke="#c084fc" stroke-width="2.5"/>
+        <text x="425" y="60" text-anchor="middle" fill="#c084fc" font-size="15" font-weight="700">${isReverse ? 'ডোমেন D (f⁻¹)' : 'কোডোমেন B'}</text>
+      `;
+
+      const domY = cfg.dom.map((_, i) => 135 + i * (150 / Math.max(1, cfg.dom.length - 1)));
+      const codY = cfg.cod.map((_, i) => 125 + i * (170 / Math.max(1, cfg.cod.length - 1)));
+
+      // Draw edges
+      cfg.edges.forEach(([u, v]) => {
+        const y1 = domY[u];
+        const y2 = codY[v];
+        const x1 = 195;
+        const x2 = 405;
+        html += `
+          <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${cfg.color}" stroke-width="2.5"/>
+          ${!isReverse
+            ? `<polygon points="${x2},${y2}${x2-12},${y2-5}${x2-12},${y2+5}" fill="${cfg.color}"/>`
+            : `<polygon points="${x1},${y1}${x1+12},${y1-5}${x1+12},${y1+5}" fill="${cfg.color}"/>`
+          }
+        `;
+      });
+
+      // Draw Domain Nodes
+      cfg.dom.forEach((d, i) => {
+        html += `
+          <circle cx="175" cy="${domY[i]}" r="18" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+          <text x="175" y="${domY[i]+6}" text-anchor="middle" fill="#f8fafc" font-size="16" font-weight="700" class="mono">${d}</text>
+        `;
+      });
+
+      // Draw Codomain Nodes
+      cfg.cod.forEach((c, i) => {
+        const isUnmapped = !cfg.edges.some(([_, v]) => v === i);
+        html += `
+          <circle cx="425" cy="${codY[i]}" r="18" fill="#1e293b" stroke="${isUnmapped ? '#fb7185' : '#c084fc'}" stroke-width="2"/>
+          <text x="425" y="${codY[i]+6}" text-anchor="middle" fill="#f8fafc" font-size="16" font-weight="700" class="mono">${c}</text>
+        `;
+      });
+
+      svg.innerHTML = html;
+
+      liveReadout.innerHTML = `
+        <div style="color:${cfg.color}; font-weight:700;">${cfg.verdict}</div>
+        <div style="margin-top:6px; font-size:0.9rem; color:var(--text-muted);">
+          মনে রাখবেন: একটি অন্বয়ের ক্রমজোড়গুলোর প্রথম উপাদানগুলো যদি ভিন্ন ভিন্ন হয়, তবেই সেটি ফাংশন। আর ফাংশনটি এক-এক ও সার্বিক হলেই কেবল <span class="mono">f⁻¹</span> নির্ণয় করা যায়।
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // SCENE 6: FUNCTION GRAPHS & VERTICAL LINE TEST (Pages 29-33)
+    // =========================================================================
+    function renderChapter6(t) {
+      // Coordinate system: Center (300, 210), scale = 25px per unit
+      const ox = 300;
+      const oy = 210;
+      const sc = 24;
+
+      const toScreenX = (x) => ox + x * sc;
+      const toScreenY = (y) => oy - y * sc;
+
+      // Grid & Axes
+      let html = `<g stroke="#1e293b" stroke-width="1">`;
+      for (let gx = -10; gx <= 10; gx++) {
+        const sx = toScreenX(gx);
+        html += `<line x1="${sx}" y1="15" x2="${sx}" y2="385"/>`;
+      }
+      for (let gy = -7; gy <= 7; gy++) {
+        const sy = toScreenY(gy);
+        html += `<line x1="40" y1="${sy}" x2="560" y2="${sy}"/>`;
+      }
+      html += `</g>`;
+
+      // Main Axes XOX' and YOY'
+      html += `
+        <line x1="40" y1="${oy}" x2="560" y2="${oy}" stroke="#64748b" stroke-width="2"/>
+        <line x1="${ox}" y1="15" x2="${ox}" y2="385" stroke="#64748b" stroke-width="2"/>
+        <text x="550" y="${oy - 8}" fill="#94a3b8" font-size="14" class="mono">X</text>
+        <text x="${ox + 10}" y="28" fill="#94a3b8" font-size="14" class="mono">Y</text>
+        <text x="${ox - 16}" y="${oy + 18}" fill="#94a3b8" font-size="13" class="mono">O</text>
+      `;
+
+      // Scrubber x value from -4.5 to +5.5
+      const xScan = -4.2 + t * 9.4;
+      const sxScan = toScreenX(xScan);
+
+      let curvePath = '';
+      let hits = [];
+      let titleText = '';
+      let analysisHTML = '';
+
+      if (state.graphMode === 'quadratic') {
+        // Page 32: y = x^2 - 4x - 1
+        titleText = "দ্বিঘাত ফাংশন (পরাবৃত্ত): y = x² - 4x - 1 (পৃষ্ঠা ৩২)";
+        const pts = [];
+        for (let x = -1.6; x <= 5.6; x += 0.1) {
+          const y = x * x - 4 * x - 1;
+          pts.push(`${toScreenX(x)},${toScreenY(y)}`);
+        }
+        curvePath = `<polyline fill="none" stroke="#38bdf8" stroke-width="3" points="${pts.join(' ')}"/>`;
+
+        // Key textbook points (-1,4), (0,-1), (1,-4), (2,-5), (3,-4), (4,-1), (5,4)
+        [[-1,4],[0,-1],[1,-4],[2,-5],[3,-4],[4,-1],[5,4]].forEach(([px, py]) => {
+          html += `<circle cx="${toScreenX(px)}" cy="${toScreenY(py)}" r="4" fill="#fbbf24"/>`;
+        });
+
+        const yVal = xScan * xScan - 4 * xScan - 1;
+        if (yVal >= -7.5 && yVal <= 7.5) hits.push([xScan, yVal]);
+
+        analysisHTML = `
+          <div><strong>দ্বিঘাত ফাংশন: <span class="mono">y = x² - 4x - 1</span></strong></div>
+          <div>উল্লম্ব রেখা <span class="mono">x = ${xScan.toFixed(2)}</span> লেখচিত্রটিকে <strong>১টি মাত্র বিন্দুতে</strong> <span class="mono">(${xScan.toFixed(1)}, ${yVal.toFixed(1)})</span> ছেদ করেছে। তাই এটি একটি ফাংশন। এর সর্বনিম্ন মান বিন্দু (Vertex) হলো <span class="badge-item">(2, -5)</span> এবং প্রতিসাম্য রেখা <span class="mono">x = 2</span>।</div>
+        `;
+      } else if (state.graphMode === 'linear') {
+        // Page 31: y = 3x + 2
+        titleText = "সরলরৈখিক ফাংশন: f(x) = 3x + 2 (ঢাল m = 3, ছেদক b = 2)";
+        const x1 = -2.5, y1 = 3 * x1 + 2;
+        const x2 = 2.2, y2 = 3 * x2 + 2;
+        curvePath = `<line x1="${toScreenX(x1)}" y1="${toScreenY(y1)}" x2="${toScreenX(x2)}" y2="${toScreenY(y2)}" stroke="#34d399" stroke-width="3"/>`;
+
+        [[-2,-4],[-1,-1],[0,2],[1,5]].forEach(([px, py]) => {
+          html += `<circle cx="${toScreenX(px)}" cy="${toScreenY(py)}" r="4.5" fill="#fbbf24"/>`;
+        });
+
+        const yVal = 3 * xScan + 2;
+        if (yVal >= -7.5 && yVal <= 7.5) hits.push([xScan, yVal]);
+
+        analysisHTML = `
+          <div><strong>সরলরৈখিক ফাংশন: <span class="mono">f(x) = 3x + 2</span> (পৃষ্ঠা ৩১)</strong></div>
+          <div>বর্তমান বিন্দু: <span class="badge-item">(${xScan.toFixed(2)}, ${yVal.toFixed(2)})</span>। এটি এক-এক ও সার্বিক ফাংশন।</div>
+        `;
+      } else if (state.graphMode === 'circle') {
+        // Page 33 Example 35: x^2 + y^2 = 16 (r = 4)
+        titleText = "বৃত্তের লেখচিত্র: S = {(x,y) : x² + y² = 4²} (ফাংশন নয়!)";
+        curvePath = `<circle cx="${ox}" cy="${oy}" r="${4 * sc}" fill="rgba(251, 113, 133, 0.1)" stroke="#fb7185" stroke-width="3"/>`;
+
+        if (Math.abs(xScan) <= 4) {
+          const yAbs = Math.sqrt(16 - xScan * xScan);
+          hits.push([xScan, yAbs]);
+          if (yAbs > 0.05) hits.push([xScan, -yAbs]);
+        }
+
+        analysisHTML = `
+          <div style="color:var(--rose); font-weight:700;"><strong>বৃত্তের সমীকরণ: <span class="mono">x² + y² = 16</span> (উদাহরণ ৩৫, পৃষ্ঠা ৩২–৩৩)</strong></div>
+          <div>
+            ${hits.length === 2
+              ? `❌ দেখুন! <span class="mono">x = ${xScan.toFixed(2)}</span> এর জন্য উল্লম্ব রেখাটি বৃত্তকে <strong>২টি বিন্দুতে</strong> ছেদ করেছে: <span class="badge-item">y = +${hits[0][1].toFixed(2)}</span> এবং <span class="badge-item">y = ${hits[1][1].toFixed(2)}</span>। যেহেতু একটি x এর জন্য দুটি y পাওয়া যাচ্ছে, তাই বৃত্ত কোনো ফাংশন নয় (কেবল একটি অন্বয়)!`
+              : `রেখাটি বর্তমানে বৃত্তের ডোমেন [-4, 4] এর বাইরে বা প্রান্তবিন্দুতে আছে।`}
+          </div>
+        `;
+      } else if (state.graphMode === 'inverse') {
+        // Page 29 Example 33: f(x) = 3x + 1 (0 <= x <= 2) and f^-1(x) = (x-1)/3 (1 <= x <= 7)
+        titleText = "উদাহরণ ৩৩ (পৃষ্ঠা ২৯): f(x) = 3x+1 এবং বিপরীত ফাংশন f⁻¹(x) = (x-1)/3";
+        // y = x symmetry line
+        curvePath = `
+          <line x1="${toScreenX(-2)}" y1="${toScreenY(-2)}" x2="${toScreenX(7)}" y2="${toScreenY(7)}" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5 5"/>
+          <text x="${toScreenX(6.2)}" y="${toScreenY(6.6)}" fill="#fbbf24" font-size="12" class="mono">y = x প্রতিসাম্য রেখা</text>
+
+          <!-- f(x) from (0,1) to (2,7) -->
+          <line x1="${toScreenX(0)}" y1="${toScreenY(1)}" x2="${toScreenX(2)}" y2="${toScreenY(7)}" stroke="#38bdf8" stroke-width="3.5"/>
+          <text x="${toScreenX(1.1)}" y="${toScreenY(5.5)}" fill="#38bdf8" font-size="15" font-weight="700" class="mono">f</text>
+
+          <!-- f^-1(x) from (1,0) to (7,2) -->
+          <line x1="${toScreenX(1)}" y1="${toScreenY(0)}" x2="${toScreenX(7)}" y2="${toScreenY(2)}" stroke="#34d399" stroke-width="3.5"/>
+          <text x="${toScreenX(4.5)}" y="${toScreenY(0.6)}" fill="#34d399" font-size="15" font-weight="700" class="mono">f⁻¹</text>
+        `;
+
+        const u = t * 2; // 0 to 2
+        const fu = 3 * u + 1; // 1 to 7
+        html += `
+          <!-- Animated Mirror Pair (u, f(u)) and (f(u), u) -->
+          <line x1="${toScreenX(u)}" y1="${toScreenY(fu)}" x2="${toScreenX(fu)}" y2="${toScreenY(u)}" stroke="#c084fc" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <circle cx="${toScreenX(u)}" cy="${toScreenY(fu)}" r="6" fill="#38bdf8" stroke="#0b0f19" stroke-width="2"/>
+          <circle cx="${toScreenX(fu)}" cy="${toScreenY(u)}" r="6" fill="#34d399" stroke="#0b0f19" stroke-width="2"/>
+        `;
+
+        analysisHTML = `
+          <div><strong>উদাহরণ ৩৩ (পৃষ্ঠা ২৯): <span class="mono">f(x) = 3x + 1, 0 ≤ x ≤ 2</span></strong></div>
+          <div>
+            ডোমেন <span class="mono">[0, 2]</span> এবং রেঞ্জ <span class="mono">[1, 7]</span>। স্লাইডার পয়েন্টে:
+            <span class="badge-item">f(${u.toFixed(2)}) = ${fu.toFixed(2)}</span> এবং ঠিক তার প্রতিবিম্ব বিন্দু
+            <span class="badge-item">f⁻¹(${fu.toFixed(2)}) = ${u.toFixed(2)}</span> যা <span class="mono">y = x</span> রেখার সাপেক্ষে প্রতিসম!
+          </div>
+        `;
+      }
+
+      html += curvePath;
+
+      // Draw Vertical Line Test Scanner (except in inverse mirror mode)
+      if (state.graphMode !== 'inverse') {
+        const lineColor = hits.length > 1 ? '#fb7185' : '#fbbf24';
+        html += `
+          <line x1="${sxScan}" y1="20" x2="${sxScan}" y2="380" stroke="${lineColor}" stroke-width="2" stroke-dasharray="6 4"/>
+          <rect x="${sxScan - 42}" y="20" width="84" height="22" rx="4" fill="#0f172a" stroke="${lineColor}"/>
+          <text x="${sxScan}" y="35" text-anchor="middle" fill="${lineColor}" font-size="11" font-weight="700" class="mono">x = ${xScan.toFixed(1)}</text>
+        `;
+
+        hits.forEach(([hx, hy]) => {
+          html += `
+            <circle cx="${toScreenX(hx)}" cy="${toScreenY(hy)}" r="6.5" fill="${lineColor}" stroke="#0b0f19" stroke-width="2"/>
+            <text x="${toScreenX(hx) + 10}" y="${toScreenY(hy) - 8}" fill="#f8fafc" font-size="12" font-weight="700" class="mono">(${hx.toFixed(1)}, ${hy.toFixed(1)})</text>
+          `;
+        });
+      }
+
+      html += `<text x="55" y="36" fill="#f8fafc" font-size="14" font-weight="600">${titleText}</text>`;
+
+      svg.innerHTML = html;
+      liveReadout.innerHTML = analysisHTML;
+    }
+
+    // Initial render
+    render();
+  </script>
+</body>
+</html>

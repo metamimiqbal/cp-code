@@ -66,30 +66,18 @@ void solve() {
     ll n; cin>>n;
     VEC v(n);
     rep(i, 0, n) cin>>v[i];
-    VEC calc;
-    rep(i, 0, n-4) {
-        calc.push_back((v[i]+v[i+2]-v[i+4]));
-        // dbg(i+1);
-        // dbg(calc.back());
-    }
+    VEC pfx;
     ll ans = 0;
     MAP mp;
-
-    for(auto u: calc) {
-        mp[u]++;
-    }
-    for(auto [x, y]: mp) {
-        // cout<<x<<spc<<y<<nl;
-        ans += y*(y-1)/2;
-        // dbg(y);
-    }k
-
-    rep(i, 0, sz(calc)) {
-       if(i+2<sz(calc) && calc[i] == calc[i+2]) --ans; 
-       if(i+4<sz(calc) && calc[i] == calc[i+4]) --ans;
+    rep(i, 0, n-4) {
+        ll valu = v[i] + v[i+2] - v[i+4];
+        ans += mp[valu];
+        if(i >= 2 && pfx[i-2] == valu) ans--;
+        if(i >= 4 && pfx[i-4] == valu) ans --;
+        mp[valu]++;
+        pfx.push_back(valu);
     }
 
-    cout<<ans<<nl;
 }
 
 signed main() {

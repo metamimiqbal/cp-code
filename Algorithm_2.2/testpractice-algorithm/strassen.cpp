@@ -1,4 +1,4 @@
-// d&c matrix multiplication:
+// strassen method mm
 #include<bits/stdc++.h>
 using namespace std;
 #define ll long long
@@ -99,7 +99,7 @@ Matrix mul(const Matrix &a, const Matrix &b) {
 
     Matrix m1(md, vector<ll>(md)), m2(md, vector<ll>(md)), m3(md, vector<ll>(md)), m4(md, vector<ll>(md)),
     m5(md, vector<ll>(md)), m6(md, vector<ll>(md)), m7(md, vector<ll>(md));
-    
+     
     m1 = mul(add(a11, a22), add(b11, b22));
     m2 = mul(b11, add(a21, a22));
     m3 = mul(a11, sub(b12, b22));

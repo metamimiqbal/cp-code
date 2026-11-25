@@ -1,48 +1,110 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
+
 #define FAST_IO ios::sync_with_stdio(false); cin.tie(nullptr);
-#define nl '\n'
+#define THINK_LIKE_JACK_SPARROW FAST_IO
+
+// datatype:
 #define ll long long
-#define ull unsigned long long
 #define flt long double
-#define psbk push_back
-#define psfr push_front
-#define ppbk pop_back
-#define ppfr pop_front
-#define all(x) (x).begin(), (x).end() 
-#define rall(x) (x).rbegin(), (x).rend() 
-#define mkpr make_pair 
-#define mpi map<int, int>
-#define mps map<string, int>
-#define seti set<int>
-#define que queue<int>
-#define dque deque<int>
-#define vec vector<int>
-#define prque priority_queue<int>  
-#define aprque priority_queue<int, vector<int>, greater<int>>  
-#define vvec vector<vector<int>>
+#define ull unsigned long long
+
+
+// stl:
+#define pll pair<ll, ll>
+#define VEC vector<ll>
+#define MAP map<ll, ll>
+#define SET set<ll>
+#define prque priority_queue<ll>
+#define rprque priority_queue<ll, vector<ll>, greater<ll>> // reverse priority queue
+
+// iteration:
+#define all(x)  (x).begin(), (x).end()
+#define rall(x) (x).rbegin(), (x).rend()
+#define sz(x) (ll)(x).size()
+#define rep(i, a, b) for(ll i = (a); i<(b); ++i)
+#define rrep(i, a, b) for(ll i = (a); i>=(b); --i)
+#define each(x, a) for(auto &x: (a))
+
+// functions:
+#define SUM(x) accumulate(all(x), 0LL)
+#define MAX(x) *max_element(all(x))
+#define MIN(x) *min_element(all(x))
+#define string_toupper(s) transform(all(s), s.begin(), ::toupper)
+#define string_tolower(s) transform(all(s), s.begin(), ::tolower)
+
+
+// printing:
+#define nl '\n'
+#define spc " "
 #define yes cout<<"YES\n"
 #define no cout<<"NO\n"
-#define octroi 1e9+7
+#define print(x) cout<<(x)<<'\n'
 
-void solve(){
-    int a, b, qa, qb, ka, kb;
-    cin>>a>>b>>ka>>kb>>qa>>qb;
-    int df1 = abs(qa-ka);
-    int df2 = abs(qb-kb);
-    if(df1==df2 && (a+b)==df1){
-        if(a==b) cout<<1<<nl;
-        else cout<<2<<nl;//a!=b
-    }else if(((a+b)==df1 && df2==0) || ((a+b)==df2 && df1==0)){
-        cout<<2<<endl;//symmetric-wise 2 answers
-    }else{
-        cout<<0<<endl;
+// debugging: 
+#define dbg(x) cerr<<"[DEBUG] "<<#x<<" = "<<x<<nl
+#define printv(v)                 \
+    do {                          \
+        for (auto &x : (v))       \
+            cerr << x << ' ';     \
+        cerr << '\n';             \
+    } while (0)
+
+// mathematical:
+#define gcd __gcd
+#define lcm(a, b) ((a)/gcd((a), (b))*(b))
+#define modn(x) ((((x)%mod + mod))%mod)
+#define ll_len(n) ((n) > 0 ? (int)floor(log10((long double)(n)) + 1) : 1) 
+constexpr ll INF = 1e18;
+constexpr ll MOD = 1000000007LL;
+template<class T>
+inline T sq(T x) { return x * x; }
+
+
+// [ Why So Serious ]
+void solve() {
+    ll a, b, kx, ky, qx, qy;
+    cin>>a>>b>>kx>>ky>>qx>>qy;
+
+    ll xx[] = {a, a, -a, -a};
+    ll yy[] = {-b, b, b, -b};
+
+    // ll ans = 0;
+    set<pair<ll, ll>>st;
+    rep(i, 0, 4) {
+        // if(kx+xx[i] == qx and ky+yy[i] == qy) ++ans;
+        ll vx = kx+xx[i], vy = ky+yy[i];
+        rep(j, 0, 4) {
+            if(vx+xx[j]==qx and vy+yy[j]==qy) st.insert({qx, qy});
+        }
+        rep(j, 0, 4) {
+            if(vx+yy[j]==qx and vy+xx[j]==qy) st.insert({qx, qy});
+        }
+
+
+        // dbg(kx + xx[i]);
+        // dbg(ky + yy[i]);
     }
+    // cout<<endl;
+    if(a!=b) {
+        rep(i, 0, 4) {
+            ll vx = kx+yy[i], vy = ky+xx[i];
+            rep(j, 0, 4) {
+                if(vx+xx[j]==qx and vy+yy[j]==qy) st.insert({qx, qy});
+            }
+            rep(j, 0, 4) {
+                if(vx+yy[j]==qx and vy+xx[j]==qy) st.insert({qx, qy});
+            }
+        }
+    }
+    cout<<st.size()<<nl;
 }
-signed main(){
-    FAST_IO 
-    int t; cin>>t; while(t--)
-        solve();
-   
+
+signed main() {
+    THINK_LIKE_JACK_SPARROW
+
+    int tt; cin>>tt; while(tt--)
+    solve();
+
     return 0;
 }

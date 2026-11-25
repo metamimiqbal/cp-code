@@ -16,12 +16,10 @@ void makeSet(ll n) {
         rank_value[i] = 0;
     }
 }
-
 ll findSet(ll n) {
     if(n == parent[n]) return n;
-    return findSet(parent[n]);
+    return parent[n] = findSet(parent[n]);
 }
-
 bool unionSet(ll a, ll b) {
     ll x = findSet(a);
     ll y = findSet(b);
@@ -36,7 +34,6 @@ bool unionSet(ll a, ll b) {
     }
     return true;
 }
-
 int main() {
     cout<<"Input:\n";
     ll n, m;

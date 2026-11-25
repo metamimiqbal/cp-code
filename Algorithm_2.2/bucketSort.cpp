@@ -3,9 +3,7 @@
 using namespace std;
 
 void insertionSort(vector<float>& bucket) {
-
-    for (int i = 1; i < bucket.size(); i++) {
-
+    for (int i = 1; i < (long long)bucket.size(); i++) {
         float key = bucket[i];
         int j = i - 1;
 
@@ -13,25 +11,17 @@ void insertionSort(vector<float>& bucket) {
             bucket[j + 1] = bucket[j];
             j--;
         }
-
         bucket[j + 1] = key;
     }
 }
 
 void bucketSort(vector<float>& arr) {
-
-    const int bucketCount = 10;
-
     vector<float> buckets[10];
-
     // Put elements into buckets
     for (float x : arr) {
-
         int index = x * 10;
-
         if (index == 10)
             index = 9;
-
         buckets[index].push_back(x);
     }
 
@@ -39,12 +29,9 @@ void bucketSort(vector<float>& arr) {
     for (int i = 0; i < 10; i++) {
         insertionSort(buckets[i]);
     }
-
     // Concatenate buckets
     int k = 0;
-
     for (int i = 0; i < 10; i++) {
-
         for (float x : buckets[i]) {
             arr[k] = x;
             k++;
@@ -53,16 +40,11 @@ void bucketSort(vector<float>& arr) {
 }
 
 int main() {
-
     vector<float> arr = {0.00, 0.70, 0.25, 0.05};
-
     bucketSort(arr);
-
     cout << "Sorted Array: ";
-
     for (float x : arr) {
         cout << x << " ";
     }
-
     return 0;
 }

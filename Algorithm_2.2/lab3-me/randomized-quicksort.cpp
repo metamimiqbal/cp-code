@@ -5,45 +5,42 @@ using namespace std;
 vector<ll>vec {5, 9, 1, 7, 3, 8, 2, 6, 4};
 
 ll partition(ll l, ll r) {
-    ll pivot = vec[r];
-    ll i = l-1;
+    ll pivot = vec[l];
+    ll i = l-1, j = r+1;
 
-    for(ll j = l; j < r; j++) {
-        if(vec[j] <= pivot) {
-            i++;
-            swap(vec[i], vec[j]);
-        }
+    while(true) {
+        do i++;
+        while(vec[i] < pivot);
+
+        do j--;
+        while(vec[j] > pivot);
+
+        if(i >= j) return j;
+
+        swap(vec[i], vec[j]);
     }
-
-    swap(vec[i+1], vec[r]);
-    return i+1;
 }
 
 void qs(ll l, ll r) {
     if(l >= r) return;
 
+    ll k = l + rand()%(r-l+1);
+    swap(vec[l], vec[k]);
+
     ll p = partition(l, r);
 
-    qs(l, p-1);
+    qs(l, p);
     qs(p+1, r);
 }
 
 int main() {
-    ll sz = vec.size();
+    srand(time(0));
 
-    cout<<"choose an index: ["<<0<<","<<sz-1<<"]: ";
-    ll n; cin>>n;
-
-    if(n < 0 || n >= sz) {
-        cout<<"wrong index\n";
-        return 0;
-    }
-
-    swap(vec[n], vec[sz-1]);   
-    qs(0, sz-1);               
+    qs(0, vec.size()-1);
 
     for(ll x : vec) cout<<x<<" ";
     cout<<endl;
 
     return 0;
 }
+

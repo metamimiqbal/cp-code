@@ -17,7 +17,7 @@ void bucket_sort() {
     }
 
     for(ll i = 0; i < bucket; i++)
-        sort(b[i].begin(), b[i].end());
+        sort(b[i].begin(), b[i].end()); // without using insertion sort
 
     vec.clear();
 

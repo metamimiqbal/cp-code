@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>সেট ও ফাংশন (Set & Function) — Slide Deck & Smooth Scrubber</title>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #070b14;
+      --bg-card: #111827;
+      --bg-panel: #1e293b;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.3);
+      --emerald: #34d399;
+      --amber: #fbbf24;
+      --rose: #fb7185;
+      --purple: #c084fc;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #28354e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Top Navigation Bar */
+    header {
+      background: rgba(17, 24, 39, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      z-index: 30;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      color: #070b14;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+    }
+
+    .brand h1 {
+      font-size: 1.18rem;
+      font-weight: 700;
+    }
+
+    .chapter-nav {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .chap-btn {
+      background: var(--bg-panel);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 6px 13px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.83rem;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+      white-space: nowrap;
+    }
+
+    .chap-btn:hover {
+      color: var(--text-main);
+      border-color: var(--accent);
+    }
+
+    .chap-btn.active {
+      background: var(--accent);
+      color: #070b14;
+      border-color: var(--accent);
+      font-weight: 700;
+      box-shadow: 0 0 14px var(--accent-glow);
+      transform: translateY(-1px);
+    }
+
+    /* Slide-Style Scrolling Deck */
+    .deck-viewport {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      width: 100vw;
+    }
+
+    .deck-track {
+      display: flex;
+      width: 700vw; /* 7 slides */
+      height: 100%;
+      transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+
+    .slide {
+      width: 100vw;
+      height: 100%;
+      padding: 18px 54px;
+      display: grid;
+      grid-template-columns: 1.38fr 1fr;
+      gap: 20px;
+      overflow: hidden;
+      opacity: 0.35;
+      transform: scale(0.96);
+      transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    @media (max-width: 960px) {
+      .slide {
+        grid-template-columns: 1fr;
+        padding: 12px 44px;
+        overflow-y: auto;
+      }
+    }
+
+    /* Floating Side Slide Arrows */
+    .slide-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 38px;
+      height: 64px;
+      background: rgba(30, 41, 59, 0.75);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      border-radius: 10px;
+      cursor: pointer;
+      z-index: 25;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: all 0.2s;
+    }
+
+    .slide-arrow:hover:not(:disabled) {
+      background: var(--accent);
+      color: #070b14;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .slide-arrow:disabled {
+      opacity: 0.2;
+      cursor: default;
+    }
+
+    .slide-arrow.prev { left: 8px; }
+    .slide-arrow.next { right: 8px; }
+
+    /* Visual Stage Card */
+    .stage-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+    }
+
+    .stage-header {
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(30, 41, 59, 0.45);
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .stage-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .slide-pill {
+      font-size: 0.75rem;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent);
+      padding: 2px 8px;
+      border-radius: 99px;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+    }
+
+    .stage-controls {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .ctrl-btn {
+      background: var(--bg-panel);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .ctrl-btn:hover {
+      border-color: var(--accent);
+    }
+
+    .ctrl-btn.active {
+      background: var(--accent);
+      color: #070b14;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+
+    .canvas-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      position: relative;
+      min-height: 290px;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      max-height: 440px;
+      overflow: visible;
+    }
+
+    /* Right Info Panel inside each Slide */
+    .info-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 18px;
+    }
+
+    .card h2 {
+      font-size: 1.22rem;
+      margin-bottom: 6px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .page-ref {
+      font-size: 0.75rem;
+      background: var(--bg-panel);
+      color: var(--amber);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(251, 191, 36, 0.35);
+      font-weight: 500;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      line-height: 1.58;
+      font-size: 0.92rem;
+      margin-bottom: 8px;
+    }
+
+    .formula-box {
+      background: #090d18;
+      border-left: 3px solid var(--accent);
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--emerald);
+      margin-top: 6px;
+      overflow-x: auto;
+    }
+
+    .live-readout {
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.65), rgba(17, 24, 39, 0.95));
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 15px 18px;
+      flex: 1;
+    }
+
+    .readout-label {
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .readout-value {
+      font-size: 0.96rem;
+      line-height: 1.55;
+      color: var(--text-main);
+    }
+
+    .badge-item {
+      display: inline-block;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin: 2px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--accent);
+    }
+
+    /* Bottom Scrubber & Speed Controller Bar */
+    footer {
+      background: rgba(17, 24, 39, 0.95);
+      border-top: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 30;
+    }
+
+    .scrubber-controls-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .play-btn {
+      background: var(--accent);
+      color: #070b14;
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .play-btn:hover {
+      transform: scale(1.07);
+      box-shadow: 0 0 14px var(--accent-glow);
+    }
+
+    .mode-toggle-btn {
+      background: var(--bg-panel);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .mode-toggle-btn.active {
+      border-color: var(--emerald);
+      color: var(--emerald);
+      background: rgba(52, 211, 153, 0.1);
+    }
+
+    /* Speed Pill Selector (0.25x to 2x) */
+    .speed-selector {
+      display: flex;
+      align-items: center;
+      background: #090d18;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3px;
+      gap: 2px;
+    }
+
+    .speed-label {
+      font-size: 0.73rem;
+      color: var(--text-muted);
+      padding: 0 6px;
+      font-weight: 600;
+    }
+
+    .speed-btn {
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      padding: 4px 7px;
+      border-radius: 5px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .speed-btn:hover {
+      color: var(--text-main);
+    }
+
+    .speed-btn.active {
+      background: var(--accent);
+      color: #070b14;
+      font-weight: 700;
+    }
+
+    .slider-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      min-width: 220px;
+    }
+
+    input[type="range"].scrubber-input {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 8px;
+      background: var(--bg-panel);
+      border-radius: 999px;
+      outline: none;
+      cursor: pointer;
+      border: 1px solid var(--border);
+    }
+
+    input[type="range"].scrubber-input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid #070b14;
+      box-shadow: 0 0 12px var(--accent);
+      cursor: grab;
+      transition: transform 0.1s;
+    }
+
+    input[type="range"].scrubber-input::-webkit-slider-thumb:active {
+      cursor: grabbing;
+      transform: scale(1.18);
+    }
+
+    .ticks {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      padding: 0 4px;
+    }
+
+    .tick {
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .tick:hover, .tick.active {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .scrubber-status {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--amber);
+      min-width: 135px;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <span class="brand-badge">উচ্চতর গণিত • অধ্যায় ১</span>
+      <h1>সেট ও ফাংশন (Slide Deck)</h1>
+    </div>
+    <div class="chapter-nav" id="chapterNav"></div>
+  </header>
+
+  <!-- Horizontal Slide Deck Viewport -->
+  <div class="deck-viewport" id="deckViewport">
+    <button class="slide-arrow prev" id="prevSlideBtn" title="আগের স্লাইড (PageUp / ↑)">❮</button>
+    <button class="slide-arrow next" id="nextSlideBtn" title="পরের স্লাইড (PageDown / ↓)">❯</button>
+    <div class="deck-track" id="deckTrack"></div>
+  </div>
+
+  <!-- Master Scrubber & Speed Controls -->
+  <footer>
+    <div class="scrubber-controls-row">
+      <div class="btn-group">
+        <button class="play-btn" id="playBtn" title="Play / Pause (Space)">▶</button>
+        <button class="mode-toggle-btn" id="loopSlideBtn" title="Loop current slide vs Play entire deck">
+          🔁 স্লাইড লুপ: অফ
+        </button>
+      </div>
+
+      <!-- Animation Speed Controller (.25x to 2x) -->
+      <div class="speed-selector" id="speedSelector">
+        <span class="speed-label">গতি (Speed):</span>
+        <button class="speed-btn" data-speed="0.25">0.25x</button>
+        <button class="speed-btn" data-speed="0.5">0.5x</button>
+        <button class="speed-btn" data-speed="0.75">0.75x</button>
+        <button class="speed-btn active" data-speed="1">1x</button>
+        <button class="speed-btn" data-speed="1.5">1.5x</button>
+        <button class="speed-btn" data-speed="2">2x</button>
+      </div>
+
+      <div class="slider-wrap">
+        <input type="range" class="scrubber-input" id="masterScrubber" min="0" max="700" value="0" step="0.1">
+        <div class="ticks" id="scrubberTicks"></div>
+      </div>
+
+      <div class="scrubber-status" id="scrubberStatus">Slide 1/7 • 0%</div>
+    </div>
+  </footer>
+
+  <script>
+    // =========================================================================
+    // CHAPTER SLIDE DATA (7 Key Moments from Higher Math Chapter 1 PDF)
+    // =========================================================================
+    const chapters = [
+      {
+        id: 0,
+        shortTitle: "১. সেট ও উপসেট",
+        title: "সেট গঠন ও বর্গের সেট (Tabular vs Set Builder)",
+        page: "পৃষ্ঠা ১–৩",
+        desc: "বাস্তব বা চিন্তা জগতের বস্তুর সুনির্ধারিত সংগ্রহকে সেট বলে। বইয়ের প্রথম উদাহরণে 10 থেকে বড় নয় এমন স্বাভাবিক সংখ্যার বর্গের সেট S = {1, 4, 9, ..., 100} আলোচনা করা হয়েছে। ০.২৫x থেকে ২x গতিতে অ্যানিমেশন চালিয়ে দেখুন কীভাবে প্রতিটি স্বাভাবিক সংখ্যা n বর্গ হয়ে S সেটে প্রবেশ করছে।",
+        formula: "S = {x : x, 100 থেকে বড় নয় এমন পূর্ণবর্গ সংখ্যা} = {1, 4, 9, 16, 25, 36, 49, 64, 81, 100}"
+      },
+      {
+        id: 1,
+        shortTitle: "২. শক্তি সেট P(A)",
+        title: "শক্তি সেট ও ২ⁿ সূত্র (Power Set Lattice)",
+        page: "পৃষ্ঠা ৪–৫",
+        desc: "কোনো সেট A এর সকল উপসেটের সেটকে তার শক্তি সেট P(A) বলা হয়। সেটের উপাদান সংখ্যা n হলে তার শক্তি সেটের উপাদান সংখ্যা 2ⁿ হয়। এখানে Ø থেকে শুরু করে {a, b, c} পর্যন্ত ৮টি উপসেট কীভাবে ধাপে ধাপে বিস্তৃত হয় তা স্মুথ অ্যানিমেশনে দেখুন।",
+        formula: "A = {a, b, c} ⇒ n(A) = 3 ⇒ n(P(A)) = 2³ = 8 টি উপসেট"
+      },
+      {
+        id: 2,
+        shortTitle: "৩. ভেনচিত্র ও ডি মরগ্যান",
+        title: "ভেনচিত্র, সেট প্রক্রিয়া ও ডি মরগ্যানের সূত্র",
+        page: "পৃষ্ঠা ৫–৮ (উদাহরণ ৮)",
+        desc: "সার্বিক সেট U = {0..9}, মৌলিক সংখ্যার সেট A = {2,3,5,7} এবং বিজোড় সংখ্যার সেট B = {1,3,5,7,9}। স্লাইডার বা উপরের বাটন চেপে সংযোগ (A∪B), ছেদ (A∩B), অন্তর (A\\B) এবং ডি মরগ্যানের সূত্র ভেনচিত্রে স্মুথ ট্রানজিশনে যাচাই করুন।",
+        formula: "(A ∪ B)' = A' ∩ B' = {0, 4, 6, 8}  |  (A ∩ B)' = A' ∪ B' = {0, 1, 2, 4, 6, 8, 9}"
+      },
+      {
+        id: 3,
+        shortTitle: "৪. এক-এক মিল ও অনন্ত সেট",
+        title: "সমতুল সেট ও অনন্ত সেটের রহস্য (N ~ 2N)",
+        page: "পৃষ্ঠা ১১–১৩ (উদাহরণ ১৪)",
+        desc: "স্বাভাবিক সংখ্যার সেট N = {1, 2, 3, ...} এবং জোড় সংখ্যার সেট A = {2, 4, 6, ...} এর মধ্যে n ↔ 2n নিয়মে এক-এক মিল স্থাপন করা যায়। প্রতিজ্ঞা ৭ অনুযায়ী, কোনো সেট অনন্ত (Infinite) হবে যদি ও কেবল যদি সেটটি তার নিজের একটি প্রকৃত উপসেটের সমতুল হয়!",
+        formula: "N ↔ A : n ↔ 2n, যেখানে n ∈ N  ∴ N ~ A (যদিও A ⊂ N)"
+      },
+      {
+        id: 4,
+        shortTitle: "৫. বাস্তব সমস্যা (ভেনচিত্র)",
+        title: "বাস্তব সমস্যা সমাধানে ভেনচিত্র (উদাহরণ ১৫–১৭)",
+        page: "পৃষ্ঠা ১৫–১৮",
+        desc: "উদাহরণ ১৭: 24 জন ছাত্রের মধ্যে 18 জন বাস্কেটবল (B) এবং 12 জন ভলিবল (V) পছন্দ করে। উভয় খেলা পছন্দ করে n(B∩V) = x জন। অ্যানিমেশনের মাধ্যমে x এর মান 6 (ন্যূনতম, যখন B∪V = U) থেকে 12 (বৃহত্তম, যখন V ⊂ B) পর্যন্ত পরিবর্তন করে বৃত্ত দুটির মরফিং দেখুন!",
+        formula: "n(B ∪ V) = n(B) + n(V) - n(B ∩ V) = (18 - x) + x + (12 - x) = 30 - x"
+      },
+      {
+        id: 5,
+        shortTitle: "৬. ফাংশন ও বিপরীত ফাংশন",
+        title: "অন্বয়, ফাংশন, এক-এক, সার্বিক ও বিপরীত ফাংশন",
+        page: "পৃষ্ঠা ২২–২৯",
+        desc: "বইয়ের ২৪ ও ২৫ পৃষ্ঠার চিত্রের মাধ্যমে দেখুন কখন একটি অন্বয় ফাংশন হয়, এবং কখন সেটি এক-এক (One-to-One), সার্বিক (Onto) ও বিপরীতযোগ্য (Invertible) হয়। শেষ ধাপে তীরগুলো কীভাবে ডোমেন থেকে কোডোমেনের দিকে না গিয়ে উল্টে গিয়ে বিপরীত ফাংশন f⁻¹ গঠন করে তা দেখুন!",
+        formula: "f : A → B এক-এক ও সার্বিক হলে বিপরীত ফাংশন f⁻¹ : B → A বিদ্যমান থাকে যেখানে f(a) = b ⇔ f⁻¹(b) = a"
+      },
+      {
+        id: 6,
+        shortTitle: "৭. লেখচিত্র ও উল্লম্ব রেখা পরীক্ষা",
+        title: "সরলরৈখিক, দ্বিঘাত, বৃত্ত ও বিপরীত ফাংশনের লেখচিত্র",
+        page: "পৃষ্ঠা ২৯–৩৩ (উদাহরণ ৩৩, ৩৫)",
+        desc: "লেখচিত্রের উপর দিয়ে একটি উল্লম্ব রেখা (x = k) স্মুথভাবে স্ক্যান করুন! সরলরৈখিক (y = 3x+2) ও দ্বিঘাত (y = x²-4x-1) ফাংশনে রেখাটি একটিমাত্র বিন্দুতে ছেদ করে, কিন্তু বৃত্তে (x²+y² = 16) দুটি বিন্দুতে ছেদ করে—তাই বৃত্ত ফাংশন নয়!",
+        formula: "সরলরৈখিক: y = 3x + 2 | পরাবৃত্ত: y = x² - 4x - 1 | বৃত্ত: x² + y² = 4² | বিপরীত: f(x) = 3x + 1 (0 ≤ x ≤ 2)"
+      }
+    ];
+
+    // =========================================================================
+    // STATE & DOM BUILDER
+    // =========================================================================
+    const state = {
+      scrubber: 0,        // Continuous float 0.0 to 700.0
+      playing: false,
+      speed: 1.0,         // 0.25, 0.5, 0.75, 1, 1.5, 2
+      loopCurrentSlide: false,
+      vennOp: null,       // null means follow scrubber automatically, or manual override
+      probMode: 'ex17',
+      graphMode: 'quadratic'
+    };
+
+    const deckTrack = document.getElementById('deckTrack');
+    const chapterNav = document.getElementById('chapterNav');
+    const scrubberTicks = document.getElementById('scrubberTicks');
+    const masterScrubber = document.getElementById('masterScrubber');
+    const playBtn = document.getElementById('playBtn');
+    const loopSlideBtn = document.getElementById('loopSlideBtn');
+    const scrubberStatus = document.getElementById('scrubberStatus');
+    const prevSlideBtn = document.getElementById('prevSlideBtn');
+    const nextSlideBtn = document.getElementById('nextSlideBtn');
+
+    // Build all 7 slides inside the horizontal slide deck
+    chapters.forEach((ch, idx) => {
+      // Top Nav Button
+      const navBtn = document.createElement('button');
+      navBtn.className = 'chap-btn';
+      navBtn.textContent = ch.shortTitle;
+      navBtn.onclick = () => goToSlide(idx);
+      chapterNav.appendChild(navBtn);
+
+      // Bottom Tick
+      const tick = document.createElement('span');
+      tick.className = 'tick';
+      tick.textContent = ch.shortTitle;
+      tick.onclick = () => goToSlide(idx);
+      scrubberTicks.appendChild(tick);
+
+      // Slide DOM Element
+      const slide = document.createElement('section');
+      slide.className = 'slide';
+      slide.id = `slide-${idx}`;
+      slide.innerHTML = `
+        <div class="stage-container">
+          <div class="stage-header">
+            <div class="stage-title">
+              <span class="slide-pill">স্লাইড ${idx + 1}/7</span>
+              <span>${ch.shortTitle}</span>
+            </div>
+            <div class="stage-controls" id="controls-${idx}"></div>
+          </div>
+          <div class="canvas-wrap">
+            <svg id="svg-${idx}" viewBox="0 0 600 400"></svg>
+          </div>
+        </div>
+
+        <div class="info-panel">
+          <div class="card">
+            <h2>
+              <span>${ch.title}</span>
+              <span class="page-ref">${ch.page}</span>
+            </h2>
+            <p>${ch.desc}</p>
+            <div class="formula-box">${ch.formula}</div>
+          </div>
+
+          <div class="live-readout">
+            <div class="readout-label">
+              <span>লাইভ গাণিতিক বিশ্লেষণ (Live Readout)</span>
+              <span class="mono" id="local-pct-${idx}">0%</span>
+            </div>
+            <div class="readout-value" id="readout-${idx}"></div>
+          </div>
+
+          <div class="card" style="padding: 12px 16px;">
+            <p style="margin:0; font-size:0.84rem;">
+              💡 <strong>স্লাইড নেভিগেশন:</strong> মাউস হুইল (Scroll), ট্র্যাকপ্যাড সোয়াইপ, কিবোর্ডের <span class="mono">↑</span> <span class="mono">↓</span> বা <span class="mono">←</span> <span class="mono">→</span> অ্যারো এবং নিচের <strong>0.25x – 2x</strong> স্পিড কন্ট্রোলার ব্যবহার করুন।
+            </p>
+          </div>
+        </div>
+      `;
+      deckTrack.appendChild(slide);
+    });
+
+    // Build interactive sub-controls for slides 2, 4, 6
+    function updateSubControls() {
+      // Slide 2 (Venn)
+      const c2 = document.getElementById('controls-2');
+      c2.innerHTML = '';
+      [
+        { k: null, label: 'অটো-স্ক্রাব' },
+        { k: 'union', label: 'A ∪ B' },
+        { k: 'inter', label: 'A ∩ B' },
+        { k: 'diff', label: 'A \\ B' },
+        { k: 'demorgan1', label: "(A ∪ B)'" },
+        { k: 'demorgan2', label: "(A ∩ B)'" }
+      ].forEach(op => {
+        const b = document.createElement('button');
+        b.className = 'ctrl-btn' + (state.vennOp === op.k ? ' active' : '');
+        b.textContent = op.label;
+        b.onclick = () => { state.vennOp = op.k; updateSubControls(); renderAll(); };
+        c2.appendChild(b);
+      });
+
+      // Slide 4 (Real-world Venn)
+      const c4 = document.getElementById('controls-4');
+      c4.innerHTML = '';
+      [
+        { k: 'ex17', label: 'উদাহরণ ১৭ (বাস্কেটবল-ভলিবল)' },
+        { k: 'ex16', label: 'উদাহরণ ১৬ (৩৫ বালিকা)' },
+        { k: 'ex15', label: 'উদাহরণ ১৫ (বাংলা-ইংরেজি)' }
+      ].forEach(p => {
+        const b = document.createElement('button');
+        b.className = 'ctrl-btn' + (state.probMode === p.k ? ' active' : '');
+        b.textContent = p.label;
+        b.onclick = () => { state.probMode = p.k; updateSubControls(); renderAll(); };
+        c4.appendChild(b);
+      });
+
+      // Slide 6 (Graphs)
+      const c6 = document.getElementById('controls-6');
+      c6.innerHTML = '';
+      [
+        { k: 'quadratic', label: 'দ্বিঘাত: y=x²-4x-1' },
+        { k: 'linear', label: 'সরলরৈখিক: y=3x+2' },
+        { k: 'circle', label: 'বৃত্ত: x²+y²=16' },
+        { k: 'inverse', label: 'বিপরীত: f ও f⁻¹' }
+      ].forEach(g => {
+        const b = document.createElement('button');
+        b.className = 'ctrl-btn' + (state.graphMode === g.k ? ' active' : '');
+        b.textContent = g.label;
+        b.onclick = () => { state.graphMode = g.k; updateSubControls(); renderAll(); };
+        c6.appendChild(b);
+      });
+    }
+    updateSubControls();
+
+    // =========================================================================
+    // SLIDE NAVIGATION & WHEEL / TOUCH GESTURES
+    // =========================================================================
+    function getActiveSlideIndex() {
+      return Math.min(6, Math.max(0, Math.floor(state.scrubber / 100.0001)));
+    }
+
+    function goToSlide(idx) {
+      const clamped = Math.max(0, Math.min(6, idx));
+      state.scrubber = clamped * 100;
+      masterScrubber.value = state.scrubber;
+      renderAll();
+    }
+
+    prevSlideBtn.onclick = () => goToSlide(getActiveSlideIndex() - 1);
+    nextSlideBtn.onclick = () => goToSlide(getActiveSlideIndex() + 1);
+
+    // Wheel slide navigation with cooldown so one flick = one slide transition
+    let wheelCooldown = false;
+    window.addEventListener('wheel', (e) => {
+      // Ignore if scrolling inside an overflow text panel
+      if (e.target.closest('.info-panel')) return;
+      if (wheelCooldown) return;
+
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      if (Math.abs(delta) > 28) {
+        wheelCooldown = true;
+        const cur = getActiveSlideIndex();
+        if (delta > 0 && cur < 6) goToSlide(cur + 1);
+        else if (delta < 0 && cur > 0) goToSlide(cur - 1);
+        setTimeout(() => { wheelCooldown = false; }, 650);
+      }
+    }, { passive: true });
+
+    // Touch swipe for slide deck
+    let touchStartX = null;
+    const viewport = document.getElementById('deckViewport');
+    viewport.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+
+    viewport.addEventListener('touchend', (e) => {
+      if (touchStartX === null) return;
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const cur = getActiveSlideIndex();
+      if (dx < -50 && cur < 6) goToSlide(cur + 1);
+      else if (dx > 50 && cur > 0) goToSlide(cur - 1);
+      touchStartX = null;
+    }, { passive: true });
+
+    // Keyboard shortcuts
+    window.addEventListener('keydown', (e) => {
+      const cur = getActiveSlideIndex();
+      if (e.key === 'ArrowRight') {
+        state.scrubber = Math.min(700, state.scrubber + 4 * state.speed);
+        masterScrubber.value = state.scrubber;
+        renderAll();
+      } else if (e.key === 'ArrowLeft') {
+        state.scrubber = Math.max(0, state.scrubber - 4 * state.speed);
+        masterScrubber.value = state.scrubber;
+        renderAll();
+      } else if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (cur < 6) goToSlide(cur + 1);
+      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (cur > 0) goToSlide(cur - 1);
+      } else if (e.key === ' ') {
+        e.preventDefault();
+        togglePlay();
+      }
+    });
+
+    // =========================================================================
+    // 60FPS ANIMATION ENGINE & SPEED CONTROLLER (0.25x to 2x)
+    // =========================================================================
+    let lastFrameTime = null;
+
+    function togglePlay() {
+      state.playing = !state.playing;
+      playBtn.textContent = state.playing ? '⏸' : '▶';
+      if (state.playing) {
+        if (state.scrubber >= 699.9) state.scrubber = 0;
+        lastFrameTime = performance.now();
+        requestAnimationFrame(tickAnimation);
+      }
+    }
+    playBtn.onclick = togglePlay;
+
+    loopSlideBtn.onclick = () => {
+      state.loopCurrentSlide = !state.loopCurrentSlide;
+      loopSlideBtn.classList.toggle('active', state.loopCurrentSlide);
+      loopSlideBtn.textContent = state.loopCurrentSlide ? '🔁 স্লাইড লুপ: অন' : '🔁 স্লাইড লুপ: অফ';
+    };
+
+    // Speed buttons (.25x to 2x)
+    document.querySelectorAll('.speed-btn').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.speed = parseFloat(btn.dataset.speed);
+      };
+    });
+
+    masterScrubber.addEventListener('input', (e) => {
+      state.scrubber = parseFloat(e.target.value);
+      renderAll();
+    });
+
+    function tickAnimation(now) {
+      if (!state.playing) return;
+      const dt = (now - lastFrameTime) / 1000; // elapsed seconds
+      lastFrameTime = now;
+
+      // Base speed: 1x completes 1 slide (100 scrubber units) in ~6.5 seconds (15.4 units/sec)
+      const baseRate = 15.4;
+      const curSlide = getActiveSlideIndex();
+      const slideStart = curSlide * 100;
+      const slideEnd = (curSlide + 1) * 100 - 0.01;
+
+      state.scrubber += baseRate * state.speed * dt;
+
+      if (state.loopCurrentSlide) {
+        if (state.scrubber >= slideEnd) {
+          state.scrubber = slideStart;
+        }
+      } else {
+        if (state.scrubber >= 700) {
+          state.scrubber = 700;
+          state.playing = false;
+          playBtn.textContent = '▶';
+        }
+      }
+
+      masterScrubber.value = state.scrubber;
+      renderAll();
+
+      if (state.playing) {
+        requestAnimationFrame(tickAnimation);
+      }
+    }
+
+    // Smooth interpolation helpers
+    const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+    const smoothstep = (edge0, edge1, x) => {
+      const t = clamp((x - edge0) / (edge1 - edge0), 0, 1);
+      return t * t * (3 - 2 * t);
+    };
+
+    // =========================================================================
+    // MASTER RENDER DISPATCHER
+    // =========================================================================
+    function renderAll() {
+      const activeIdx = getActiveSlideIndex();
+      const localT = clamp((state.scrubber - activeIdx * 100) / 100, 0, 1);
+
+      // Slide Track CSS Transform
+      deckTrack.style.transform = `translate3d(-${activeIdx * 100}vw, 0, 0)`;
+
+      // Update Slide Active Class & Nav Pills
+      chapters.forEach((_, i) => {
+        document.getElementById(`slide-${i}`).classList.toggle('active', i === activeIdx);
+        chapterNav.children[i].classList.toggle('active', i === activeIdx);
+        scrubberTicks.children[i].classList.toggle('active', i === activeIdx);
+      });
+
+      prevSlideBtn.disabled = activeIdx === 0;
+      nextSlideBtn.disabled = activeIdx === 6;
+
+      const pctText = `${Math.round(localT * 100)}%`;
+      scrubberStatus.textContent = `স্লাইড ${activeIdx + 1}/7 • ${pctText} (${state.speed}x)`;
+      const localPctEl = document.getElementById(`local-pct-${activeIdx}`);
+      if (localPctEl) localPctEl.textContent = `${pctText} @ ${state.speed}x`;
+
+      // Render active slide (and neighbors for seamless slide transition)
+      renderSlide(activeIdx, localT);
+      if (activeIdx > 0) renderSlide(activeIdx - 1, 1.0);
+      if (activeIdx < 6) renderSlide(activeIdx + 1, 0.0);
+    }
+
+    function renderSlide(idx, t) {
+      const svgEl = document.getElementById(`svg-${idx}`);
+      const readoutEl = document.getElementById(`readout-${idx}`);
+      if (!svgEl || !readoutEl) return;
+
+      switch (idx) {
+        case 0: renderScene0(svgEl, readoutEl, t); break;
+        case 1: renderScene1(svgEl, readoutEl, t); break;
+        case 2: renderScene2(svgEl, readoutEl, t); break;
+        case 3: renderScene3(svgEl, readoutEl, t); break;
+        case 4: renderScene4(svgEl, readoutEl, t); break;
+        case 5: renderScene5(svgEl, readoutEl, t); break;
+        case 6: renderScene6(svgEl, readoutEl, t); break;
+      }
+    }
+
+    // =========================================================================
+    // SLIDE 0: SET BUILDER & SQUARES (Smooth Card Pop & Morphing)
+    // =========================================================================
+    function renderScene0(svgEl, readoutEl, t) {
+      const exactPos = t * 10; // 0.0 to 10.0
+      const activeCount = Math.max(1, Math.min(10, Math.ceil(exactPos || 0.1)));
+      const elements = [];
+      for (let i = 1; i <= activeCount; i++) elements.push(i * i);
+
+      let html = `
+        <text x="300" y="34" text-anchor="middle" fill="#94a3b8" font-size="15">
+          সেট গঠন পদ্ধতি: S = { x : x = n², n ∈ N এবং n ≤ ${activeCount} }
+        </text>
+      `;
+
+      for (let i = 1; i <= 10; i++) {
+        // Continuous smooth appearance per card
+        const prog = smoothstep(i - 1, i - 0.15, Math.max(0.85, exactPos));
+        const col = (i - 1) % 5;
+        const row = Math.floor((i - 1) / 5);
+        const baseX = 55 + col * 102;
+        const baseY = 72 + row * 124;
+        const scale = 0.82 + 0.18 * prog;
+        const opacity = 0.18 + 0.82 * prog;
+        const sq = i * i;
+        const isCurrent = i === activeCount;
+
+        html += `
+          <g transform="translate(${baseX + 43}, ${baseY + 48}) scale(${scale.toFixed(3)}) translate(-43, -48)" opacity="${opacity.toFixed(3)}">
+            <rect width="86" height="96" rx="12" fill="${prog > 0.5 ? '#1e293b' : '#0f172a'}" 
+                  stroke="${isCurrent ? '#34d399' : (prog > 0.5 ? '#38bdf8' : '#334155')}" stroke-width="${isCurrent ? 2.8 : 1.5}"/>
+            <text x="43" y="26" text-anchor="middle" fill="#94a3b8" font-size="12" class="mono">n = ${i}</text>
+            <line x1="16" y1="36" x2="70" y2="36" stroke="#334155" stroke-width="1"/>
+            <text x="43" y="70" text-anchor="middle" fill="${prog > 0.5 ? '#38bdf8' : '#475569'}" font-size="22" font-weight="700" class="mono">${sq}</text>
+            <text x="43" y="88" text-anchor="middle" fill="#34d399" font-size="10" class="mono">${sq} ∈ S</text>
+          </g>
+        `;
+      }
+
+      const checkNum = activeCount * activeCount + 1;
+      html += `
+        <rect x="55" y="330" width="490" height="46" rx="10" fill="#131b2e" stroke="#28354e"/>
+        <text x="300" y="358" text-anchor="middle" fill="#f8fafc" font-size="15" class="mono">
+          উপাদান পরীক্ষা:  ${activeCount * activeCount} ∈ S (সদস্য)   |   ${checkNum} ∉ S (সদস্য নয়)
+        </text>
+      `;
+
+      svgEl.innerHTML = html;
+      readoutEl.innerHTML = `
+        <div><strong>তালিকা পদ্ধতি (Tabular Form):</strong></div>
+        <div style="margin: 6px 0;">
+          S = { ${elements.map(e => `<span class="badge-item">${e}</span>`).join('')} }
+        </div>
+        <div style="font-size:0.88rem; color:var(--text-muted);">
+          বর্তমান উপাদান সংখ্যা, <span class="mono">n(S) = ${activeCount}</span>। যেকোনো সেট A এর জন্য <span class="mono">A ⊆ A</span> এবং ফাঁকা সেট <span class="mono">Ø ⊆ S</span>।
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // SLIDE 1: POWER SET P(A) (Smooth Growing Hasse Lattice Edges)
+    // =========================================================================
+    function renderScene1(svgEl, readoutEl, t) {
+      const subsets = [
+        { label: "Ø", x: 300, y: 340 },
+        { label: "{a}", x: 150, y: 240 },
+        { label: "{b}", x: 300, y: 240 },
+        { label: "{c}", x: 450, y: 240 },
+        { label: "{a,b}", x: 150, y: 140 },
+        { label: "{a,c}", x: 300, y: 140 },
+        { label: "{b,c}", x: 450, y: 140 },
+        { label: "{a,b,c}", x: 300, y: 45 }
+      ];
+
+      const edges = [
+        [0,1], [0,2], [0,3],
+        [1,4], [1,5], [2,4], [2,6], [3,5], [3,6],
+        [4,7], [5,7], [6,7]
+      ];
+
+      const exactPos = Math.max(0.8, t * 8);
+      const activeCount = Math.max(1, Math.min(8, Math.ceil(exactPos)));
+
+      let html = `
+        <text x="25" y="48" fill="#94a3b8" font-size="12">মাত্রা ৩ (n=3)</text>
+        <text x="25" y="145" fill="#94a3b8" font-size="12">মাত্রা ২</text>
+        <text x="25" y="245" fill="#94a3b8" font-size="12">মাত্রা ১</text>
+        <text x="25" y="345" fill="#94a3b8" font-size="12">মাত্রা ০ (Ø)</text>
+      `;
+
+      // Smoothly growing edges
+      edges.forEach(([u, v]) => {
+        const edgeProg = smoothstep(v - 0.8, v, exactPos);
+        const x1 = subsets[u].x, y1 = subsets[u].y;
+        const x2 = subsets[v].x, y2 = subsets[v].y;
+        const curX = x1 + (x2 - x1) * edgeProg;
+        const curY = y1 + (y2 - y1) * edgeProg;
+
+        html += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#1e293b" stroke-width="1" stroke-dasharray="4 4"/>`;
+        if (edgeProg > 0) {
+          html += `<line x1="${x1}" y1="${y1}" x2="${curX.toFixed(1)}" y2="${curY.toFixed(1)}" stroke="#38bdf8" stroke-width="2.2"/>`;
+        }
+      });
+
+      subsets.forEach((s, idx) => {
+        const nodeProg = smoothstep(idx - 0.6, idx + 0.1, exactPos);
+        const isCurrent = idx === activeCount - 1;
+        const scale = 0.75 + 0.25 * nodeProg;
+        html += `
+          <g transform="translate(${s.x}, ${s.y}) scale(${scale.toFixed(3)})" opacity="${(0.2 + 0.8 * nodeProg).toFixed(2)}">
+            <rect x="-46" y="-21" width="92" height="42" rx="21" 
+                  fill="${isCurrent ? '#38bdf8' : (nodeProg > 0.5 ? '#1e293b' : '#0f172a')}"
+                  stroke="${nodeProg > 0.5 ? '#38bdf8' : '#334155'}" stroke-width="${isCurrent ? 3 : 1.8}"/>
+            <text x="0" y="6" text-anchor="middle" fill="${isCurrent ? '#070b14' : (nodeProg > 0.5 ? '#f8fafc' : '#475569')}" 
+                  font-weight="700" font-size="15" class="mono">${s.label}</text>
+          </g>
+        `;
+      });
+
+      svgEl.innerHTML = html;
+
+      const visibleList = subsets.slice(0, activeCount).map(s => `<span class="badge-item">${s.label}</span>`).join('');
+      readoutEl.innerHTML = `
+        <div><strong>শক্তি সেট P(A) গঠন (${activeCount} / 8 টি উপসেট):</strong></div>
+        <div style="margin:6px 0;">P(A) = { ${visibleList} }</div>
+        <div style="font-size:0.86rem; color:var(--amber);">
+          উদাহরণ ৬: যদি A = {a,b} ও B = {b,c} হয়, তবে P(A) ∪ P(B) তে ৬টি উপসেট থাকে, কিন্তু P(A ∪ B) তে 2³ = 8 টি উপসেট থাকে ({a,c} এবং {a,b,c} অতিরিক্ত)। তাই <strong>P(A) ∪ P(B) ⊆ P(A ∪ B)</strong>।
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // SLIDE 2: VENN DIAGRAM & DE MORGAN'S LAWS
+    // =========================================================================
+    function renderScene2(svgEl, readoutEl, t) {
+      const opsOrder = ['union', 'inter', 'diff', 'demorgan1', 'demorgan2'];
+      const autoIdx = Math.min(4, Math.floor(t * 5));
+      const activeOp = state.vennOp || opsOrder[autoIdx];
+
+      const highlight = { onlyA: false, both: false, onlyB: false, outside: false, title: '', result: '', desc: '' };
+
+      if (activeOp === 'union') {
+        highlight.onlyA = highlight.both = highlight.onlyB = true;
+        highlight.title = "সংযোগ সেট: A ∪ B";
+        highlight.result = "{1, 2, 3, 5, 7, 9}";
+        highlight.desc = "A অথবা B উভয় সেটের সকল উপাদান।";
+      } else if (activeOp === 'inter') {
+        highlight.both = true;
+        highlight.title = "ছেদ সেট: A ∩ B";
+        highlight.result = "{3, 5, 7}";
+        highlight.desc = "A এবং B উভয় সেটের সাধারণ (Common) মৌলিক ও বিজোড় সংখ্যা।";
+      } else if (activeOp === 'diff') {
+        highlight.onlyA = true;
+        highlight.title = "সেটের অন্তর: A \\ B (বা A ∩ B')";
+        highlight.result = "{2}";
+        highlight.desc = "A থেকে B এর উপাদানগুলো বাদ দিলে শুধুমাত্র জোড় মৌলিক সংখ্যা 2 থাকে।";
+      } else if (activeOp === 'demorgan1') {
+        highlight.outside = true;
+        highlight.title = "ডি মরগ্যানের ১ম সূত্র: (A ∪ B)' = A' ∩ B'";
+        highlight.result = "{0, 4, 6, 8}";
+        highlight.desc = "যারা মৌলিকও নয় এবং বিজোড়ও নয় (বৃত্ত দুটির বাইরের অংশ)।";
+      } else {
+        highlight.onlyA = highlight.onlyB = highlight.outside = true;
+        highlight.title = "ডি মরগ্যানের ২য় সূত্র: (A ∩ B)' = A' ∪ B'";
+        highlight.result = "{0, 1, 2, 4, 6, 8, 9}";
+        highlight.desc = "সাধারণ ছেদ অংশ {3,5,7} বাদে সার্বিক সেটের বাকি সব উপাদান।";
+      }
+
+      const cOutside = highlight.outside ? 'rgba(56, 189, 248, 0.24)' : '#0f172a';
+      const cOnlyA = highlight.onlyA ? 'rgba(56, 189, 248, 0.48)' : 'rgba(30, 41, 59, 0.45)';
+      const cOnlyB = highlight.onlyB ? 'rgba(56, 189, 248, 0.48)' : 'rgba(30, 41, 59, 0.45)';
+      const cBoth = highlight.both ? 'rgba(52, 211, 153, 0.65)' : 'rgba(15, 23, 42, 0.85)';
+
+      svgEl.innerHTML = `
+        <defs>
+          <clipPath id="clipA2"><circle cx="235" cy="200" r="115"/></clipPath>
+        </defs>
+        <rect x="40" y="35" width="520" height="330" rx="16" fill="${cOutside}" stroke="#475569" stroke-width="2"/>
+        <text x="530" y="65" fill="#94a3b8" font-size="20" font-weight="700" class="mono">U</text>
+
+        <circle cx="235" cy="200" r="115" fill="${cOnlyA}"/>
+        <circle cx="365" cy="200" r="115" fill="${cOnlyB}"/>
+        <circle cx="365" cy="200" r="115" clip-path="url(#clipA2)" fill="${cBoth}"/>
+
+        <circle cx="235" cy="200" r="115" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+        <circle cx="365" cy="200" r="115" fill="none" stroke="#c084fc" stroke-width="2.5"/>
+
+        <text x="155" y="105" fill="#38bdf8" font-size="17" font-weight="700">A (মৌলিক)</text>
+        <text x="395" y="105" fill="#c084fc" font-size="17" font-weight="700">B (বিজোড়)</text>
+
+        <g transform="translate(175, 200)">
+          <circle r="20" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+          <text y="6" text-anchor="middle" fill="#f8fafc" font-size="18" font-weight="700" class="mono">2</text>
+        </g>
+
+        <g transform="translate(300, 150)">
+          <circle r="18" fill="#1e293b" stroke="#34d399" stroke-width="2"/>
+          <text y="6" text-anchor="middle" fill="#34d399" font-size="16" font-weight="700" class="mono">3</text>
+        </g>
+        <g transform="translate(300, 200)">
+          <circle r="18" fill="#1e293b" stroke="#34d399" stroke-width="2"/>
+          <text y="6" text-anchor="middle" fill="#34d399" font-size="16" font-weight="700" class="mono">5</text>
+        </g>
+        <g transform="translate(300, 250)">
+          <circle r="18" fill="#1e293b" stroke="#34d399" stroke-width="2"/>
+          <text y="6" text-anchor="middle" fill="#34d399" font-size="16" font-weight="700" class="mono">7</text>
+        </g>
+
+        <g transform="translate(425, 175)">
+          <circle r="19" fill="#1e293b" stroke="#c084fc" stroke-width="2"/>
+          <text y="6" text-anchor="middle" fill="#f8fafc" font-size="17" font-weight="700" class="mono">1</text>
+        </g>
+        <g transform="translate(425, 230)">
+          <circle r="19" fill="#1e293b" stroke="#c084fc" stroke-width="2"/>
+          <text y="6" text-anchor="middle" fill="#f8fafc" font-size="17" font-weight="700" class="mono">9</text>
+        </g>
+
+        <text x="85" y="85" fill="#94a3b8" font-size="17" font-weight="600" class="mono">0</text>
+        <text x="85" y="330" fill="#94a3b8" font-size="17" font-weight="600" class="mono">4</text>
+        <text x="505" y="330" fill="#94a3b8" font-size="17" font-weight="600" class="mono">6</text>
+        <text x="300" y="348" fill="#94a3b8" font-size="17" font-weight="600" class="mono">8</text>
+      `;
+
+      readoutEl.innerHTML = `
+        <div style="color:var(--accent); font-weight:700; font-size:1.05rem;">${highlight.title} = <span class="mono">${highlight.result}</span></div>
+        <div style="margin-top:4px;">${highlight.desc}</div>
+        <div style="margin-top:8px; font-size:0.84rem; color:var(--text-muted);" class="mono">
+          A = {2,3,5,7}, B = {1,3,5,7,9} | A' = {0,1,4,6,8,9}, B' = {0,2,4,6,8}
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // SLIDE 3: ONE-TO-ONE CORRESPONDENCE & INFINITE SETS (Smooth Ray Drawing)
+    // =========================================================================
+    function renderScene3(svgEl, readoutEl, t) {
+      const maxPairs = 7;
+      const exactPos = Math.max(0.7, t * maxPairs);
+
+      let html = `
+        <ellipse cx="170" cy="205" rx="75" ry="165" fill="#131b2e" stroke="#38bdf8" stroke-width="2.5"/>
+        <text x="170" y="25" text-anchor="middle" fill="#38bdf8" font-size="16" font-weight="700">স্বাভাবিক সংখ্যা N</text>
+
+        <ellipse cx="430" cy="205" rx="75" ry="165" fill="#131b2e" stroke="#34d399" stroke-width="2.5"/>
+        <text x="430" y="25" text-anchor="middle" fill="#34d399" font-size="16" font-weight="700">জোড় সংখ্যা A ⊂ N</text>
+      `;
+
+      const labelsN = ['1', '2', '3', '4', '5', 'n', '...'];
+      const labelsA = ['2', '4', '6', '8', '10', '2n', '...'];
+
+      for (let i = 0; i < maxPairs; i++) {
+        const y = 78 + i * 42;
+        const prog = smoothstep(i, i + 0.85, exactPos);
+        const xStart = 175;
+        const xEnd = 175 + 250 * prog;
+
+        html += `
+          <g opacity="${(0.2 + 0.8 * prog).toFixed(2)}">
+            <text x="155" y="${y + 5}" text-anchor="end" fill="#f8fafc" font-size="17" font-weight="700" class="mono">${labelsN[i]}</text>
+            <text x="445" y="${y + 5}" text-anchor="start" fill="#34d399" font-size="17" font-weight="700" class="mono">${labelsA[i]}</text>
+            <line x1="${xStart}" y1="${y}" x2="${xEnd.toFixed(1)}" y2="${y}" stroke="${prog > 0.1 ? '#fbbf24' : '#334155'}" stroke-width="2.2"/>
+            ${prog > 0.85 ? `<polygon points="425,${y} 415,${y-5} 415,${y+5}" fill="#fbbf24"/>` : ''}
+            ${prog > 0.15 ? `<polygon points="175,${y} 185,${y-5} 185,${y+5}" fill="#fbbf24"/>` : ''}
+          </g>
+        `;
+      }
+
+      svgEl.innerHTML = html;
+      readoutEl.innerHTML = `
+        <div><strong>এক-এক মিল (Bijection): <span class="mono">n ↔ 2n</span></strong></div>
+        <div style="margin-top:4px;">
+          বিজোড় সংখ্যাগুলো {1, 3, 5, ...} বাদ দিয়ে জোড় সংখ্যার সেট <span class="mono">A</span> গঠিত হলেও (<span class="mono">A ⊂ N</span>), প্রতিটি স্বাভাবিক সংখ্যার সাথে একটি অনন্য জোড় সংখ্যার এক-এক মিল রয়েছে!
+        </div>
+        <div style="margin-top:6px; color:var(--emerald); font-weight:600;">
+          প্রতিজ্ঞা ৭: কোনো সেট অনন্ত (Infinite) হবে যদি ও কেবল যদি সেটটি তার নিজের একটি প্রকৃত উপসেটের সমতুল (Equivalent) হয়।
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // SLIDE 4: REAL WORLD VENN PROBLEMS (Continuous Circle Morphing)
+    // =========================================================================
+    function renderScene4(svgEl, readoutEl, t) {
+      if (state.probMode === 'ex17') {
+        // Continuous float x from 6.0 to 12.0 for ultra-smooth circle sliding
+        const xFloat = 6 + t * 6;
+        const xInt = Math.round(xFloat);
+        const onlyB = 18 - xInt;
+        const onlyV = 12 - xInt;
+        const unionBV = 30 - xInt;
+        const neither = 24 - unionBV;
+
+        const dist = 140 - (xFloat - 6) * 12.5;
+        const cxB = 300 - dist / 2;
+        const cxV = 300 + dist / 2;
+
+        svgEl.innerHTML = `
+          <rect x="40" y="30" width="520" height="340" rx="16" fill="#0f172a" stroke="#475569" stroke-width="2"/>
+          <text x="60" y="62" fill="#94a3b8" font-size="16" font-weight="700">মোট ছাত্র n(U) = 24</text>
+          <text x="535" y="62" text-anchor="end" fill="#fb7185" font-size="15" font-weight="600">কোনোটিই খেলে না: ${neither} জন</text>
+
+          <circle cx="${cxB.toFixed(2)}" cy="205" r="110" fill="rgba(56, 189, 248, 0.25)" stroke="#38bdf8" stroke-width="2.5"/>
+          <circle cx="${cxV.toFixed(2)}" cy="205" r="95" fill="rgba(251, 191, 36, 0.25)" stroke="#fbbf24" stroke-width="2.5"/>
+
+          <text x="${(cxB - 45).toFixed(1)}" y="108" fill="#38bdf8" font-size="15" font-weight="700">বাস্কেটবল n(B)=18</text>
+          <text x="${(cxV + 35).toFixed(1)}" y="108" text-anchor="middle" fill="#fbbf24" font-size="15" font-weight="700">ভলিবল n(V)=12</text>
+
+          <text x="${(cxB - 55).toFixed(1)}" y="205" text-anchor="middle" fill="#f8fafc" font-size="22" font-weight="700" class="mono">${onlyB}</text>
+          <text x="${(cxB - 55).toFixed(1)}" y="226" text-anchor="middle" fill="#94a3b8" font-size="11">শুধু বাস্কেটবল</text>
+
+          <text x="300" y="205" text-anchor="middle" fill="#34d399" font-size="25" font-weight="700" class="mono">x = ${xInt}</text>
+          <text x="300" y="226" text-anchor="middle" fill="#34d399" font-size="11">উভয় খেলা (B ∩ V)</text>
+
+          <text x="${(cxV + 52).toFixed(1)}" y="205" text-anchor="middle" fill="#f8fafc" font-size="22" font-weight="700" class="mono">${onlyV}</text>
+          <text x="${(cxV + 52).toFixed(1)}" y="226" text-anchor="middle" fill="#94a3b8" font-size="11">শুধু ভলিবল</text>
+
+          <text x="300" y="348" text-anchor="middle" fill="#38bdf8" font-size="16" font-weight="600" class="mono">
+            n(B ∪ V) = 30 - ${xInt} = ${unionBV} জন
+          </text>
+        `;
+
+        readoutEl.innerHTML = `
+          <div><strong>উদাহরণ ১৭ (পৃষ্ঠা ১৭–১৮): সম্ভাব্য ন্যূনতম ও বৃহত্তম মান</strong></div>
+          <div style="margin-top:4px;">
+            উভয় খেলা পছন্দ করে <span class="badge-item">x = ${xInt}</span> জন।
+            ${xInt === 6 ? '<span style="color:var(--emerald); font-weight:700;"> (ক্ষুদ্রতম মান x = 6, যখন B ∪ V = U বা 30 - x = 24)</span>' : ''}
+            ${xInt === 12 ? '<span style="color:var(--amber); font-weight:700;"> (বৃহত্তম মান x = 12, যখন V ⊂ B অর্থাৎ সবাই বাস্কেটবলও খেলে!)</span>' : ''}
+          </div>
+          <div style="margin-top:6px; font-size:0.88rem; color:var(--text-muted);">
+            শুধু বাস্কেটবল = ${onlyB} জন | উভয়টি = ${xInt} জন | শুধু ভলিবল = ${onlyV} জন | মোট = ${unionBV} জন।
+          </div>
+        `;
+      } else if (state.probMode === 'ex16') {
+        const showSolved = t > 0.45;
+        const xVal = showSolved ? "6 (x)" : "x";
+        const twoXVal = showSolved ? "12 (2x)" : "2x";
+        const yVal = showSolved ? "2 (y)" : "y";
+
+        svgEl.innerHTML = `
+          <rect x="40" y="20" width="520" height="360" rx="16" fill="#0f172a" stroke="#475569" stroke-width="2"/>
+          <text x="60" y="50" fill="#94a3b8" font-size="15" font-weight="700">মোট বালিকা = 35 জন | দৌড় n(J) = 15 জন</text>
+
+          <circle cx="300" cy="145" r="88" fill="rgba(192, 132, 252, 0.2)" stroke="#c084fc" stroke-width="2"/>
+          <text x="300" y="45" text-anchor="middle" fill="#c084fc" font-size="15" font-weight="700">D (নাচ)</text>
+
+          <circle cx="235" cy="245" r="88" fill="rgba(56, 189, 248, 0.2)" stroke="#38bdf8" stroke-width="2"/>
+          <text x="125" y="325" fill="#38bdf8" font-size="15" font-weight="700">J (দৌড়)</text>
+
+          <circle cx="365" cy="245" r="88" fill="rgba(52, 211, 153, 0.2)" stroke="#34d399" stroke-width="2"/>
+          <text x="455" y="325" fill="#34d399" font-size="15" font-weight="700">S (সাঁতার)</text>
+
+          <text x="300" y="110" text-anchor="middle" fill="#f8fafc" font-size="16" font-weight="700" class="mono">${twoXVal}</text>
+          <text x="242" y="175" text-anchor="middle" fill="#fbbf24" font-size="17" font-weight="700" class="mono">${yVal}</text>
+          <text x="358" y="175" text-anchor="middle" fill="#34d399" font-size="16" font-weight="700" class="mono">${xVal}</text>
+          <text x="300" y="215" text-anchor="middle" fill="#f8fafc" font-size="18" font-weight="700" class="mono">4</text>
+          <text x="195" y="265" text-anchor="middle" fill="#f8fafc" font-size="18" font-weight="700" class="mono">2</text>
+          <text x="300" y="275" text-anchor="middle" fill="#f8fafc" font-size="18" font-weight="700" class="mono">7</text>
+          <text x="405" y="265" text-anchor="middle" fill="#f8fafc" font-size="18" font-weight="700" class="mono">2</text>
+        `;
+
+        readoutEl.innerHTML = `
+          <div><strong>উদাহরণ ১৬ (পৃষ্ঠা ১৬–১৭): ৩টি সেটের ভেনচিত্র</strong></div>
+          <div style="margin-top:4px;">
+            ১) যারা দৌড় পছন্দ করে না, <span class="mono">n(J') = 35 - 15 = 20 ⇒ 2x + x + 2 = 20 ⇒ x = 6</span>।<br>
+            ২) দৌড় ও নাচ পছন্দ করে কিন্তু সাঁতার নয় (<span class="mono">J ∩ D ∩ S'</span>) = <span class="mono">y</span>। যেহেতু <span class="mono">y + 4 + 7 + 2 = 15</span>, তাই <span class="badge-item">y = 2 জন</span>।
+          </div>
+        `;
+      } else {
+        svgEl.innerHTML = `
+          <rect x="40" y="30" width="520" height="340" rx="16" fill="#0f172a" stroke="#475569" stroke-width="2"/>
+          <text x="60" y="62" fill="#94a3b8" font-size="16" font-weight="700">মোট লোক n(S) = n(E ∪ B) = 50 জন</text>
+
+          <circle cx="235" cy="205" r="110" fill="rgba(56, 189, 248, 0.25)" stroke="#38bdf8" stroke-width="2.5"/>
+          <circle cx="365" cy="205" r="110" fill="rgba(52, 211, 153, 0.25)" stroke="#34d399" stroke-width="2.5"/>
+
+          <text x="175" y="195" text-anchor="middle" fill="#f8fafc" font-size="22" font-weight="700" class="mono">10</text>
+          <text x="175" y="220" text-anchor="middle" fill="#94a3b8" font-size="13">শুধু ইংরেজি (E\\B)</text>
+
+          <text x="300" y="195" text-anchor="middle" fill="#fbbf24" font-size="24" font-weight="700" class="mono">25</text>
+          <text x="300" y="220" text-anchor="middle" fill="#fbbf24" font-size="13">উভয় ভাষা (E ∩ B)</text>
+
+          <text x="425" y="195" text-anchor="middle" fill="#34d399" font-size="24" font-weight="700" class="mono">15</text>
+          <text x="425" y="220" text-anchor="middle" fill="#34d399" font-size="13">কেবল বাংলা (B\\E)</text>
+        `;
+
+        readoutEl.innerHTML = `
+          <div><strong>উদাহরণ ১৫ (পৃষ্ঠা ১৫–১৬):</strong></div>
+          <div style="margin-top:4px;">
+            <span class="mono">n(E ∪ B) = n(E) + n(B) - n(E ∩ B) ⇒ 50 = 35 + n(B) - 25 ⇒ n(B) = 40 জন</span> (বাংলা বলতে পারে)।<br>
+            কেবলমাত্র বাংলা বলতে পারে <span class="mono">n(B \\ E) = 40 - 25 = 15 জন</span>।
+          </div>
+        `;
+      }
+    }
+
+    // =========================================================================
+    // SLIDE 5: FUNCTION MAPPING & INVERSE FUNCTION (Animated Travelling Particles)
+    // =========================================================================
+    function renderScene5(svgEl, readoutEl, t) {
+      const modeIdx = Math.min(3, Math.floor(t * 4));
+      const subT = (t * 4) - modeIdx; // 0.0 to 1.0 inside each sub-case
+      const isReverse = t > 0.86;
+
+      const configs = [
+        {
+          name: "১. ফাংশন নয় (অন্বয় মাত্র - উদাহরণ ২৬)",
+          dom: ['1', '2', '3'],
+          cod: ['2', '4', '5'],
+          edges: [[0,0], [1,1], [1,2], [2,1], [2,2]],
+          verdict: "❌ এটি ফাংশন নয়, কারণ ডোমেনের একই উপাদান 2 এর দুটি ভিন্ন প্রতিবিম্ব (4 ও 5) রয়েছে!",
+          color: "#fb7185"
+        },
+        {
+          name: "২. এক-এক (One-to-One) কিন্তু সার্বিক (Onto) নয়",
+          dom: ['a', 'b', 'c'],
+          cod: ['1', '2', '3', '4'],
+          edges: [[0,0], [1,1], [2,3]],
+          verdict: "⚠️ এক-এক ফাংশন, কিন্তু সার্বিক নয় (কোডোমেনের 3 এর কোনো প্রাক-প্রতিবিম্ব নেই)।",
+          color: "#fbbf24"
+        },
+        {
+          name: "৩. সার্বিক (Onto) কিন্তু এক-এক নয়",
+          dom: ['a', 'b', 'c'],
+          cod: ['1', '2'],
+          edges: [[0,0], [1,1], [2,1]],
+          verdict: "⚠️ সার্বিক ফাংশন (রেঞ্জ = কোডোমেন), কিন্তু এক-এক নয় কারণ b ও c উভয়েরই প্রতিবিম্ব 2।",
+          color: "#fbbf24"
+        },
+        {
+          name: isReverse ? "৪. বিপরীত ফাংশন f⁻¹ : D → A (তীর উল্টে গেছে!)" : "৪. এক-এক ও সার্বিক ফাংশন f : A → D (বিপরীতযোগ্য)",
+          dom: ['a', 'b', 'c'],
+          cod: ['1', '2', '3'],
+          edges: [[0,1], [1,0], [2,2]],
+          verdict: isReverse
+            ? "✅ বিপরীত ফাংশন সক্রিয়! f⁻¹(1) = b, f⁻¹(2) = a, f⁻¹(3) = c।"
+            : "✅ এক-এক এবং সার্বিক! তাই এর বিপরীত ফাংশন f⁻¹ বিদ্যমান।",
+          color: "#34d399"
+        }
+      ];
+
+      const cfg = configs[modeIdx];
+
+      let html = `
+        <text x="300" y="32" text-anchor="middle" fill="${cfg.color}" font-size="16" font-weight="700">${cfg.name}</text>
+
+        <ellipse cx="175" cy="210" rx="68" ry="135" fill="#131b2e" stroke="#38bdf8" stroke-width="2.5"/>
+        <text x="175" y="60" text-anchor="middle" fill="#38bdf8" font-size="14" font-weight="700">${isReverse ? 'প্রাক-প্রতিবিম্ব সেট A' : 'ডোমেন A'}</text>
+
+        <ellipse cx="425" cy="210" rx="68" ry="135" fill="#131b2e" stroke="#c084fc" stroke-width="2.5"/>
+        <text x="425" y="60" text-anchor="middle" fill="#c084fc" font-size="14" font-weight="700">${isReverse ? 'ডোমেন D (f⁻¹)' : 'কোডোমেন B'}</text>
+      `;
+
+      const domY = cfg.dom.map((_, i) => 135 + i * (150 / Math.max(1, cfg.dom.length - 1)));
+      const codY = cfg.cod.map((_, i) => 125 + i * (170 / Math.max(1, cfg.cod.length - 1)));
+
+      cfg.edges.forEach(([u, v]) => {
+        const y1 = domY[u];
+        const y2 = codY[v];
+        const x1 = 195;
+        const x2 = 405;
+
+        // Animated signal pulse travelling along the arrow
+        const pulseT = isReverse ? (1 - (subT % 1)) : (subT % 1);
+        const px = x1 + (x2 - x1) * pulseT;
+        const py = y1 + (y2 - y1) * pulseT;
+
+        html += `
+          <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${cfg.color}" stroke-width="2.2" opacity="0.8"/>
+          <circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="5" fill="#f8fafc" stroke="${cfg.color}" stroke-width="2"/>
+          ${!isReverse
+            ? `<polygon points="${x2},${y2}${x2-12},${y2-5}${x2-12},${y2+5}" fill="${cfg.color}"/>`
+            : `<polygon points="${x1},${y1}${x1+12},${y1-5}${x1+12},${y1+5}" fill="${cfg.color}"/>`
+          }
+        `;
+      });
+
+      cfg.dom.forEach((d, i) => {
+        html += `
+          <circle cx="175" cy="${domY[i]}" r="18" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+          <text x="175" y="${domY[i]+6}" text-anchor="middle" fill="#f8fafc" font-size="16" font-weight="700" class="mono">${d}</text>
+        `;
+      });
+
+      cfg.cod.forEach((c, i) => {
+        const isUnmapped = !cfg.edges.some(([_, v]) => v === i);
+        html += `
+          <circle cx="425" cy="${codY[i]}" r="18" fill="#1e293b" stroke="${isUnmapped ? '#fb7185' : '#c084fc'}" stroke-width="2"/>
+          <text x="425" y="${codY[i]+6}" text-anchor="middle" fill="#f8fafc" font-size="16" font-weight="700" class="mono">${c}</text>
+        `;
+      });
+
+      svgEl.innerHTML = html;
+      readoutEl.innerHTML = `
+        <div style="color:${cfg.color}; font-weight:700;">${cfg.verdict}</div>
+        <div style="margin-top:6px; font-size:0.88rem; color:var(--text-muted);">
+          একটি অন্বয়ের ক্রমজোড়গুলোর প্রথম উপাদানগুলো ভিন্ন ভিন্ন হলে সেটি ফাংশন। আর ফাংশনটি এক-এক ও সার্বিক হলেই কেবল <span class="mono">f⁻¹</span> নির্ণয় করা যায়।
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // SLIDE 6: FUNCTION GRAPHS & VERTICAL LINE SCANNER (60FPS Continuous)
+    // =========================================================================
+    function renderScene6(svgEl, readoutEl, t) {
+      const ox = 300;
+      const oy = 210;
+      const sc = 24;
+      const toScreenX = (x) => ox + x * sc;
+      const toScreenY = (y) => oy - y * sc;
+
+      let html = `<g stroke="#1e293b" stroke-width="1">`;
+      for (let gx = -10; gx <= 10; gx++) {
+        const sx = toScreenX(gx);
+        html += `<line x1="${sx}" y1="15" x2="${sx}" y2="385"/>`;
+      }
+      for (let gy = -7; gy <= 7; gy++) {
+        const sy = toScreenY(gy);
+        html += `<line x1="40" y1="${sy}" x2="560" y2="${sy}"/>`;
+      }
+      html += `</g>`;
+
+      html += `
+        <line x1="40" y1="${oy}" x2="560" y2="${oy}" stroke="#64748b" stroke-width="2"/>
+        <line x1="${ox}" y1="15" x2="${ox}" y2="385" stroke="#64748b" stroke-width="2"/>
+        <text x="550" y="${oy - 8}" fill="#94a3b8" font-size="14" class="mono">X</text>
+        <text x="${ox + 10}" y="28" fill="#94a3b8" font-size="14" class="mono">Y</text>
+        <text x="${ox - 16}" y="${oy + 18}" fill="#94a3b8" font-size="13" class="mono">O</text>
+      `;
+
+      const xScan = -4.2 + t * 9.4;
+      const sxScan = toScreenX(xScan);
+
+      let curvePath = '';
+      let hits = [];
+      let titleText = '';
+      let analysisHTML = '';
+
+      if (state.graphMode === 'quadratic') {
+        titleText = "দ্বিঘাত ফাংশন (পরাবৃত্ত): y = x² - 4x - 1 (পৃষ্ঠা ৩২)";
+        const pts = [];
+        for (let x = -1.6; x <= 5.6; x += 0.1) {
+          const y = x * x - 4 * x - 1;
+          pts.push(`${toScreenX(x).toFixed(1)},${toScreenY(y).toFixed(1)}`);
+        }
+        curvePath = `<polyline fill="none" stroke="#38bdf8" stroke-width="3" points="${pts.join(' ')}"/>`;
+
+        [[-1,4],[0,-1],[1,-4],[2,-5],[3,-4],[4,-1],[5,4]].forEach(([px, py]) => {
+          html += `<circle cx="${toScreenX(px)}" cy="${toScreenY(py)}" r="4" fill="#fbbf24"/>`;
+        });
+
+        const yVal = xScan * xScan - 4 * xScan - 1;
+        if (yVal >= -7.5 && yVal <= 7.5) hits.push([xScan, yVal]);
+
+        analysisHTML = `
+          <div><strong>দ্বিঘাত ফাংশন: <span class="mono">y = x² - 4x - 1</span></strong></div>
+          <div>উল্লম্ব রেখা <span class="mono">x = ${xScan.toFixed(2)}</span> লেখচিত্রটিকে <strong>১টি মাত্র বিন্দুতে</strong> <span class="mono">(${xScan.toFixed(2)}, ${yVal.toFixed(2)})</span> ছেদ করেছে। এর সর্বনিম্ন মান বিন্দু <span class="badge-item">(2, -5)</span>।</div>
+        `;
+      } else if (state.graphMode === 'linear') {
+        titleText = "সরলরৈখিক ফাংশন: f(x) = 3x + 2 (ঢাল m = 3, ছেদক b = 2)";
+        const x1 = -2.5, y1 = 3 * x1 + 2;
+        const x2 = 2.2, y2 = 3 * x2 + 2;
+        curvePath = `<line x1="${toScreenX(x1)}" y1="${toScreenY(y1)}" x2="${toScreenX(x2)}" y2="${toScreenY(y2)}" stroke="#34d399" stroke-width="3"/>`;
+
+        [[-2,-4],[-1,-1],[0,2],[1,5]].forEach(([px, py]) => {
+          html += `<circle cx="${toScreenX(px)}" cy="${toScreenY(py)}" r="4.5" fill="#fbbf24"/>`;
+        });
+
+        const yVal = 3 * xScan + 2;
+        if (yVal >= -7.5 && yVal <= 7.5) hits.push([xScan, yVal]);
+
+        analysisHTML = `
+          <div><strong>সরলরৈখিক ফাংশন: <span class="mono">f(x) = 3x + 2</span> (পৃষ্ঠা ৩১)</strong></div>
+          <div>বর্তমান বিন্দু: <span class="badge-item">(${xScan.toFixed(2)}, ${yVal.toFixed(2)})</span>। এটি এক-এক ও সার্বিক ফাংশন।</div>
+        `;
+      } else if (state.graphMode === 'circle') {
+        titleText = "বৃত্তের লেখচিত্র: S = {(x,y) : x² + y² = 4²} (ফাংশন নয়!)";
+        curvePath = `<circle cx="${ox}" cy="${oy}" r="${4 * sc}" fill="rgba(251, 113, 133, 0.1)" stroke="#fb7185" stroke-width="3"/>`;
+
+        if (Math.abs(xScan) <= 4) {
+          const yAbs = Math.sqrt(16 - xScan * xScan);
+          hits.push([xScan, yAbs]);
+          if (yAbs > 0.05) hits.push([xScan, -yAbs]);
+        }
+
+        analysisHTML = `
+          <div style="color:var(--rose); font-weight:700;"><strong>বৃত্তের সমীকরণ: <span class="mono">x² + y² = 16</span> (উদাহরণ ৩৫, পৃষ্ঠা ৩২–৩৩)</strong></div>
+          <div>
+            ${hits.length === 2
+              ? `❌ <span class="mono">x = ${xScan.toFixed(2)}</span> এর জন্য উল্লম্ব রেখাটি বৃত্তকে <strong>২টি বিন্দুতে</strong> ছেদ করেছে: <span class="badge-item">y = +${hits[0][1].toFixed(2)}</span> এবং <span class="badge-item">y = ${hits[1][1].toFixed(2)}</span>। তাই বৃত্ত ফাংশন নয়!`
+              : `রেখাটি বর্তমানে বৃত্তের ডোমেন [-4, 4] এর বাইরে আছে।`}
+          </div>
+        `;
+      } else {
+        titleText = "উদাহরণ ৩৩ (পৃষ্ঠা ২৯): f(x) = 3x+1 এবং বিপরীত ফাংশন f⁻¹(x) = (x-1)/3";
+        curvePath = `
+          <line x1="${toScreenX(-2)}" y1="${toScreenY(-2)}" x2="${toScreenX(7)}" y2="${toScreenY(7)}" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5 5"/>
+          <text x="${toScreenX(6.1)}" y="${toScreenY(6.6)}" fill="#fbbf24" font-size="12" class="mono">y = x প্রতিসাম্য রেখা</text>
+
+          <line x1="${toScreenX(0)}" y1="${toScreenY(1)}" x2="${toScreenX(2)}" y2="${toScreenY(7)}" stroke="#38bdf8" stroke-width="3.5"/>
+          <text x="${toScreenX(1.1)}" y="${toScreenY(5.5)}" fill="#38bdf8" font-size="15" font-weight="700" class="mono">f</text>
+
+          <line x1="${toScreenX(1)}" y1="${toScreenY(0)}" x2="${toScreenX(7)}" y2="${toScreenY(2)}" stroke="#34d399" stroke-width="3.5"/>
+          <text x="${toScreenX(4.5)}" y="${toScreenY(0.6)}" fill="#34d399" font-size="15" font-weight="700" class="mono">f⁻¹</text>
+        `;
+
+        const u = t * 2;
+        const fu = 3 * u + 1;
+        html += `
+          <line x1="${toScreenX(u)}" y1="${toScreenY(fu)}" x2="${toScreenX(fu)}" y2="${toScreenY(u)}" stroke="#c084fc" stroke-width="1.8" stroke-dasharray="3 3"/>
+          <circle cx="${toScreenX(u)}" cy="${toScreenY(fu)}" r="6" fill="#38bdf8" stroke="#070b14" stroke-width="2"/>
+          <circle cx="${toScreenX(fu)}" cy="${toScreenY(u)}" r="6" fill="#34d399" stroke="#070b14" stroke-width="2"/>
+        `;
+
+        analysisHTML = `
+          <div><strong>উদাহরণ ৩৩ (পৃষ্ঠা ২৯): <span class="mono">f(x) = 3x + 1, 0 ≤ x ≤ 2</span></strong></div>
+          <div>
+            স্লাইডার পয়েন্টে: <span class="badge-item">f(${u.toFixed(2)}) = ${fu.toFixed(2)}</span> এবং এর প্রতিসম বিন্দু <span class="badge-item">f⁻¹(${fu.toFixed(2)}) = ${u.toFixed(2)}</span> যা <span class="mono">y = x</span> রেখার সাপেক্ষে প্রতিফলিত!
+          </div>
+        `;
+      }
+
+      html += curvePath;
+
+      if (state.graphMode !== 'inverse') {
+        const lineColor = hits.length > 1 ? '#fb7185' : '#fbbf24';
+        html += `
+          <line x1="${sxScan.toFixed(1)}" y1="20" x2="${sxScan.toFixed(1)}" y2="380" stroke="${lineColor}" stroke-width="2" stroke-dasharray="6 4"/>
+          <rect x="${(sxScan - 42).toFixed(1)}" y="20" width="84" height="22" rx="4" fill="#0f172a" stroke="${lineColor}"/>
+          <text x="${sxScan.toFixed(1)}" y="35" text-anchor="middle" fill="${lineColor}" font-size="11" font-weight="700" class="mono">x = ${xScan.toFixed(2)}</text>
+        `;
+
+        hits.forEach(([hx, hy]) => {
+          html += `
+            <circle cx="${toScreenX(hx).toFixed(1)}" cy="${toScreenY(hy).toFixed(1)}" r="6.5" fill="${lineColor}" stroke="#070b14" stroke-width="2"/>
+            <text x="${(toScreenX(hx) + 10).toFixed(1)}" y="${(toScreenY(hy) - 8).toFixed(1)}" fill="#f8fafc" font-size="12" font-weight="700" class="mono">(${hx.toFixed(1)}, ${hy.toFixed(1)})</text>
+          `;
+        });
+      }
+
+      html += `<text x="55" y="36" fill="#f8fafc" font-size="14" font-weight="600">${titleText}</text>`;
+
+      svgEl.innerHTML = html;
+      readoutEl.innerHTML = analysisHTML;
+    }
+
+    // Initial boot
+    renderAll();
+  </script>
+</body>
+</html>

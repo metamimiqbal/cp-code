@@ -22,8 +22,6 @@ vector<int> merge(vector<int>&left, vector<int>&right) {
     return merged;
 }
 
-
-
 // divide and conquer:
 vector<int> merge_sort(vector<int>&vec) {
     if((int)vec.size() <= 1) return vec;
@@ -31,7 +29,7 @@ vector<int> merge_sort(vector<int>&vec) {
     int md = vec.size()/2; 
     vector<int> left(vec.begin(), vec.begin() + md);
     vector<int> right(vec.begin() + md, vec.end());
-
+    
     left = merge_sort(left);
     right = merge_sort(right);
 

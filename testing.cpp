@@ -63,26 +63,18 @@ inline T sq(T x) { return x * x; }
 
 // [ Why So Serious ]
 void solve() {
-    ll n, k; cin>>n>>k;
-    string s; cin>>s;
-    map<char, ll>mp;
-    rep(i, 0, n) {
-        mp[s[i]]++;
-    }
+    string s = "tamimi";
+    ll n = s.size();
+    string s1 = s.substr(0, n-1);
+        string s2 = s.substr(1, n-1);
+        cout<<s1<<spc<<s2<<nl;
 
-    ll od = 0;
-    for(auto [u, v]: mp) {
-        od += (v&1);
-        cout<<u<<spc<<v<<nl;
-    }
-
-    cout<<od<<nl;
 }
 
 signed main() {
     THINK_LIKE_JACK_SPARROW
 
-    int tt; cin>>tt; while(tt--)
+    //int tt; cin>>tt; while(tt--)
     solve();
 
     return 0;

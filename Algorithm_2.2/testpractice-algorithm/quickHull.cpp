@@ -62,6 +62,8 @@ vector<Point> quickHull(vector<Point>pts) {
         ll d = cross(A, B, p);
         if(d > 0) upper.push_back(p);
         else if(d < 0) lower.push_back(p);
+        // if d == 0, then that point is on the same line, 
+        //which to be neglected, as we've take the best already
     }
 
     hull.push_back(A);

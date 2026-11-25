@@ -17,7 +17,7 @@ ll dist2(Point A, Point B) {
 
 bool polarCompare(Point A, Point B) {
     ll d = cross(pivot, A, B);
-    if (d == 0) return dist2(pivot, A) < dist2(pivot, B);
+    if (d == 0) return dist2(pivot, A) < dist2(pivot, B); // if pivot, A, B same line then to choose the closer one
     return d > 0;
 }
 
